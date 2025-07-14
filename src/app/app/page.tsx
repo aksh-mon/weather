@@ -87,6 +87,7 @@ export default function WeatherPage() {
 
   return (
     <div
+      style={{fontFamily:'monospace'}}
       className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300 ${
         isDarkMode ? 'bg-gray-900 text-white' : 'bg-blue-100 text-black'
       }`}
