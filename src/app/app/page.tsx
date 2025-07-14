@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
 // app/weather/page.tsx
 "use client";
 import React, { useEffect, useState } from "react";
@@ -99,15 +100,16 @@ export default function WeatherPage() {
     <div
       style={{
         fontFamily: "monospace",
-
-     backgroundImage: `url(${isDarkMode ? bgDark.src : bgLight.src})`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',  
-    }}
-      className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300 w-full `}
+        backgroundImage: `url(${isDarkMode ? bgDark.src : bgLight.src})`,
+        backgroundSize: "cover",
+        backgroundPositionX: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+      className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300 ${
+        isDarkMode ? "bg-gray-900 text-white" : "bg-blue-100 text-black"
+      }`}
     >
-      <div className="w-full max-w-md shadow-md rounded-xl p-6 text-center border border-white/20 bg-white/20 backdrop-blur-sm">
+      <div className="w-full h-fit max-w-md shadow-md rounded-xl p-6 text-center border border-white/20 bg-white/20 backdrop-blur-sm">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Weather App</h1>
           <button
@@ -156,7 +158,7 @@ export default function WeatherPage() {
               <div className="text-3xl font-bold">{weather.temperature}°C</div>
               <div
                 className={`${
-                  isDarkMode ? "text-gray-100" : "text-gray-700"
+                  isDarkMode ? "text-gray-100" : "text-gray-900"
                 } capitalize`}
               >
                 {weather.condition}
@@ -177,10 +179,18 @@ export default function WeatherPage() {
                   {localTime}
                 </div>
               </div>
+               <div className="text-center mt-5">
+                  Made with 💓 by tailwind <br /> &copy; aksh-mon
+                </div>
             </div>
           )
         )}
       </div>
+      <div
+        className={` ${
+          isDarkMode ? "bg-gray-900 text-white" : "bg-blue-100 text-black"
+        }`}
+      ></div>
     </div>
   );
 }
