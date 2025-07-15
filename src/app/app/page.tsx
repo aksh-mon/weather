@@ -180,7 +180,7 @@ export default function WeatherPage() {
                 </div>
               </div>
                <div className="text-center mt-5">
-                  Made with 💓 by tailwind <br /> &copy; aksh-mon
+                  Next Js <br /> &copy; aksh-mon
                 </div>
             </div>
           )
