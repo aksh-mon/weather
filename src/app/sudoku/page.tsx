@@ -225,9 +225,12 @@ const Sudoku = () => {
                 <div
                   key={`${r}-${c}`}
                   onClick={() => setSelectedCell([r, c])}
+                  style={{
+                    border:'3px solid red'
+                  }}
                   className={`
      sm-w-10 w-10 h-10 text-center cursor-pointer flex items-center justify-center text-lg 
-    transition-all duration-200 ease-in-out border-2 border-[#000]
+    transition-all duration-200 ease-in-out
     ${isSelected ? "bg-yellow-300" : ""}
     ${isSameNum ? "bg-blue-200" : ""}
     ${isEditable ? "text-red-700 font-bold" : "text-black"}
