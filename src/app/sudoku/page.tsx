@@ -173,11 +173,11 @@ const Sudoku = () => {
         </button>
         <span className="font-mono">{formatTime(timer)}</span>
       </div>
-      <div className="flex justify-between items-center w-[50%]">
+      <div className="flex flex-col justify-between items-center  ">
         <h2
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="text-4xl uppercase tracking-[.5rem] font-light rotate-[-15deg] transition-all duration-300 bg-amber-50 p-2 text-center rounded-3xl"
+          className="text-4xl uppercase tracking-[.5rem] font-light  transition-all duration-300 bg-amber-50 p-2 text-center rounded-3xl"
           style={{
             color: colors[colorIndex],
             textShadow: `0 0 10px ${colors[colorIndex]}, 0 0 20px ${colors[colorIndex]}`,
@@ -185,7 +185,7 @@ const Sudoku = () => {
         >
           Sudoku
         </h2>
-        <div className="grid grid-cols-9 gap-0.5 border-2 border-black p-2 bg-[#755f65]">
+        <div className=" grid grid-cols-9 gap-0.5 border-2 border-black bg-[#755f65] sm:min-w-[100%]">
           {grid.map((row, r) =>
             row.map((val, c) => {
               const isSelected =
@@ -201,7 +201,7 @@ const Sudoku = () => {
                   key={`${r}-${c}`}
                   onClick={() => setSelectedCell([r, c])}
                   className={`
-    w-10 h-10 text-center cursor-pointer flex items-center justify-center text-lg 
+     sm-w-10 w-10 h-10 text-center cursor-pointer flex items-center justify-center text-lg 
     transition-all duration-200 ease-in-out 
     ${isSelected ? "bg-yellow-300" : ""}
     ${isSameNum ? "bg-blue-200" : ""}
@@ -230,7 +230,7 @@ const Sudoku = () => {
         <h2
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="text-4xl uppercase tracking-[.5rem] font-light rotate-[15deg] transition-all duration-300 bg-amber-50 p-2 tet-center  rounded-3xl"
+          className="text-4xl uppercase tracking-[.5rem] font-light  transition-all duration-300 bg-amber-50 p-2 tet-center  rounded-3xl"
           style={{
             color: colors[colorIndex],
             textShadow: `0 0 10px ${colors[colorIndex]}, 0 0 20px ${colors[colorIndex]}`,
