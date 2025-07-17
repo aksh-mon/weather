@@ -121,7 +121,7 @@ const Sudoku = () => {
   "#ff0",  // Yellow
   "#0f0",  // Lime
   "#f80",  // Orange
-  "#3296ff", // Sky Blue
+  "#3296", // Sky Blue
 
   // Bright/Neon colors
   "#39ff14", // Neon Green
@@ -212,7 +212,7 @@ const Sudoku = () => {
         >
           Sudoku
         </h2>
-        <div className=" grid grid-cols-9 gap-0.5 border-2 border-black bg-[#755f65] sm:min-w-[100%]">
+        <div className=" grid grid-cols-9 gap-0.5 border-2 border-black bg-[#39ff14] sm:min-w-[100%]">
           {grid.map((row, r) =>
             row.map((val, c) => {
               const isSelected =
