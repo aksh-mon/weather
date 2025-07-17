@@ -116,14 +116,7 @@ const Sudoku = () => {
       .padStart(2, "0")}`;
   };
   const colors = [
-  "#0ff",  // Cyan
-  "#f0f",  // Magenta
-  "#ff0",  // Yellow
-  "#0f0",  // Lime
-  "#f80",  // Orange
-  "#3296", // Sky Blue
-
-  // Bright/Neon colors
+"#0ff", "#f0f", "#ff0", "#0f0", "#f80", "#3296ff",
   "#39ff14", // Neon Green
   "#ff073a", // Neon Red
   "#ff6ec7", // Neon Pink
@@ -133,8 +126,6 @@ const Sudoku = () => {
   "#ff0090", // Hot Pink
   "#ff9933", // Orange-ish
   "#00ffcc", // Bright Turquoise
-
-  // Soft Pastels (for smoother visuals)
   "#ffd1dc", // Light Pink
   "#c1f0f6", // Light Aqua
   "#f9f871", // Light Yellow
@@ -143,6 +134,13 @@ const Sudoku = () => {
   "#ffdab9", // Peach Puff
   "#add8e6", // Light Blue
   "#f0e68c", // Khaki
+  "#7f00ff", // Purple
+  "#e100ff", // Electric Violet
+  "#00c9ff", // Sky Blue
+  "#92fe9d", // Light Green
+  "#f7971e", // Orange Peel
+  "#ffd200", // Golden
+  "#2b5876", "#4e4376", "#1e3c72", "#2a5298", "#232526", "#414345"
 ];
  // neon colors
   const [colorIndex, setColorIndex] = useState(0);
