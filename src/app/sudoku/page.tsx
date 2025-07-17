@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect, useRef } from "react";
@@ -116,14 +115,42 @@ const Sudoku = () => {
       .toString()
       .padStart(2, "0")}`;
   };
-  const colors = ["#0ff", "#f0f", "#ff0", "#0f0", "#f80"]; // neon colors
+  const colors = [
+  "#0ff",  // Cyan
+  "#f0f",  // Magenta
+  "#ff0",  // Yellow
+  "#0f0",  // Lime
+  "#f80",  // Orange
+  "#3296ff", // Sky Blue
+
+  // Bright/Neon colors
+  "#39ff14", // Neon Green
+  "#ff073a", // Neon Red
+  "#ff6ec7", // Neon Pink
+  "#fe019a", // Bright Pink
+  "#00ffff", // Aqua
+  "#ffcc00", // Bright Yellow
+  "#ff0090", // Hot Pink
+  "#ff9933", // Orange-ish
+  "#00ffcc", // Bright Turquoise
+
+  // Soft Pastels (for smoother visuals)
+  "#ffd1dc", // Light Pink
+  "#c1f0f6", // Light Aqua
+  "#f9f871", // Light Yellow
+  "#caffb9", // Mint
+  "#e0bbff", // Lavender
+  "#ffdab9", // Peach Puff
+  "#add8e6", // Light Blue
+  "#f0e68c", // Khaki
+];
+ // neon colors
   const [colorIndex, setColorIndex] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isPausedRef = useRef(false);
 
   useEffect(() => {
     startColorCycle();
-
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
