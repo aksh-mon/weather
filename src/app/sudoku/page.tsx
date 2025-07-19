@@ -139,6 +139,13 @@ const Sudoku = () => {
   "#ffdab9", // Peach Puff
   "#add8e6", // Light Blue
   "#f0e68c", // Khaki
+  "#7f00ff", // Purple
+  "#e100ff", // Electric Violet
+  "#00c9ff", // Sky Blue
+  "#92fe9d", // Light Green
+  "#f7971e", // Orange Peel
+  "#ffd200", // Golden
+  "#2b5876", "#4e4376", "#1e3c72", "#2a5298", "#232526", "#414345"
 ];
  // neon colors
   const [colorIndex, setColorIndex] = useState(0);
@@ -208,7 +215,7 @@ const Sudoku = () => {
         >
           Sudoku
         </h2>
-        <div className=" grid grid-cols-9 gap-0.5 border-2 border-black bg-[#755f65] sm:min-w-[100%]">
+        <div className=" grid grid-cols-9 gap-0.5 border-2 border-black bg-[#39ff14] sm:min-w-[100%]">
           {grid.map((row, r) =>
             row.map((val, c) => {
               const isSelected =
@@ -223,9 +230,12 @@ const Sudoku = () => {
                 <div
                   key={`${r}-${c}`}
                   onClick={() => setSelectedCell([r, c])}
+                  style={{
+                    border:'1.5px solid #fff'
+                  }}
                   className={`
      sm-w-10 w-10 h-10 text-center cursor-pointer flex items-center justify-center text-lg 
-    transition-all duration-200 ease-in-out 
+    transition-all duration-200 ease-in-out
     ${isSelected ? "bg-yellow-300" : ""}
     ${isSameNum ? "bg-blue-200" : ""}
     ${isEditable ? "text-red-700 font-bold" : "text-black"}
