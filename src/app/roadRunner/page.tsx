@@ -13,9 +13,9 @@ const page = () => {
       className="w-full h-screen flex flex-col items-center justify-center "
     >
       <div className="flex justify-between  w-full p-5"> 
-        <div className="bg-transparent border-white w-[70px] h-[70px] rounded-[50%] text-black  font-bold font-mono text-2xl flex justify-center items-center  ">X</div>
+        <div className="bg-transparent  border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-black  font-bold font-mono text-2xl flex justify-center items-center  ">X</div>
 
-        <div className="bg-transparent border-white w-[70px] h-[70px] rounded-[50%] text-black font-bold font-mono text-2xl flex justify-center items-center   ">O</div>
+        <div className="bg-transparent border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-black font-bold font-mono text-2xl flex justify-center items-center   ">O</div>
       </div>
     </div>
   );
