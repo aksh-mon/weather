@@ -122,8 +122,6 @@ const Sudoku = () => {
   "#0f0",  // Lime
   "#f80",  // Orange
   "#3296ff", // Sky Blue
-
-  // Bright/Neon colors
   "#39ff14", // Neon Green
   "#ff073a", // Neon Red
   "#ff6ec7", // Neon Pink
@@ -133,8 +131,6 @@ const Sudoku = () => {
   "#ff0090", // Hot Pink
   "#ff9933", // Orange-ish
   "#00ffcc", // Bright Turquoise
-
-  // Soft Pastels (for smoother visuals)
   "#ffd1dc", // Light Pink
   "#c1f0f6", // Light Aqua
   "#f9f871", // Light Yellow
@@ -174,7 +170,7 @@ const Sudoku = () => {
 
   return (
     <div
-      className="flex flex-col items-center gap-4 p-4 "
+      className="flex flex-col items-center gap-4 p-4 h-screen justify-center"
       style={{ fontFamily: "monospace",
            backgroundColor: colors[colorIndex],
             textShadow: `0 0 10px ${colors[colorIndex]}, 0 0 20px ${colors[colorIndex]}`,
