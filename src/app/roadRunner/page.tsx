@@ -12,10 +12,10 @@ const page = () => {
       }}
       className="w-full h-screen flex flex-col items-center justify-center "
     >
-      <div className="flex justify-around border-2 w-full"> 
-        <div className="bg-teal-50 w-[50px] h-[50px] rounded-[50%] text-black  ">X</div>
+      <div className="flex justify-between  w-full p-5"> 
+        <div className="bg-transparent w-[50px] h-[50px] rounded-[50%] text-black  font-bold font-mono text-2xl flex justify-center items-center  ">X</div>
 
-        <div className="bg-teal-50 w-[50px] h-[50px] rounded-[50%] text-black  ">O</div>
+        <div className="bg-transparent  w-[50px] h-[50px] rounded-[50%] text-black font-bold font-mono text-2xl flex justify-center items-center   ">O</div>
       </div>
     </div>
   );
