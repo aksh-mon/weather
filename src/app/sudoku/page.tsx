@@ -116,38 +116,42 @@ const Sudoku = () => {
       .padStart(2, "0")}`;
   };
   const colors = [
-  "#0ff",  // Cyan
-  "#f0f",  // Magenta
-  "#ff0",  // Yellow
-  "#0f0",  // Lime
-  "#f80",  // Orange
-  "#3296ff", // Sky Blue
-  "#39ff14", // Neon Green
-  "#ff073a", // Neon Red
-  "#ff6ec7", // Neon Pink
-  "#fe019a", // Bright Pink
-  "#00ffff", // Aqua
-  "#ffcc00", // Bright Yellow
-  "#ff0090", // Hot Pink
-  "#ff9933", // Orange-ish
-  "#00ffcc", // Bright Turquoise
-  "#ffd1dc", // Light Pink
-  "#c1f0f6", // Light Aqua
-  "#f9f871", // Light Yellow
-  "#caffb9", // Mint
-  "#e0bbff", // Lavender
-  "#ffdab9", // Peach Puff
-  "#add8e6", // Light Blue
-  "#f0e68c", // Khaki
-  "#7f00ff", // Purple
-  "#e100ff", // Electric Violet
-  "#00c9ff", // Sky Blue
-  "#92fe9d", // Light Green
-  "#f7971e", // Orange Peel
-  "#ffd200", // Golden
-  "#2b5876", "#4e4376", "#1e3c72", "#2a5298", "#232526", "#414345"
-];
- // neon colors
+    "#0ff", // Cyan
+    "#f0f", // Magenta
+    "#ff0", // Yellow
+    "#0f0", // Lime
+    "#f80", // Orange
+    "#3296ff", // Sky Blue
+    "#39ff14", // Neon Green
+    "#ff073a", // Neon Red
+    "#ff6ec7", // Neon Pink
+    "#fe019a", // Bright Pink
+    "#00ffff", // Aqua
+    "#ffcc00", // Bright Yellow
+    "#ff0090", // Hot Pink
+    "#ff9933", // Orange-ish
+    "#00ffcc", // Bright Turquoise
+    "#ffd1dc", // Light Pink
+    "#c1f0f6", // Light Aqua
+    "#f9f871", // Light Yellow
+    "#caffb9", // Mint
+    "#e0bbff", // Lavender
+    "#ffdab9", // Peach Puff
+    "#add8e6", // Light Blue
+    "#f0e68c", // Khaki
+    "#7f00ff", // Purple
+    "#e100ff", // Electric Violet
+    "#00c9ff", // Sky Blue
+    "#92fe9d", // Light Green
+    "#f7971e", // Orange Peel
+    "#ffd200", // Golden
+    "#2b5876",
+    "#4e4376",
+    "#1e3c72",
+    "#2a5298",
+    "#232526",
+    "#414345",
+  ];
   const [colorIndex, setColorIndex] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isPausedRef = useRef(false);
@@ -178,10 +182,11 @@ const Sudoku = () => {
   return (
     <div
       className="flex flex-col items-center gap-4 p-4 h-screen justify-center"
-      style={{ fontFamily: "monospace",
-           backgroundColor: colors[colorIndex],
-            textShadow: `0 0 10px ${colors[colorIndex]}, 0 0 20px ${colors[colorIndex]}`,
-       }}
+      style={{
+        fontFamily: "monospace",
+        backgroundColor: colors[colorIndex],
+        textShadow: `0 0 10px ${colors[colorIndex]}, 0 0 20px ${colors[colorIndex]}`,
+      }}
     >
       <div className="flex justify-between items-center w-full max-w-md">
         <select
@@ -203,7 +208,8 @@ const Sudoku = () => {
         </button>
         <span className="font-mono">{formatTime(timer)}</span>
       </div>
-      <div className="flex flex-col justify-between items-center  ">
+
+      <div className="flex flex-col justify-between items-center">
         <h2
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -231,22 +237,17 @@ const Sudoku = () => {
                   key={`${r}-${c}`}
                   onClick={() => setSelectedCell([r, c])}
                   style={{
-                    border:'1.5px solid #fff'
+                    border: "1.5px solid #fff",
                   }}
-                  className={`
-     sm-w-10 w-10 h-10 text-center cursor-pointer flex items-center justify-center text-lg 
+                  className={`sm-w-10 w-10 h-10 text-center cursor-pointer flex items-center justify-center text-lg 
     transition-all duration-200 ease-in-out
     ${isSelected ? "bg-yellow-300" : ""}
     ${isSameNum ? "bg-blue-200" : ""}
     ${isEditable ? "text-red-700 font-bold" : "text-black"}
-
-    // Border Thickness for 3x3 Grid
     ${r % 3 === 0 ? "border-t-2" : "border-t"}
     ${c % 3 === 0 ? "border-l-2" : "border-l"}
     ${r === 8 ? "border-b-2" : "border-b"}
     ${c === 8 ? "border-r-2" : "border-r"}
-
-    // Border Colors - make them unique per box
     ${
       (Math.floor(r / 3) + Math.floor(c / 3)) % 2 === 0
         ? "border-green-200"

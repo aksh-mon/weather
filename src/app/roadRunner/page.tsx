@@ -12,10 +12,10 @@ const page = () => {
       }}
       className="w-full h-screen flex flex-col items-center justify-center "
     >
-      <div className="flex justify-around  border-2"> 
-        <div className="w-3 h-3 rounded-3xl bg-amber-50"></div>
+      <div className="flex justify-around border-2 w-full"> 
+        <div className="bg-teal-50 w-[50px] h-[50px] rounded-[50%] text-black  ">X</div>
 
-        <div className="w-3 h-3 rounded-3xl bg-amber-50"></div>
+        <div className="bg-teal-50 w-[50px] h-[50px] rounded-[50%] text-black  ">O</div>
       </div>
     </div>
   );
