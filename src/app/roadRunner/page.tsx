@@ -14,7 +14,7 @@ const page = () => {
       className="w-full h-screen flex flex-col items-center justify-center "
     >
       <div className="flex lg:justify-between  w-full min-h-screen p-5 items-center sm:justify-center ">
-        <div className="lg:flex sm:hidden flex-col items-center w-[200px] ">
+        <div className="lg:flex sm:hidden flex-col items-center w-[200px] max-[650px]:hidden ">
           <button className="lg:flex sm:hidden bg-transparent  border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-white  font-bold font-mono text-5xl  flex justify-center items-center  hover:shadow-[1px_1px_12px_12px_rgba(255,255,255,0.3)] hover:border-transparent hover:animate-spin ">
             <Cross color="red" size={38} className="" />
           </button>
@@ -30,27 +30,27 @@ const page = () => {
             <Cross color="red" size={38} className="" />
           </button>
         </div>
-        <p className=" text-white lg:hidden sm:flex sm:items-center sm:gap-4 ">
+        <p className=" text-white lg:hidden sm:flex sm:items-center  sm:gap-4 text-center w-full">
           Note Rotate{" "}
-          <Rotate3DIcon size={38} color="red" className="animate-spin" /> your
+          <Rotate3DIcon size={38} color="red" className="animate-spin flex  w-full justify-center" /> your
           device{" "}
         </p>
-        <div className="lg:flex sm:hidden flex-col items-center w-[200px]">
-        <button className="lg:flex sm:hidden bg-transparent border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-white font-bold font-mono text-5xl flex justify-center items-center    hover:shadow-[1px_1px_12px_12px_rgba(255,255,255,0.3)] hover:border-transparent hover:animate-spin ">
-          <Badge color="red" size={38} />
-        </button>
-        <div className="w-full flex justify-between">
-        <button className="lg:flex sm:hidden bg-transparent border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-white font-bold font-mono text-5xl flex justify-center items-center    hover:shadow-[1px_1px_12px_12px_rgba(255,255,255,0.3)] hover:border-transparent hover:animate-spin ">
-          <Badge color="red" size={38} />
-        </button>
-        <button className="lg:flex sm:hidden bg-transparent border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-white font-bold font-mono text-5xl flex justify-center items-center    hover:shadow-[1px_1px_12px_12px_rgba(255,255,255,0.3)] hover:border-transparent hover:animate-spin ">
-          <Badge color="red" size={38} />
-        </button>
-        </div>
+        <div className="lg:flex  sm:hidden max-[650px]:hidden flex-col items-center w-[200px]">
+          <button className="lg:flex sm:hidden bg-transparent border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-white font-bold font-mono text-5xl flex justify-center items-center    hover:shadow-[1px_1px_12px_12px_rgba(255,255,255,0.3)] hover:border-transparent hover:animate-spin ">
+            <Badge color="red" size={38} />
+          </button>
+          <div className="w-full flex justify-between">
+            <button className="lg:flex sm:hidden bg-transparent border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-white font-bold font-mono text-5xl flex justify-center items-center    hover:shadow-[1px_1px_12px_12px_rgba(255,255,255,0.3)] hover:border-transparent hover:animate-spin ">
+              <Badge color="red" size={38} />
+            </button>
+            <button className="lg:flex sm:hidden bg-transparent border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-white font-bold font-mono text-5xl flex justify-center items-center    hover:shadow-[1px_1px_12px_12px_rgba(255,255,255,0.3)] hover:border-transparent hover:animate-spin ">
+              <Badge color="red" size={38} />
+            </button>
+          </div>
 
-        <button className="lg:flex sm:hidden bg-transparent border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-white font-bold font-mono text-5xl flex justify-center items-center    hover:shadow-[1px_1px_12px_12px_rgba(255,255,255,0.3)] hover:border-transparent hover:animate-spin ">
-          <Badge color="red" size={38} />
-        </button>
+          <button className="lg:flex sm:hidden bg-transparent border-[2px] border-white w-[70px] h-[70px] rounded-[50%] text-white font-bold font-mono text-5xl flex justify-center items-center    hover:shadow-[1px_1px_12px_12px_rgba(255,255,255,0.3)] hover:border-transparent hover:animate-spin ">
+            <Badge color="red" size={38} />
+          </button>
         </div>
       </div>
     </div>
