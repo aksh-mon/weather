@@ -31,7 +31,7 @@ const page = () => {
           </button>
         </div>
         <p className=" text-white lg:hidden sm:flex sm:items-center  sm:gap-4 text-center w-full">
-          Note Rotate{" "}
+          Rotate{" "}
           <Rotate3DIcon size={38} color="red" className="animate-spin flex  w-full justify-center" /> your
           device{" "}
         </p>
