@@ -289,7 +289,7 @@ const Sudoku = () => {
         {[...Array(9).keys()].map((i) => (
           <button
             key={i}
-            className="w-10 h-10 bg-gray-300 hover:bg-gray-400 rounded"
+            className="w-10 h-10 bg-gray-300 text-black hover:bg-gray-400 rounded"
             onClick={() => handleInput(i + 1)}
           >
             {i + 1}
