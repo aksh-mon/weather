@@ -1,30 +1,53 @@
-/* eslint-disable @next/next/no-img-element */
-// components/GrowTreesDoor.tsx
 'use client';
+import Image from 'next/image';
+import TreeImage from '../../../public/tree.svg'; // Replace with your actual image path
 
-import { useState } from 'react';
-
-export default function GrowTreesDoor() {
-  const [showMessage, setShowMessage] = useState(false);
-
+export default function TreeWithRain() {
   return (
-    <div className="fixed left-2 top-1/2 -translate-y-1/2 z-50">
-      <button
-        onClick={() => setShowMessage(true)}
-        className=" text-white text-xl p-3 rounded-r-xl shadow-md hover:bg-green-700 transition"
-        aria-label="Open Grow Tree Message"
-      > 
-        <img src="./tree.svg" alt='tree' width={50} height={50} />
-      </button>
+    <div className="relative w-full h-[400px] overflow-hidden bg-black flex items-center justify-center">
+      {/* Your tree image */}
+      <Image
+        src={TreeImage}
+        alt="Tree"
+        className="w-auto h-full object-contain z-10"
+      />
 
-      {showMessage && (
-        <div
-          onClick={() => setShowMessage(false)}
-          className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-white border border-green-400 text-green-800 text-sm px-4 py-2 rounded-lg shadow-lg cursor-pointer"
-        >
-          🌱 Let&lsquo;s grow trees!
-        </div>
-      )}
+      {/* Rain overlay */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
+        {[...Array(50)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute top-0 w-[1px] h-8 bg-white opacity-50 animate-raindrop"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 2}s`,
+              animationDuration: `${0.5 + Math.random()}s`,
+            }}
+          ></div>
+        ))}
+      </div>
+
+      {/* Add custom CSS animation */}
+      <style jsx>{`
+        @keyframes raindrop {
+          0% {
+            transform: translateY(-10%);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(110%);
+            opacity: 0;
+          }
+        }
+        .animate-raindrop {
+          animation-name: raindrop;
+          animation-iteration-count: infinite;
+          animation-timing-function: linear;
+        }
+      `}</style>
     </div>
   );
 }
