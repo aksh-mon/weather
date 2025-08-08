@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+6/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { Rotate3DIcon } from "lucide-react";
@@ -219,7 +219,7 @@ export default function DinoGame() {
 
   return (
     <div
-      className="w-full h-screen flex items-center justify-center flex-col"
+      className="w-full h-full flex items-center justify-center flex-col"
       style={{
         background:
           "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
