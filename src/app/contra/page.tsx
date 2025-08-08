@@ -4,6 +4,13 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Headline from "../compo/headline";
+import {
+  ArrowBigLeft,
+  ArrowBigRight,
+  ArrowBigDownDash,
+  RotateCcw,
+  Play,
+} from "lucide-react";
 
 const ROWS = 20;
 const COLS = 20;
@@ -176,6 +183,7 @@ const TetrisPage = () => {
       }}
     >
       <Headline title="treeMON" />
+      <button onClick={startGame} className="p-2 bg-blue-400 text-white hover:bg-amber-600">Play <Play color="#3296"/></button>
 
       <div
         className="grid border-4 border-white"
@@ -200,27 +208,27 @@ const TetrisPage = () => {
       <div className="flex sm:hidden gap-3 mt-6">
         <button
           onClick={() => move("left")}
-          className="bg-white text-black px-4 py-2 rounded-lg"
+          className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
-          ⬅️
+          <ArrowBigLeft color="#fff" /> 
         </button>
         <button
           onClick={() => move("rotate")}
-          className="bg-white text-black px-4 py-2 rounded-lg"
+          className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
-          🔄
+          <RotateCcw  color="#fff"/>
         </button>
         <button
           onClick={() => move("right")}
-          className="bg-white text-black px-4 py-2 rounded-lg"
+          className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
-          ➡️
+          <ArrowBigRight color="#fff"/>
         </button>
         <button
           onClick={() => move("down")}
-          className="bg-white text-black px-4 py-2 rounded-lg"
+          className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
-          ⬇️
+          <ArrowBigDownDash color="#fff"/>
         </button>
       </div>
 
