@@ -47,8 +47,13 @@ const TetrisPage = () => {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [elapsed, setElapsed] = useState(0);
+
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const moveSound = useRef<HTMLAudioElement | null>(null);
+  const rotateSound = useRef<HTMLAudioElement | null>(null);
+  const downSound = useRef<HTMLAudioElement | null>(null);
 
   const mergeShapeToBoard = (shape: number[][], pos: any, base: number[][]) => {
     const newBoard = base.map((row) => [...row]);
@@ -85,31 +90,38 @@ const TetrisPage = () => {
   const clearFullRows = (newBoard: number[][]) => {
     const filtered = newBoard.filter((row) => row.some((cell) => cell === 0));
     const cleared = ROWS - filtered.length;
-    setScore((prev) => prev + cleared * 100);
-    const newRows = Array(cleared).fill(Array(COLS).fill(0));
-    setBoard([...newRows, ...filtered]);
+    if (cleared > 0) {
+      setScore((prev) => prev + cleared * 100);
+      const newRows = Array(cleared).fill(Array(COLS).fill(0));
+      setBoard([...newRows, ...filtered]);
+    } else {
+      setBoard(newBoard);
+    }
   };
 
   const drop = () => {
-    const newPos = { row: position.row + 1, col: position.col };
-    if (isValidMove(shape, newPos)) {
-      setPosition(newPos);
-    } else {
-      const newBoard = mergeShapeToBoard(shape, position, board);
-      clearFullRows(newBoard);
-      setBoard(newBoard);
-
-      const newShape = getRandomShape();
-      const startPos = { row: 0, col: 4 };
-      if (!isValidMove(newShape, startPos)) {
-        setGameOver(true);
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        if (timerRef.current) clearInterval(timerRef.current);
+    setPosition((prevPos) => {
+      const newPos = { row: prevPos.row + 1, col: prevPos.col };
+      if (isValidMove(shape, newPos)) {
+        return newPos;
       } else {
-        setShape(newShape);
-        setPosition(startPos);
+        const newBoard = mergeShapeToBoard(shape, prevPos, board);
+        clearFullRows(newBoard);
+
+        const newShape = getRandomShape();
+        const startPos = { row: 0, col: 4 };
+
+        if (!isValidMove(newShape, startPos)) {
+          setGameOver(true);
+          if (intervalRef.current) clearInterval(intervalRef.current);
+          if (timerRef.current) clearInterval(timerRef.current);
+          return prevPos;
+        } else {
+          setShape(newShape);
+          return startPos;
+        }
       }
-    }
+    });
   };
 
   const startGame = () => {
@@ -128,23 +140,36 @@ const TetrisPage = () => {
   };
 
   useEffect(() => {
+    moveSound.current = new Audio("move.wav");
+    rotateSound.current = new Audio("/sounds/rotate.mp3");
+    downSound.current = new Audio("/sounds/down.mp3");
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
-        e.preventDefault();
-      }
       if (gameOver) return;
 
       if (e.key === "ArrowLeft") {
         const newPos = { row: position.row, col: position.col - 1 };
-        if (isValidMove(shape, newPos)) setPosition(newPos);
+        if (isValidMove(shape, newPos)) {
+          setPosition(newPos);
+          moveSound.current?.play();
+        }
       } else if (e.key === "ArrowRight") {
         const newPos = { row: position.row, col: position.col + 1 };
-        if (isValidMove(shape, newPos)) setPosition(newPos);
+        if (isValidMove(shape, newPos)) {
+          setPosition(newPos);
+          moveSound.current?.play();
+        }
       } else if (e.key === "ArrowDown") {
         drop();
+        downSound.current?.play();
       } else if (e.key === "ArrowUp") {
         const rotated = rotate(shape);
-        if (isValidMove(rotated, position)) setShape(rotated);
+        if (isValidMove(rotated, position)) {
+          setShape(rotated);
+          rotateSound.current?.play();
+        }
       }
     };
 
@@ -152,9 +177,37 @@ const TetrisPage = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [shape, position, board, gameOver]);
 
-  const currentBoard = mergeShapeToBoard(shape, position, board);
   const minutes = Math.floor(elapsed / 60);
   const seconds = elapsed % 60;
+  const currentBoard = mergeShapeToBoard(shape, position, board);
+
+  // Mobile Controls
+  const handleMobileMove = (dir: "left" | "right" | "down" | "rotate") => {
+    if (gameOver) return;
+
+    if (dir === "left") {
+      const newPos = { row: position.row, col: position.col - 1 };
+      if (isValidMove(shape, newPos)) {
+        setPosition(newPos);
+        moveSound.current?.play();
+      }
+    } else if (dir === "right") {
+      const newPos = { row: position.row, col: position.col + 1 };
+      if (isValidMove(shape, newPos)) {
+        setPosition(newPos);
+        moveSound.current?.play();
+      }
+    } else if (dir === "down") {
+      drop();
+      downSound.current?.play();
+    } else if (dir === "rotate") {
+      const rotated = rotate(shape);
+      if (isValidMove(rotated, position)) {
+        setShape(rotated);
+        rotateSound.current?.play();
+      }
+    }
+  };
 
   return (
     <div
@@ -169,7 +222,8 @@ const TetrisPage = () => {
       <div className="flex justify-between items-center w-full max-w-lg px-4 text-white font-mono text-lg mb-3">
         <div>Score: {score}</div>
         <div>
-          Time: {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+          Time: {minutes.toString().padStart(2, "0")}:
+          {seconds.toString().padStart(2, "0")}
         </div>
         <button
           onClick={startGame}
@@ -198,11 +252,42 @@ const TetrisPage = () => {
         ))}
       </div>
 
+      {/* Mobile Controls */}
+      <div className="md:hidden mt-6 flex flex-col items-center gap-2">
+        <button
+          className="bg-black text-white px-8 py-2 rounded"
+          onClick={() => handleMobileMove("rotate")}
+        >
+          ⬆️
+        </button>
+        <div className="flex gap-4">
+          <button
+            className="bg-black text-white px-4 py-2 rounded"
+            onClick={() => handleMobileMove("left")}
+          >
+            ⬅️
+          </button>
+          <button
+            className="bg-black text-white px-4 py-2 rounded"
+            onClick={() => handleMobileMove("down")}
+          >
+            ⬇️
+          </button>
+          <button
+            className="bg-black text-white px-4 py-2 rounded"
+            onClick={() => handleMobileMove("right")}
+          >
+            ➡️
+          </button>
+        </div>
+      </div>
+
       {gameOver && (
         <div className="absolute bg-white text-black px-6 py-4 rounded-2xl text-center shadow-xl text-2xl animate-pulse space-y-4">
           <div>
             🎮 Game Over!
-            <br /> Wanna try again?
+            <br />
+            Wanna try again?
           </div>
           <button
             onClick={startGame}
