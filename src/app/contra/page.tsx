@@ -4,6 +4,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Headline from "../compo/headline";
+import { ArrowBigLeft, RotateCcw, ArrowBigRight, ArrowBigDownDash } from "lucide-react";
 
 const ROWS = 20;
 const COLS = 20;
@@ -197,10 +198,10 @@ const TetrisPage = () => {
 
       {/* Mobile Controls */}
       <div className="flex gap-3 mt-6 md:hidden">
-        <button onClick={() => handleMobileControl("left")} className="bg-black text-white px-4 py-2 rounded-lg">⬅️</button>
-        <button onClick={() => handleMobileControl("rotate")} className="bg-black text-white px-4 py-2 rounded-lg">🔄</button>
-        <button onClick={() => handleMobileControl("right")} className="bg-black text-white px-4 py-2 rounded-lg">➡️</button>
-        <button onClick={() => handleMobileControl("down")} className="bg-black text-white px-4 py-2 rounded-lg">⬇️</button>
+        <button onClick={() => handleMobileControl("left")} className="bg-black text-white px-4 py-2 rounded-lg"><ArrowBigLeft color="#fff"/></button>
+        <button onClick={() => handleMobileControl("rotate")} className="bg-black text-white px-4 py-2 rounded-lg"><RotateCcw color="#fff"/></button>
+        <button onClick={() => handleMobileControl("right")} className="bg-black text-white px-4 py-2 rounded-lg"><ArrowBigRight color="#fff"/></button>
+        <button onClick={() => handleMobileControl("down")} className="bg-black text-white px-4 py-2 rounded-lg"><ArrowBigDownDash color="#fff" /></button>
       </div>
 
       <Headline title="tetMON" />
