@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
 import Headline from "../compo/headline";
 import {
   ArrowBigLeft,
@@ -12,281 +14,212 @@ import {
 } from "lucide-react";
 
 const ROWS = 20;
-const COLS = 20;
-const BLOCK_SIZE = 20;
+const COLS = 10;
 
 const shapes = [
-  [[1, 1, 1, 1]],
+  [[1, 1, 1, 1]], // I
   [
     [1, 1],
     [1, 1],
-  ],
+  ], // O
   [
     [0, 1, 0],
     [1, 1, 1],
-  ],
-  [
-    [0, 1, 1],
-    [1, 1, 0],
-  ],
-  [
-    [1, 1, 0],
-    [0, 1, 1],
-  ],
+  ], // T
   [
     [1, 0, 0],
     [1, 1, 1],
-  ],
+  ], // J
   [
     [0, 0, 1],
     [1, 1, 1],
-  ],
+  ], // L
+  [
+    [1, 1, 0],
+    [0, 1, 1],
+  ], // S
+  [
+    [0, 1, 1],
+    [1, 1, 0],
+  ], // Z
 ];
 
-const getRandomShape = () => shapes[Math.floor(Math.random() * shapes.length)];
-const emptyBoard = () =>
-  Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+const randomShape = () => {
+  const shape = shapes[Math.floor(Math.random() * shapes.length)];
+  return {
+    shape,
+    x: Math.floor((COLS - shape[0].length) / 2),
+    y: 0,
+  };
+};
 
-const TetrisPage = () => {
-  const [board, setBoard] = useState(emptyBoard());
-  const [shape, setShape] = useState(getRandomShape());
-  const [position, setPosition] = useState({ row: 0, col: 4 });
-  const [gameOver, setGameOver] = useState(false);
-  const [score, setScore] = useState(0);
-  const [timer, setTimer] = useState(0);
-  const [started, setStarted] = useState(false);
-
+const TetrisGame = () => {
+  const [grid, setGrid] = useState<number[][]>(
+    Array.from({ length: ROWS }, () => Array(COLS).fill(0))
+  );
+  const [current, setCurrent] = useState(randomShape());
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [elapsed, setElapsed] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const mergeShapeToBoard = (shape: number[][], pos: any, base: number[][]) => {
-    const newBoard = base.map((row) => [...row]);
-    shape.forEach((r, i) =>
-      r.forEach((cell, j) => {
+  const merge = (
+    shape: typeof current.shape,
+    grid: number[][],
+    offsetX: number,
+    offsetY: number
+  ) => {
+    return grid.map((row, y) =>
+      row.map((cell, x) => (shape[y - offsetY]?.[x - offsetX] ? 1 : cell))
+    );
+  };
+
+  const collides = (
+    shape: typeof current.shape,
+    offsetX: number,
+    offsetY: number
+  ) => {
+    for (let y = 0; y < shape.length; y++) {
+      for (let x = 0; x < shape[y].length; x++) {
         if (
-          cell &&
-          newBoard[pos.row + i] &&
-          newBoard[pos.row + i][pos.col + j] !== undefined
+          shape[y][x] &&
+          (grid[y + offsetY]?.[x + offsetX] === undefined ||
+            grid[y + offsetY]?.[x + offsetX])
         ) {
-          newBoard[pos.row + i][pos.col + j] = cell;
+          return true;
         }
-      })
-    );
-    return newBoard;
-  };
-
-  const isValidMove = (shape: number[][], pos: any) => {
-    return shape.every((row, i) =>
-      row.every((cell, j) => {
-        const x = pos.row + i;
-        const y = pos.col + j;
-        return (
-          !cell ||
-          (x >= 0 && x < ROWS && y >= 0 && y < COLS && board[x][y] === 0)
-        );
-      })
-    );
-  };
-
-  const rotate = (matrix: number[][]) =>
-    matrix[0].map((_, i) => matrix.map((row) => row[i]).reverse());
-
-  const drop = () => {
-    const newPos = { row: position.row + 1, col: position.col };
-    if (isValidMove(shape, newPos)) {
-      setPosition(newPos);
-    } else {
-      const newBoard = mergeShapeToBoard(shape, position, board);
-      const clearedRows = clearFullRows(newBoard);
-      if (clearedRows > 0) {
-        setScore((prev) => prev + clearedRows * 100);
       }
-      const newShape = getRandomShape();
-      const startPos = { row: 0, col: 4 };
+    }
+    return false;
+  };
 
-      if (!isValidMove(newShape, startPos)) {
-        setGameOver(true);
-        stopGame();
+  const rotate = (shape: number[][]) =>
+    shape[0].map((_, i) => shape.map((row) => row[i]).reverse());
+
+  const move = (dx: number, dy: number, rotateShape = false) => {
+    const newShape = rotateShape ? rotate(current.shape) : current.shape;
+    const newX = current.x + dx;
+    const newY = current.y + dy;
+    if (!collides(newShape, newX, newY)) {
+      setCurrent({ ...current, shape: newShape, x: newX, y: newY });
+    } else if (dy > 0 && !rotateShape) {
+      const merged = merge(current.shape, grid, current.x, current.y);
+      const newGrid = merged.filter((row) => row.some((cell) => cell === 0));
+      const cleared = ROWS - newGrid.length;
+      while (newGrid.length < ROWS) newGrid.unshift(Array(COLS).fill(0));
+      setGrid(newGrid);
+      const next = randomShape();
+      if (collides(next.shape, next.x, next.y)) {
+        setIsGameOver(true);
+        clearInterval(intervalRef.current!);
       } else {
-        setShape(newShape);
-        setPosition(startPos);
+        setCurrent(next);
       }
     }
   };
 
-  const clearFullRows = (newBoard: number[][]): number => {
-    const filtered = newBoard.filter((row) => row.some((cell) => cell === 0));
-    const clearedCount = ROWS - filtered.length;
-    const cleared = Array(clearedCount).fill(Array(COLS).fill(0));
-    setBoard([...cleared, ...filtered]);
-    return clearedCount;
-  };
+  const drop = () => move(0, 1);
+  const left = () => move(-1, 0);
+  const right = () => move(1, 0);
+  const rotateBlock = () => move(0, 0, true);
+  const fastDrop = () => move(0, 1);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
       e.preventDefault();
-    }
+      if (isGameOver) return;
+      switch (e.key) {
+        case "ArrowLeft":
+          left();
+          break;
+        case "ArrowRight":
+          right();
+          break;
+        case "ArrowDown":
+          fastDrop();
+          break;
+        case "ArrowUp":
+          rotateBlock();
+          break;
+      }
+    };
 
-    if (!started || gameOver) return;
-
-    if (e.key === "ArrowLeft") {
-      const newPos = { row: position.row, col: position.col - 1 };
-      if (isValidMove(shape, newPos)) setPosition(newPos);
-    } else if (e.key === "ArrowRight") {
-      const newPos = { row: position.row, col: position.col + 1 };
-      if (isValidMove(shape, newPos)) setPosition(newPos);
-    } else if (e.key === "ArrowDown") {
-      drop();
-    } else if (e.key === "ArrowUp") {
-      const rotated = rotate(shape);
-      if (isValidMove(rotated, position)) setShape(rotated);
-    }
-  };
-
-  const handleMobileControl = (direction: string) => {
-    if (!started || gameOver) return;
-    if (direction === "left") {
-      const newPos = { row: position.row, col: position.col - 1 };
-      if (isValidMove(shape, newPos)) setPosition(newPos);
-    } else if (direction === "right") {
-      const newPos = { row: position.row, col: position.col + 1 };
-      if (isValidMove(shape, newPos)) setPosition(newPos);
-    } else if (direction === "down") {
-      drop();
-    } else if (direction === "rotate") {
-      const rotated = rotate(shape);
-      if (isValidMove(rotated, position)) setShape(rotated);
-    }
-  };
-
-  const startGame = () => {
-    setBoard(emptyBoard());
-    setShape(getRandomShape());
-    setPosition({ row: 0, col: 4 });
-    setGameOver(false);
-    setScore(0);
-    setTimer(0);
-    setStarted(true);
-
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(drop, 500);
-  };
-
-  const stopGame = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    if (timerRef.current) clearInterval(timerRef.current);
-  };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [current, isGameOver]);
 
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      stopGame();
-    };
-  }, [shape, position, board, gameOver, started]);
+    if (startTime === null) {
+      setStartTime(Date.now());
+    }
 
-  const currentBoard = mergeShapeToBoard(shape, position, board);
-  useEffect(() => {
-    if (!started || gameOver) return;
+    intervalRef.current = setInterval(() => {
+      if (!isGameOver) {
+        drop();
+        setElapsed(Math.floor((Date.now() - (startTime ?? Date.now())) / 1000));
+      }
+    }, 800);
 
-    timerRef.current = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000);
+    return () => clearInterval(intervalRef.current!);
+  }, [current, startTime, isGameOver]);
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [started, gameOver]);
+  const displayGrid = merge(current.shape, grid, current.x, current.y);
+
+  const minutes = Math.floor(elapsed / 60);
+  const seconds = elapsed % 60;
 
   return (
-    <div
-      className="w-full h-screen py-5 flex flex-col items-center justify-center relative"
-      style={{
-        background:
-          "linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%)",
-      }}
-    >
-      <Headline title="MONtet" />
-
-      <div className="text-white mb-2">
-        Score: {score} | Time: {timer}s
+    <div className="flex flex-col items-center mt-8 gap-4">
+      <Headline title="TETRIS" />
+      <div className="text-lg font-mono text-gray-800">
+        ⏱️ Time: {minutes}m {seconds}s
       </div>
-
-      {!started && (
-        <button
-          onClick={startGame}
-          className="bg-black text-white px-6 py-2 rounded-lg mb-4"
-        >
-          ▶️ Start Game
-        </button>
-      )}
-
-      <div
-        className="grid border-4 border-white"
-        style={{
-          gridTemplateRows: `repeat(${ROWS}, minmax(0, 1fr))`,
-          gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))`,
-          width: `${COLS * BLOCK_SIZE}px`,
-          height: `${ROWS * BLOCK_SIZE}px`,
-        }}
-      >
-        {currentBoard.flat().map((cell, i) => (
+      <div className="grid grid-cols-10 gap-[1px] bg-gray-400 p-1 border-4 border-purple-500 rounded">
+        {displayGrid.flat().map((cell, i) => (
           <div
             key={i}
-            className={`border border-gray-700 ${
-              cell ? "bg-green-400" : "bg-black"
-            }`}
-          ></div>
+            className={`w-6 h-6 ${cell ? "bg-purple-600" : "bg-white"}`}
+          />
         ))}
       </div>
 
+      {isGameOver && (
+        <div className="mt-4 text-center text-2xl font-bold text-red-600 animate-pulse">
+          💀 Game Over!
+        </div>
+      )}
+
+      {/* Mobile controls */}
       <div className="flex gap-3 mt-6 md:hidden">
         <button
-          onClick={() => handleMobileControl("left")}
-          className="bg-black text-white px-4 py-2 rounded-lg hover:bg-blue-300"
+          className="bg-gray-700 text-white px-3 py-2 rounded hover:bg-blue-300"
+          onClick={left}
         >
           <ArrowBigLeft color="#fff" />
         </button>
         <button
-          onClick={() => handleMobileControl("rotate")}
-          className="bg-black text-white px-4 py-2 rounded-lg hover:bg-blue-300 "
+          className="bg-gray-700 text-white px-3 py-2 rounded hover:bg-blue-300"
+          onClick={rotateBlock}
         >
+          {" "}
           <RotateCcw color="#fff" />
         </button>
         <button
-          onClick={() => handleMobileControl("down")}
-          className="bg-black text-white px-4 py-2 rounded-lg hover:bg-blue-300"
+          className="bg-gray-700 text-white px-3 py-2 rounded hover:bg-blue-300"
+          onClick={fastDrop}
         >
           <ArrowBigDownDash color="#fff" />
         </button>
+
         <button
-          onClick={() => handleMobileControl("right")}
-          className="bg-black text-white px-4 py-2 rounded-lg  hover:bg-blue-300"
+          className="bg-gray-700 text-white px-3 py-2 rounded hover:bg-blue-300"
+          onClick={right}
         >
           <ArrowBigRight color="#fff" />
         </button>
       </div>
-
-      {gameOver && (
-        <div className="absolute bg-white text-black px-6 py-4 rounded-2xl text-center shadow-xl text-2xl animate-pulse space-y-4">
-          <div>
-            🎮 Game Over!
-            <br />
-            Score: {score} | Time: {timer}s
-            <br /> Wanna try again?
-          </div>
-          <button
-            onClick={startGame}
-            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
-          >
-            🔄 Restart Game
-          </button>
-        </div>
-      )}
-
-      <Headline title="tetMON" />
     </div>
   );
 };
 
-export default TetrisPage;
+export default TetrisGame;
