@@ -11,10 +11,10 @@ export default function GrowTreesDoor() {
     <div className="fixed left-2 top-1/2 -translate-y-1/2 z-50">
       <button
         onClick={() => setShowMessage(true)}
-        className="bg-green-600 text-white text-xl p-3 rounded-r-xl shadow-md hover:bg-green-700 transition"
+        className=" text-white text-xl p-3 rounded-r-xl shadow-md hover:bg-green-700 transition"
         aria-label="Open Grow Tree Message"
       > 
-        <img src="./tree.svg" alt='tree' width={100} height={100} />
+        <img src="./tree.svg" alt='tree' width={50} height={50} />
       </button>
 
       {showMessage && (
