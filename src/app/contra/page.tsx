@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+ /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -228,8 +228,7 @@ const TetrisPage = () => {
         >
           <ArrowBigDownDash color="#fff"/>
         </button>
-  <button
-          onClick={() => move("right")}
+  <button onClick={() => move("right")}
           className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
           <ArrowBigRight color="#fff"/>
