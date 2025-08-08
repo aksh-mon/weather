@@ -221,17 +221,18 @@ const TetrisPage = () => {
         >
           <RotateCcw  color="#fff"/>
         </button>
-        <button
-          onClick={() => move("right")}
-          className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
-        >
-          <ArrowBigRight color="#fff"/>
-        </button>
+      
         <button
           onClick={() => move("down")}
           className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
           <ArrowBigDownDash color="#fff"/>
+        </button>
+  <button
+          onClick={() => move("right")}
+          className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
+        >
+          <ArrowBigRight color="#fff"/>
         </button>
       </div>
 
