@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -9,6 +8,7 @@ import {
   ArrowBigRight,
   ArrowBigDownDash,
   RotateCcw,
+  Play,
 } from "lucide-react";
 
 const ROWS = 20;
@@ -54,8 +54,11 @@ const TetrisPage = () => {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [elapsed, setElapsed] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const mergeShapeToBoard = (shape: number[][], pos: any, base: number[][]) => {
     const newBoard = base.map((row) => [...row]);
@@ -98,8 +101,7 @@ const TetrisPage = () => {
 
       if (!isValidMove(newShape, startPos)) {
         setGameOver(true);
-        clearInterval(intervalRef.current!);
-        clearInterval(timerRef.current!);
+        stopGame();
       } else {
         setShape(newShape);
         setPosition(startPos);
@@ -115,28 +117,6 @@ const TetrisPage = () => {
     return cleared;
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (gameOver) return;
-
-      if (e.key === "ArrowLeft") {
-        const newPos = { row: position.row, col: position.col - 1 };
-        if (isValidMove(shape, newPos)) setPosition(newPos);
-      } else if (e.key === "ArrowRight") {
-        const newPos = { row: position.row, col: position.col + 1 };
-        if (isValidMove(shape, newPos)) setPosition(newPos);
-      } else if (e.key === "ArrowDown") {
-        drop();
-      } else if (e.key === "ArrowUp") {
-        const rotated = rotate(shape);
-        if (isValidMove(rotated, position)) setShape(rotated);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [shape, position, board, gameOver]);
-
   const startGame = () => {
     setBoard(emptyBoard());
     setShape(getRandomShape());
@@ -144,13 +124,51 @@ const TetrisPage = () => {
     setGameOver(false);
     setScore(0);
     setElapsed(0);
+    setIsPlaying(true);
 
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (timerRef.current) clearInterval(timerRef.current);
 
-    intervalRef.current = setInterval(() => drop(), 500);
+    intervalRef.current = setInterval(drop, 500);
     timerRef.current = setInterval(() => setElapsed((e) => e + 1), 1000);
+
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => {});
+    }
   };
+
+  const stopGame = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (timerRef.current) clearInterval(timerRef.current);
+    if (audioRef.current) audioRef.current.pause();
+    setIsPlaying(false);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (!isPlaying || gameOver) return;
+
+    const preventKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+    if (preventKeys.includes(e.key)) e.preventDefault();
+
+    if (e.key === "ArrowLeft") {
+      const newPos = { row: position.row, col: position.col - 1 };
+      if (isValidMove(shape, newPos)) setPosition(newPos);
+    } else if (e.key === "ArrowRight") {
+      const newPos = { row: position.row, col: position.col + 1 };
+      if (isValidMove(shape, newPos)) setPosition(newPos);
+    } else if (e.key === "ArrowDown") {
+      drop();
+    } else if (e.key === "ArrowUp") {
+      const rotated = rotate(shape);
+      if (isValidMove(rotated, position)) setShape(rotated);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown, { passive: false });
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  });
 
   const currentBoard = mergeShapeToBoard(shape, position, board);
   const minutes = Math.floor(elapsed / 60);
@@ -165,12 +183,19 @@ const TetrisPage = () => {
       }}
     >
       <Headline title="MONtet" />
-      <div className="flex gap-4 mb-4 text-white font-mono">
-        <div>Score: {score}</div>
-        <div>
-          Time: {minutes}m {seconds}s
-        </div>
+      <button
+        onClick={startGame}
+        className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded mb-4 hover:bg-gray-900 transition"
+      >
+        <Play size={20} />
+        Start Game
+      </button>
+
+      <div className="flex gap-4 mb-4 text-white font-mono text-sm md:text-lg">
+        <div>🎯 Score: {score}</div>
+        <div>⏱ Time: {minutes}m {seconds}s</div>
       </div>
+
       <div
         className="grid border-4 border-white"
         style={{
@@ -191,7 +216,7 @@ const TetrisPage = () => {
       </div>
 
       {/* Mobile Controls */}
-      {!gameOver && (
+      {isPlaying && !gameOver && (
         <div className="flex gap-3 mt-6 md:hidden">
           <button
             className="bg-gray-800 p-3 rounded text-white"
@@ -211,7 +236,10 @@ const TetrisPage = () => {
           >
             <RotateCcw />
           </button>
-          <button className="bg-gray-800 p-3 rounded text-white" onClick={drop}>
+          <button
+            className="bg-gray-800 p-3 rounded text-white"
+            onClick={drop}
+          >
             <ArrowBigDownDash />
           </button>
           <button
@@ -227,6 +255,7 @@ const TetrisPage = () => {
       )}
 
       <Headline title="tetMON" />
+
       {gameOver && (
         <div className="absolute bg-white text-black px-6 py-4 rounded-2xl text-center shadow-xl text-2xl animate-pulse space-y-4">
           <div>
@@ -241,6 +270,9 @@ const TetrisPage = () => {
           </button>
         </div>
       )}
+
+      {/* Audio Element */}
+      <audio ref={audioRef} src="/move.wav" loop preload="auto" />
     </div>
   );
 };
