@@ -1,0 +1,29 @@
+// components/GrowTreesDoor.tsx
+'use client';
+
+import { useState } from 'react';
+
+export default function GrowTreesDoor() {
+  const [showMessage, setShowMessage] = useState(false);
+
+  return (
+    <div className="fixed left-2 top-1/2 -translate-y-1/2 z-50">
+      <button
+        onClick={() => setShowMessage(true)}
+        className="bg-green-600 text-white text-xl p-3 rounded-r-xl shadow-md hover:bg-green-700 transition"
+        aria-label="Open Grow Tree Message"
+      >
+        🌳
+      </button>
+
+      {showMessage && (
+        <div
+          onClick={() => setShowMessage(false)}
+          className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-white border border-green-400 text-green-800 text-sm px-4 py-2 rounded-lg shadow-lg cursor-pointer"
+        >
+          🌱 Let&lsquo;s grow trees!
+        </div>
+      )}
+    </div>
+  );
+}
