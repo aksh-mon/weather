@@ -1,252 +1,226 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-'use client';
-
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  ArrowBigLeft,
-  RotateCcw,
-  ArrowBigRight,
-  ArrowBigDownDash,
-  PlayCircle,
-} from 'lucide-react';
+// Complete Tetris game with working timer (minutes & seconds), score, and mobile-friendly controls
+import React, { useState, useEffect, useRef } from 'react';
 
 const ROWS = 20;
 const COLS = 10;
-const CELL_SIZE = 8; // Tailwind size unit = 2rem
+const BLOCK_SIZE = 30;
 
-const shapes = [
-  [[1, 1, 1, 1]], // I
-  [
+const SHAPES = {
+  I: [[1, 1, 1, 1]],
+  O: [
     [1, 1],
     [1, 1],
-  ], // O
-  [
+  ],
+  T: [
     [0, 1, 0],
     [1, 1, 1],
-  ], // T
-  [
+  ],
+  L: [
     [1, 0, 0],
     [1, 1, 1],
-  ], // J
-  [
+  ],
+  J: [
     [0, 0, 1],
     [1, 1, 1],
-  ], // L
-  [
-    [1, 1, 0],
-    [0, 1, 1],
-  ], // S
-  [
+  ],
+  S: [
     [0, 1, 1],
     [1, 1, 0],
-  ], // Z
-];
-
-const randomShape = () => {
-  const shape = shapes[Math.floor(Math.random() * shapes.length)];
-  return {
-    shape,
-    x: Math.floor((COLS - shape[0].length) / 2),
-    y: 0,
-  };
+  ],
+  Z: [
+    [1, 1, 0],
+    [0, 1, 1],
+  ],
 };
 
-const TetrisGame = () => {
-  const [grid, setGrid] = useState<number[][]>(
-    Array.from({ length: ROWS }, () => Array(COLS).fill(0))
-  );
-  const [current, setCurrent] = useState(randomShape());
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [isStarted, setIsStarted] = useState(false);
-  const [startTime, setStartTime] = useState<number | null>(null);
-  const [elapsed, setElapsed] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+const COLORS = {
+  I: 'cyan',
+  O: 'yellow',
+  T: 'purple',
+  L: 'orange',
+  J: 'blue',
+  S: 'green',
+  Z: 'red',
+};
 
-  // Sounds
-  const rotateSound = useRef<HTMLAudioElement | null>(null);
-  const moveSound = useRef<HTMLAudioElement | null>(null);
-  const dropSound = useRef<HTMLAudioElement | null>(null);
-  const gameOverSound = useRef<HTMLAudioElement | null>(null);
+const getRandomPiece = () => {
+  const keys = Object.keys(SHAPES);
+  const rand = keys[Math.floor(Math.random() * keys.length)];
+  return { shape: SHAPES[rand], type: rand, x: 3, y: 0 };
+};
 
-  const merge = (
-    shape: typeof current.shape,
-    grid: number[][],
-    offsetX: number,
-    offsetY: number
-  ) => {
-    return grid.map((row, y) =>
-      row.map((cell, x) => (shape[y - offsetY]?.[x - offsetX] ? 1 : cell))
+const Tetris = () => {
+  const [grid, setGrid] = useState(Array(ROWS).fill().map(() => Array(COLS).fill(null)));
+  const [piece, setPiece] = useState(getRandomPiece());
+  const [gameOver, setGameOver] = useState(false);
+  const [score, setScore] = useState(0);
+  const [time, setTime] = useState(0);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    if (gameOver) return;
+    const interval = setInterval(() => movePiece(0, 1), 700);
+    intervalRef.current = interval;
+    return () => clearInterval(interval);
+  }, [piece, gameOver]);
+
+  useEffect(() => {
+    const timer = setInterval(() => setTime(t => t + 1), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const rotate = shape => {
+    return shape[0].map((_, i) => shape.map(row => row[i])).reverse();
+  };
+
+  const isValidMove = (shape, offsetX, offsetY) => {
+    return shape.every((row, y) =>
+      row.every((cell, x) => {
+        if (!cell) return true;
+        const newX = piece.x + x + offsetX;
+        const newY = piece.y + y + offsetY;
+        return (
+          newX >= 0 &&
+          newX < COLS &&
+          newY >= 0 &&
+          newY < ROWS &&
+          !grid[newY][newX]
+        );
+      })
     );
   };
 
-  const collides = (
-    shape: typeof current.shape,
-    offsetX: number,
-    offsetY: number
-  ) => {
-    for (let y = 0; y < shape.length; y++) {
-      for (let x = 0; x < shape[y].length; x++) {
-        if (
-          shape[y][x] &&
-          (grid[y + offsetY]?.[x + offsetX] === undefined ||
-            grid[y + offsetY]?.[x + offsetX])
-        ) {
-          return true;
-        }
-      }
-    }
-    return false;
+  const mergePiece = () => {
+    const newGrid = grid.map(row => [...row]);
+    piece.shape.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell) newGrid[piece.y + y][piece.x + x] = piece.type;
+      });
+    });
+    return newGrid;
   };
 
-  const rotate = (shape: number[][]) =>
-    shape[0].map((_, i) => shape.map((row) => row[i]).reverse());
+  const clearLines = newGrid => {
+    const filtered = newGrid.filter(row => row.some(cell => !cell));
+    const clearedLines = ROWS - filtered.length;
+    setScore(prev => prev + clearedLines * 100);
+    return Array(clearedLines).fill(Array(COLS).fill(null)).concat(filtered);
+  };
 
-  const move = (dx: number, dy: number, rotateShape = false) => {
-    const newShape = rotateShape ? rotate(current.shape) : current.shape;
-    const newX = current.x + dx;
-    const newY = current.y + dy;
-    if (!collides(newShape, newX, newY)) {
-      setCurrent({ ...current, shape: newShape, x: newX, y: newY });
-      if (rotateShape) rotateSound.current?.play();
-      else if (dy === 0) moveSound.current?.play();
-    } else if (dy > 0 && !rotateShape) {
-      const merged = merge(current.shape, grid, current.x, current.y);
-      const newGrid = merged.filter((row) => row.some((cell) => cell === 0));
-      const cleared = ROWS - newGrid.length;
-      while (newGrid.length < ROWS) newGrid.unshift(Array(COLS).fill(0));
-      setGrid(newGrid);
-      const next = randomShape();
-      if (collides(next.shape, next.x, next.y)) {
-        setIsGameOver(true);
-        gameOverSound.current?.play();
-        clearInterval(intervalRef.current!);
+  const movePiece = (dx, dy) => {
+    if (gameOver) return;
+    const newX = piece.x + dx;
+    const newY = piece.y + dy;
+    if (isValidMove(piece.shape, dx, dy)) {
+      setPiece({ ...piece, x: newX, y: newY });
+    } else if (dy === 1) {
+      const newGrid = mergePiece();
+      const clearedGrid = clearLines(newGrid);
+      const next = getRandomPiece();
+      if (!isValidMove(next.shape, 0, 0)) {
+        setGameOver(true);
+        clearInterval(intervalRef.current);
       } else {
-        setCurrent(next);
+        setGrid(clearedGrid);
+        setPiece(next);
       }
-      dropSound.current?.play();
     }
   };
 
-  const drop = () => move(0, 1);
-  const left = () => move(-1, 0);
-  const right = () => move(1, 0);
-  const rotateBlock = () => move(0, 0, true);
-  const fastDrop = () => move(0, 1);
+  const hardDrop = () => {
+    while (isValidMove(piece.shape, 0, 1)) {
+      setPiece(prev => ({ ...prev, y: prev.y + 1 }));
+    }
+  };
 
-  const startGame = () => {
-    setIsStarted(true);
-    setIsGameOver(false);
-    setGrid(Array.from({ length: ROWS }, () => Array(COLS).fill(0)));
-    setCurrent(randomShape());
-    setStartTime(Date.now());
-    setElapsed(0);
+  const handleKeyDown = e => {
+    if (gameOver) return;
+    switch (e.key) {
+      case 'ArrowLeft':
+        movePiece(-1, 0);
+        break;
+      case 'ArrowRight':
+        movePiece(1, 0);
+        break;
+      case 'ArrowDown':
+        movePiece(0, 1);
+        break;
+      case ' ': // Spacebar
+        hardDrop();
+        break;
+      case 'ArrowUp':
+        const rotated = rotate(piece.shape);
+        if (isValidMove(rotated, 0, 0)) setPiece({ ...piece, shape: rotated });
+        break;
+    }
   };
 
   useEffect(() => {
-    if (!isStarted || isGameOver) return;
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  });
 
-    const handleKey = (e: KeyboardEvent) => {
-      e.preventDefault();
-      switch (e.key) {
-        case 'ArrowLeft':
-          left();
-          break;
-        case 'ArrowRight':
-          right();
-          break;
-        case 'ArrowDown':
-          fastDrop();
-          break;
-        case 'ArrowUp':
-          rotateBlock();
-          break;
-      }
-    };
+  const drawGrid = () => {
+    const display = grid.map(row => [...row]);
+    piece.shape.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell && piece.y + y >= 0) display[piece.y + y][piece.x + x] = piece.type;
+      });
+    });
+    return display;
+  };
 
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [current, isStarted, isGameOver]);
-
-  useEffect(() => {
-    if (!isStarted || isGameOver) return;
-
-    intervalRef.current = setInterval(() => {
-      drop();
-      setElapsed(Math.floor((Date.now() - (startTime ?? Date.now())) / 1000));
-    }, 800);
-
-    return () => clearInterval(intervalRef.current!);
-  }, [current, isStarted, startTime, isGameOver]);
-
-  const displayGrid = merge(current.shape, grid, current.x, current.y);
-  const minutes = Math.floor(elapsed / 60);
-  const seconds = elapsed % 60;
+  const formattedTime = `${Math.floor(time / 60).toString().padStart(2, '0')}:${(time % 60)
+    .toString()
+    .padStart(2, '0')}`;
 
   return (
-    <div className="relative flex flex-col items-center mt-8 gap-4">
-      <h1 className="text-4xl font-bold text-purple-700 tracking-widest">TETRIS</h1>
-      <div className="text-lg font-mono text-gray-800">
-        ⏱️ Time: {minutes}m {seconds}s
-      </div>
-
-      {/* Tetris Grid */}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+      <h1 className="text-3xl font-bold mb-4">Tetris</h1>
+      <div className="text-lg mb-2">Time: {formattedTime}</div>
+      <div className="text-lg mb-2">Score: {score}</div>
+      {gameOver && <div className="text-red-500 font-bold">Game Over</div>}
       <div
-        className="grid gap-[1px] bg-gray-400 p-1 border-4 border-gray-800 rounded"
-        style={{ gridTemplateColumns: `repeat(${COLS}, ${CELL_SIZE * 4}px)` }}
+        className="grid"
+        style={{
+          gridTemplateRows: `repeat(${ROWS}, ${BLOCK_SIZE}px)`,
+          gridTemplateColumns: `repeat(${COLS}, ${BLOCK_SIZE}px)`,
+          gap: 1,
+          backgroundColor: '#333',
+        }}
       >
-        {displayGrid.flat().map((cell, i) => (
-          <div
-            key={i}
-            className={`w-${CELL_SIZE} h-${CELL_SIZE} ${
-              cell ? 'bg-green-400' : 'bg-white'
-            }`}
-          />
-        ))}
+        {drawGrid().map((row, rowIndex) =>
+          row.map((cell, colIndex) => (
+            <div
+              key={`${rowIndex}-${colIndex}`}
+              style={{
+                width: BLOCK_SIZE,
+                height: BLOCK_SIZE,
+                backgroundColor: cell ? COLORS[cell] : '#111',
+              }}
+            />
+          ))
+        )}
       </div>
-
-      {/* Game Over Message */}
-      {isGameOver && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80 text-red-600 text-3xl font-bold animate-pulse z-10">
-          💀 Game Over!
-        </div>
-      )}
-
-      {/* Start Button */}
-      {!isStarted && !isGameOver && (
-        <button
-          onClick={startGame}
-          className="bg-purple-700 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-purple-900 transition"
-        >
-          <PlayCircle /> Start Game
-        </button>
-      )}
 
       {/* Mobile Controls */}
-      {isStarted && !isGameOver && (
-        <div className="flex gap-3 mt-6 md:hidden">
-          <button className="bg-gray-700 text-white p-3 rounded" onClick={left}>
-            <ArrowBigLeft color="#fff" />
-          </button>
-          <button className="bg-gray-700 text-white p-3 rounded" onClick={rotateBlock}>
-            <RotateCcw color="#fff" />
-          </button>
-          <button className="bg-gray-700 text-white p-3 rounded" onClick={fastDrop}>
-            <ArrowBigDownDash color="#fff" />
-          </button>
-          <button className="bg-gray-700 text-white p-3 rounded" onClick={right}>
-            <ArrowBigRight color="#fff" />
-          </button>
-        </div>
-      )}
-
-      {/* Audio elements */}
-      <audio ref={rotateSound} src="/rotate.wav" />
-      <audio ref={moveSound} src="/move.wav" />
-      <audio ref={dropSound} src="/drop.wav" />
-      <audio ref={gameOverSound} src="/gameover.mp3" />
+      <div className="mt-4 flex gap-4">
+        <button onClick={() => movePiece(-1, 0)} className="p-2 bg-gray-700 rounded">⬅️</button>
+        <button onClick={() => movePiece(0, 1)} className="p-2 bg-gray-700 rounded">⬇️</button>
+        <button onClick={() => movePiece(1, 0)} className="p-2 bg-gray-700 rounded">➡️</button>
+        <button
+          onClick={() => {
+            const rotated = rotate(piece.shape);
+            if (isValidMove(rotated, 0, 0)) setPiece({ ...piece, shape: rotated });
+          }}
+          className="p-2 bg-gray-700 rounded"
+        >
+          🔄
+        </button>
+        <button onClick={hardDrop} className="p-2 bg-gray-700 rounded">⏬</button>
+      </div>
     </div>
   );
 };
 
-export default TetrisGame;
+export default Tetris;
