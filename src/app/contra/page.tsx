@@ -44,7 +44,8 @@ const shapes = [
 ];
 
 const getRandomShape = () => shapes[Math.floor(Math.random() * shapes.length)];
-const emptyBoard = () => Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+const emptyBoard = () =>
+  Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 
 const TetrisPage = () => {
   const [board, setBoard] = useState(emptyBoard());
@@ -169,11 +170,6 @@ const TetrisPage = () => {
 
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(drop, 500);
-
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000);
   };
 
   const stopGame = () => {
@@ -190,6 +186,17 @@ const TetrisPage = () => {
   }, [shape, position, board, gameOver, started]);
 
   const currentBoard = mergeShapeToBoard(shape, position, board);
+  useEffect(() => {
+    if (!started || gameOver) return;
+
+    timerRef.current = setInterval(() => {
+      setTimer((prev) => prev + 1);
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [started, gameOver]);
 
   return (
     <div
@@ -201,7 +208,9 @@ const TetrisPage = () => {
     >
       <Headline title="MONtet" />
 
-      <div className="text-white mb-2">Score: {score} | Time: {timer}s</div>
+      <div className="text-white mb-2">
+        Score: {score} | Time: {timer}s
+      </div>
 
       {!started && (
         <button
@@ -234,25 +243,25 @@ const TetrisPage = () => {
       <div className="flex gap-3 mt-6 md:hidden">
         <button
           onClick={() => handleMobileControl("left")}
-          className="bg-black text-white px-4 py-2 rounded-lg"
+          className="bg-black text-white px-4 py-2 rounded-lg hover:bg-blue-300"
         >
           <ArrowBigLeft color="#fff" />
         </button>
         <button
           onClick={() => handleMobileControl("rotate")}
-          className="bg-black text-white px-4 py-2 rounded-lg"
+          className="bg-black text-white px-4 py-2 rounded-lg hover:bg-blue-300 "
         >
           <RotateCcw color="#fff" />
         </button>
         <button
           onClick={() => handleMobileControl("down")}
-          className="bg-black text-white px-4 py-2 rounded-lg"
+          className="bg-black text-white px-4 py-2 rounded-lg hover:bg-blue-300"
         >
           <ArrowBigDownDash color="#fff" />
         </button>
         <button
           onClick={() => handleMobileControl("right")}
-          className="bg-black text-white px-4 py-2 rounded-lg"
+          className="bg-black text-white px-4 py-2 rounded-lg  hover:bg-blue-300"
         >
           <ArrowBigRight color="#fff" />
         </button>
@@ -261,7 +270,9 @@ const TetrisPage = () => {
       {gameOver && (
         <div className="absolute bg-white text-black px-6 py-4 rounded-2xl text-center shadow-xl text-2xl animate-pulse space-y-4">
           <div>
-            🎮 Game Over!<br />Score: {score} | Time: {timer}s
+            🎮 Game Over!
+            <br />
+            Score: {score} | Time: {timer}s
             <br /> Wanna try again?
           </div>
           <button
