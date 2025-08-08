@@ -1,271 +1,248 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
-import React, { useState, useEffect, useRef } from 'react';
+"use client";
+
+import React, { useEffect, useState, useRef } from "react";
+import Headline from "../compo/headline";
 
 const ROWS = 20;
-const COLS = 10;
-const BLOCK_SIZE = 30;
+const COLS = 20;
+const BLOCK_SIZE = 20;
 
-const SHAPES = {
-  I: [
-    [[1], [1], [1], [1]],
-    [[1, 1, 1, 1]],
-  ],
-  O: [
-    [
-      [1, 1],
-      [1, 1],
-    ],
-  ],
-  T: [
-    [
-      [0, 1, 0],
-      [1, 1, 1],
-    ],
-    [
-      [1, 0],
-      [1, 1],
-      [1, 0],
-    ],
-    [
-      [1, 1, 1],
-      [0, 1, 0],
-    ],
-    [
-      [0, 1],
-      [1, 1],
-      [0, 1],
-    ],
-  ],
-  L: [
-    [
-      [1, 0],
-      [1, 0],
-      [1, 1],
-    ],
-    [
-      [0, 0, 1],
-      [1, 1, 1],
-    ],
-    [
-      [1, 1],
-      [0, 1],
-      [0, 1],
-    ],
-    [
-      [1, 1, 1],
-      [1, 0, 0],
-    ],
-  ],
-  J: [
-    [
-      [0, 1],
-      [0, 1],
-      [1, 1],
-    ],
-    [
-      [1, 0, 0],
-      [1, 1, 1],
-    ],
-    [
-      [1, 1],
-      [1, 0],
-      [1, 0],
-    ],
-    [
-      [1, 1, 1],
-      [0, 0, 1],
-    ],
-  ],
-  S: [
-    [
-      [0, 1, 1],
-      [1, 1, 0],
-    ],
-    [
-      [1, 0],
-      [1, 1],
-      [0, 1],
-    ],
-  ],
-  Z: [
-    [
-      [1, 1, 0],
-      [0, 1, 1],
-    ],
-    [
-      [0, 1],
-      [1, 1],
-      [1, 0],
-    ],
-  ],
-};
+const shapes = [
+  [[1, 1, 1, 1]], // I
+  [
+    [1, 1],
+    [1, 1],
+  ], // O
+  [
+    [0, 1, 0],
+    [1, 1, 1],
+  ], // T
+  [
+    [0, 1, 1],
+    [1, 1, 0],
+  ], // S
+  [
+    [1, 1, 0],
+    [0, 1, 1],
+  ], // Z
+  [
+    [1, 0, 0],
+    [1, 1, 1],
+  ], // J
+  [
+    [0, 0, 1],
+    [1, 1, 1],
+  ], // L
+];
 
-const COLORS = ['#00FFFF', '#FFD700', '#FF00FF', '#FF4500', '#7CFC00', '#1E90FF', '#9400D3'];
-const SHAPE_KEYS = Object.keys(SHAPES);
+const getRandomShape = () => shapes[Math.floor(Math.random() * shapes.length)];
 
-const getRandomShape = () => {
-  const shape = SHAPE_KEYS[Math.floor(Math.random() * SHAPE_KEYS.length)];
-  const rotation = 0;
-  return { shape, rotation };
-};
+const emptyBoard = () =>
+  Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 
-const Tetris = () => {
-  const [board, setBoard] = useState<number[][]>(Array.from({ length: ROWS }, () => Array(COLS).fill(0)));
-  const [current, setCurrent] = useState<any>(getRandomShape());
-  const [position, setPosition] = useState({ row: 0, col: Math.floor(COLS / 2) - 1 });
-  const [score, setScore] = useState(0);
-  const [timer, setTimer] = useState(0);
-  const intervalRef = useRef<any>(null);
+const TetrisPage = () => {
+  const [board, setBoard] = useState(emptyBoard());
+  const [shape, setShape] = useState(getRandomShape());
+  const [position, setPosition] = useState({ row: 0, col: 4 });
+  const [gameOver, setGameOver] = useState(false);
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const mergeShapeToBoard = (shape: number[][], pos: any, base: number[][]) => {
+    const newBoard = base.map((row) => [...row]);
+    shape.forEach((r, i) =>
+      r.forEach((cell, j) => {
+        if (
+          cell &&
+          newBoard[pos.row + i] &&
+          newBoard[pos.row + i][pos.col + j] !== undefined
+        ) {
+          newBoard[pos.row + i][pos.col + j] = cell;
+        }
+      })
+    );
+    return newBoard;
+  };
+
+  const isValidMove = (shape: number[][], pos: any) => {
+    return shape.every((row, i) =>
+      row.every((cell, j) => {
+        const x = pos.row + i;
+        const y = pos.col + j;
+        return (
+          !cell ||
+          (x >= 0 && x < ROWS && y >= 0 && y < COLS && board[x][y] === 0)
+        );
+      })
+    );
+  };
+
+  const rotate = (matrix: number[][]) =>
+    matrix[0].map((_, i) => matrix.map((row) => row[i]).reverse());
+
+  const drop = () => {
+    const newPos = { row: position.row + 1, col: position.col };
+    if (isValidMove(shape, newPos)) {
+      setPosition(newPos);
+    } else {
+      const newBoard = mergeShapeToBoard(shape, position, board);
+      clearFullRows(newBoard);
+      const newShape = getRandomShape();
+      const startPos = { row: 0, col: 4 };
+
+      if (!isValidMove(newShape, startPos)) {
+        setGameOver(true);
+        if (intervalRef.current) clearInterval(intervalRef.current);
+      } else {
+        setShape(newShape);
+        setPosition(startPos);
+        setBoard(newBoard);
+      }
+    }
+  };
+
+  const clearFullRows = (newBoard: number[][]) => {
+    const filtered = newBoard.filter((row) => row.some((cell) => cell === 0));
+    const cleared = Array(ROWS - filtered.length).fill(Array(COLS).fill(0));
+    setBoard([...cleared, ...filtered]);
+  };
+
+  const move = (dir: "left" | "right" | "down" | "rotate") => {
+    if (gameOver) return;
+
+    if (dir === "left") {
+      const newPos = { row: position.row, col: position.col - 1 };
+      if (isValidMove(shape, newPos)) setPosition(newPos);
+    } else if (dir === "right") {
+      const newPos = { row: position.row, col: position.col + 1 };
+      if (isValidMove(shape, newPos)) setPosition(newPos);
+    } else if (dir === "down") {
+      drop();
+    } else if (dir === "rotate") {
+      const rotated = rotate(shape);
+      if (isValidMove(rotated, position)) setShape(rotated);
+    }
+  };
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      setTimer(t => t + 1);
-    }, 1000);
-    return () => clearInterval(intervalRef.current);
-  }, []);
-
-  const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
-
-  const shapeMatrix = SHAPES[current.shape][current.rotation % SHAPES[current.shape].length];
-
-  const isValid = (r: number, c: number, shape: number[][] = shapeMatrix) => {
-    for (let i = 0; i < shape.length; i++) {
-      for (let j = 0; j < shape[i].length; j++) {
-        if (shape[i][j]) {
-          const newRow = r + i;
-          const newCol = c + j;
-          if (
-            newRow < 0 || newRow >= ROWS ||
-            newCol < 0 || newCol >= COLS ||
-            board[newRow][newCol]
-          ) return false;
-        }
-      }
-    }
-    return true;
-  };
-
-  const merge = () => {
-    const newBoard = board.map(row => [...row]);
-    for (let i = 0; i < shapeMatrix.length; i++) {
-      for (let j = 0; j < shapeMatrix[i].length; j++) {
-        if (shapeMatrix[i][j]) {
-          const row = position.row + i;
-          const col = position.col + j;
-          newBoard[row][col] = SHAPE_KEYS.indexOf(current.shape) + 1;
-        }
-      }
-    }
-    clearLines(newBoard);
-  };
-
-  const clearLines = (newBoard: number[][]) => {
-    const cleared = newBoard.filter(row => row.some(cell => cell === 0));
-    const linesCleared = ROWS - cleared.length;
-    const emptyRows = Array.from({ length: linesCleared }, () => Array(COLS).fill(0));
-    const updatedBoard = [...emptyRows, ...cleared];
-    if (linesCleared > 0) setScore(score + linesCleared * 10);
-    setBoard(updatedBoard);
-    setCurrent(getRandomShape());
-    setPosition({ row: 0, col: Math.floor(COLS / 2) - 1 });
-
-    if (!isValid(0, Math.floor(COLS / 2) - 1)) {
-      alert("Game Over");
-      window.location.reload();
-    }
-  };
-
-  const moveDown = () => {
-    if (isValid(position.row + 1, position.col)) {
-      setPosition(prev => ({ ...prev, row: prev.row + 1 }));
-    } else {
-      merge();
-    }
-  };
-
-  const moveLeft = () => {
-    if (isValid(position.row, position.col - 1)) {
-      setPosition(prev => ({ ...prev, col: prev.col - 1 }));
-    }
-  };
-
-  const moveRight = () => {
-    if (isValid(position.row, position.col + 1)) {
-      setPosition(prev => ({ ...prev, col: prev.col + 1 }));
-    }
-  };
-
-  const rotate = () => {
-    const nextRotation = (current.rotation + 1) % SHAPES[current.shape].length;
-    const nextShape = SHAPES[current.shape][nextRotation];
-    if (isValid(position.row, position.col, nextShape)) {
-      setCurrent(prev => ({ ...prev, rotation: nextRotation }));
-    }
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      moveDown();
+      drop();
     }, 500);
-    return () => clearInterval(interval);
-  });
 
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case 'ArrowLeft': moveLeft(); break;
-        case 'ArrowRight': moveRight(); break;
-        case 'ArrowDown': moveDown(); break;
-        case 'ArrowUp': rotate(); break;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " "].includes(e.key)
+      ) {
+        e.preventDefault(); // prevent scroll
       }
+
+      if (gameOver) return;
+
+      if (e.key === "ArrowLeft") move("left");
+      else if (e.key === "ArrowRight") move("right");
+      else if (e.key === "ArrowDown") move("down");
+      else if (e.key === "ArrowUp") move("rotate");
     };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  });
 
-  const tempBoard = board.map(row => [...row]);
-  for (let i = 0; i < shapeMatrix.length; i++) {
-    for (let j = 0; j < shapeMatrix[i].length; j++) {
-      if (shapeMatrix[i][j]) {
-        const row = position.row + i;
-        const col = position.col + j;
-        if (row >= 0 && col >= 0 && row < ROWS && col < COLS) {
-          tempBoard[row][col] = SHAPE_KEYS.indexOf(current.shape) + 1;
-        }
-      }
-    }
-  }
+    window.addEventListener("keydown", handleKeyDown, { passive: false });
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [shape, position, board, gameOver]);
+
+  const currentBoard = mergeShapeToBoard(shape, position, board);
+
+  const startGame = () => {
+    setBoard(emptyBoard());
+    setShape(getRandomShape());
+    setPosition({ row: 0, col: 4 });
+    setGameOver(false);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      drop();
+    }, 500);
+  };
 
   return (
-    <div className="flex flex-col items-center p-4 text-white">
-      <div className="text-2xl font-bold mb-2">⏱ Time: {formatTime(timer)}</div>
-      <div className="text-2xl font-bold mb-4">🏆 Score: {score}</div>
+    <div
+      className="w-full h-screen py-5 flex flex-col items-center justify-center relative"
+      style={{
+        background:
+          "linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%)",
+      }}
+    >
+      <Headline title="treeMON" />
+
       <div
-        className="grid"
+        className="grid border-4 border-white"
         style={{
-          gridTemplateRows: `repeat(${ROWS}, ${BLOCK_SIZE}px)`,
-          gridTemplateColumns: `repeat(${COLS}, ${BLOCK_SIZE}px)`,
+          gridTemplateRows: `repeat(${ROWS}, minmax(0, 1fr))`,
+          gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))`,
+          width: `${COLS * BLOCK_SIZE}px`,
+          height: `${ROWS * BLOCK_SIZE}px`,
         }}
       >
-        {tempBoard.flat().map((cell, i) => (
+        {currentBoard.flat().map((cell, i) => (
           <div
             key={i}
-            className="border border-gray-700"
-            style={{
-              width: BLOCK_SIZE,
-              height: BLOCK_SIZE,
-              backgroundColor: cell ? COLORS[cell - 1] : '#111',
-            }}
-          />
+            className={`border border-gray-700 ${
+              cell ? "bg-green-400" : "bg-black"
+            }`}
+          ></div>
         ))}
       </div>
+
+      {/* Mobile Buttons */}
+      <div className="flex sm:hidden gap-3 mt-6">
+        <button
+          onClick={() => move("left")}
+          className="bg-white text-black px-4 py-2 rounded-lg"
+        >
+          ⬅️
+        </button>
+        <button
+          onClick={() => move("rotate")}
+          className="bg-white text-black px-4 py-2 rounded-lg"
+        >
+          🔄
+        </button>
+        <button
+          onClick={() => move("right")}
+          className="bg-white text-black px-4 py-2 rounded-lg"
+        >
+          ➡️
+        </button>
+        <button
+          onClick={() => move("down")}
+          className="bg-white text-black px-4 py-2 rounded-lg"
+        >
+          ⬇️
+        </button>
+      </div>
+
+      <Headline title="tetris" />
+
+      {gameOver && (
+        <div className="absolute bg-white text-black px-6 py-4 rounded-2xl text-center shadow-xl text-2xl animate-pulse space-y-4">
+          <div>
+            🎮 Game Over!
+            <br />
+            Wanna try again?
+          </div>
+          <button
+            onClick={startGame}
+            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
+          >
+            🔄 Restart Game
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Tetris;
+export default TetrisPage;
