@@ -174,9 +174,9 @@ const TetrisPage = () => {
     }, 500);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     startGame();
-  },[])
+  }, []);
   return (
     <div
       className="w-full h-screen py-5 flex flex-col items-center justify-center relative"
@@ -186,15 +186,20 @@ const TetrisPage = () => {
       }}
     >
       <Headline title="treeMON" />
-      <button onClick={startGame} className="p-2 bg-transparent text-white flex justify-center items-center">Play <Play color="#3296"/></button>
+      <button
+        onClick={startGame}
+        className="p-2 bg-transparent text-white flex justify-center items-center"
+      >
+        Play <Play color="#3296" />
+      </button>
 
       <div
         className="grid border-4 border-white"
         style={{
-          gridTemplateRows: repeat(${ROWS}, minmax(0, 1fr)),
-          gridTemplateColumns: repeat(${COLS}, minmax(0, 1fr)),
-          width: ${COLS * BLOCK_SIZE}px,
-          height: ${ROWS * BLOCK_SIZE}px,
+          gridTemplateRows: `repeat(${ROWS}, minmax(0, 1fr))`,
+          gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))`,
+          width: `${COLS * BLOCK_SIZE}px`,
+          height: `${ROWS * BLOCK_SIZE}px`,
         }}
       >
         {currentBoard.flat().map((cell, i) => (
@@ -205,6 +210,7 @@ const TetrisPage = () => {
             }`}
           ></div>
         ))}
+      </div>
 
       {/* Mobile Buttons */}
       <div className="flex sm:hidden gap-3 mt-6">
@@ -212,25 +218,26 @@ const TetrisPage = () => {
           onClick={() => move("left")}
           className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
-          <ArrowBigLeft color="#fff" /> 
+          <ArrowBigLeft color="#fff" />
         </button>
         <button
           onClick={() => move("rotate")}
           className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
-          <RotateCcw  color="#fff"/>
+          <RotateCcw color="#fff" />
         </button>
-      
+
         <button
           onClick={() => move("down")}
           className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
-          <ArrowBigDownDash color="#fff"/>
+          <ArrowBigDownDash color="#fff" />
         </button>
-  <button onClick={() => move("right")}
+        <button
+          onClick={() => move("right")}
           className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
-          <ArrowBigRight color="#fff"/>
+          <ArrowBigRight color="#fff" />
         </button>
       </div>
 
@@ -255,4 +262,4 @@ const TetrisPage = () => {
   );
 };
 
-export default TetrisPage;
+export default TetrisPage;
