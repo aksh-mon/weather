@@ -4,7 +4,12 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Headline from "../compo/headline";
-import { ArrowBigLeft, RotateCcw, ArrowBigRight, ArrowBigDownDash } from "lucide-react";
+import {
+  ArrowBigLeft,
+  RotateCcw,
+  ArrowBigRight,
+  ArrowBigDownDash,
+} from "lucide-react";
 
 const ROWS = 20;
 const COLS = 20;
@@ -39,7 +44,8 @@ const shapes = [
 ];
 
 const getRandomShape = () => shapes[Math.floor(Math.random() * shapes.length)];
-const emptyBoard = () => Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+const emptyBoard = () =>
+  Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 
 const TetrisPage = () => {
   const [board, setBoard] = useState(emptyBoard());
@@ -191,17 +197,39 @@ const TetrisPage = () => {
         {currentBoard.flat().map((cell, i) => (
           <div
             key={i}
-            className={`border border-gray-700 ${cell ? "bg-green-400" : "bg-black"}`}
+            className={`border border-gray-700 ${
+              cell ? "bg-green-400" : "bg-black"
+            }`}
           ></div>
         ))}
       </div>
 
       {/* Mobile Controls */}
       <div className="flex gap-3 mt-6 md:hidden">
-        <button onClick={() => handleMobileControl("left")} className="bg-black text-white px-4 py-2 rounded-lg"><ArrowBigLeft color="#fff"/></button>
-        <button onClick={() => handleMobileControl("rotate")} className="bg-black text-white px-4 py-2 rounded-lg"><RotateCcw color="#fff"/></button>
-        <button onClick={() => handleMobileControl("right")} className="bg-black text-white px-4 py-2 rounded-lg"><ArrowBigRight color="#fff"/></button>
-        <button onClick={() => handleMobileControl("down")} className="bg-black text-white px-4 py-2 rounded-lg"><ArrowBigDownDash color="#fff" /></button>
+        <button
+          onClick={() => handleMobileControl("left")}
+          className="bg-black text-white px-4 py-2 rounded-lg  "
+        >
+          <ArrowBigLeft className="hover:bg-cyan-500" color="#fff" />
+        </button>
+        <button
+          onClick={() => handleMobileControl("rotate")}
+          className="bg-black text-white px-4 py-2 rounded-lg "
+        >
+          <RotateCcw className="hover:bg-cyan-500" color="#fff" />
+        </button>
+        <button
+          onClick={() => handleMobileControl("down")}
+          className="bg-black text-white px-4 py-2 rounded-lg "
+        >
+          <ArrowBigDownDash className="hover:bg-cyan-500" color="#fff" />
+        </button>
+        <button
+          onClick={() => handleMobileControl("right")}
+          className="bg-black text-white px-4 py-2 rounded-lg "
+        >
+          <ArrowBigRight className="hover:bg-cyan-500" color="#fff" />
+        </button>
       </div>
 
       <Headline title="tetMON" />
