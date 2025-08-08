@@ -1,20 +1,19 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+'use client';
 
-"use client";
-
-import React, { useEffect, useRef, useState } from "react";
-
-import Headline from "../compo/headline";
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ArrowBigLeft,
   RotateCcw,
   ArrowBigRight,
   ArrowBigDownDash,
-} from "lucide-react";
+  PlayCircle,
+} from 'lucide-react';
 
 const ROWS = 20;
 const COLS = 10;
+const CELL_SIZE = 8; // Tailwind size unit = 2rem
 
 const shapes = [
   [[1, 1, 1, 1]], // I
@@ -59,9 +58,16 @@ const TetrisGame = () => {
   );
   const [current, setCurrent] = useState(randomShape());
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sounds
+  const rotateSound = useRef<HTMLAudioElement | null>(null);
+  const moveSound = useRef<HTMLAudioElement | null>(null);
+  const dropSound = useRef<HTMLAudioElement | null>(null);
+  const gameOverSound = useRef<HTMLAudioElement | null>(null);
 
   const merge = (
     shape: typeof current.shape,
@@ -102,6 +108,8 @@ const TetrisGame = () => {
     const newY = current.y + dy;
     if (!collides(newShape, newX, newY)) {
       setCurrent({ ...current, shape: newShape, x: newX, y: newY });
+      if (rotateShape) rotateSound.current?.play();
+      else if (dy === 0) moveSound.current?.play();
     } else if (dy > 0 && !rotateShape) {
       const merged = merge(current.shape, grid, current.x, current.y);
       const newGrid = merged.filter((row) => row.some((cell) => cell === 0));
@@ -111,10 +119,12 @@ const TetrisGame = () => {
       const next = randomShape();
       if (collides(next.shape, next.x, next.y)) {
         setIsGameOver(true);
+        gameOverSound.current?.play();
         clearInterval(intervalRef.current!);
       } else {
         setCurrent(next);
       }
+      dropSound.current?.play();
     }
   };
 
@@ -124,100 +134,117 @@ const TetrisGame = () => {
   const rotateBlock = () => move(0, 0, true);
   const fastDrop = () => move(0, 1);
 
+  const startGame = () => {
+    setIsStarted(true);
+    setIsGameOver(false);
+    setGrid(Array.from({ length: ROWS }, () => Array(COLS).fill(0)));
+    setCurrent(randomShape());
+    setStartTime(Date.now());
+    setElapsed(0);
+  };
+
   useEffect(() => {
+    if (!isStarted || isGameOver) return;
+
     const handleKey = (e: KeyboardEvent) => {
       e.preventDefault();
-      if (isGameOver) return;
       switch (e.key) {
-        case "ArrowLeft":
+        case 'ArrowLeft':
           left();
           break;
-        case "ArrowRight":
+        case 'ArrowRight':
           right();
           break;
-        case "ArrowDown":
+        case 'ArrowDown':
           fastDrop();
           break;
-        case "ArrowUp":
+        case 'ArrowUp':
           rotateBlock();
           break;
       }
     };
 
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [current, isGameOver]);
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [current, isStarted, isGameOver]);
 
   useEffect(() => {
-    if (startTime === null) {
-      setStartTime(Date.now());
-    }
+    if (!isStarted || isGameOver) return;
 
     intervalRef.current = setInterval(() => {
-      if (!isGameOver) {
-        drop();
-        setElapsed(Math.floor((Date.now() - (startTime ?? Date.now())) / 1000));
-      }
+      drop();
+      setElapsed(Math.floor((Date.now() - (startTime ?? Date.now())) / 1000));
     }, 800);
 
     return () => clearInterval(intervalRef.current!);
-  }, [current, startTime, isGameOver]);
+  }, [current, isStarted, startTime, isGameOver]);
 
   const displayGrid = merge(current.shape, grid, current.x, current.y);
-
   const minutes = Math.floor(elapsed / 60);
   const seconds = elapsed % 60;
 
   return (
-    <div className="flex flex-col items-center mt-8 gap-4">
-      <Headline title="TETRIS" />
+    <div className="relative flex flex-col items-center mt-8 gap-4">
+      <h1 className="text-4xl font-bold text-purple-700 tracking-widest">TETRIS</h1>
       <div className="text-lg font-mono text-gray-800">
         ⏱️ Time: {minutes}m {seconds}s
       </div>
-      <div className="grid grid-cols-10 gap-[1px] bg-gray-400 p-1 border-4 border-purple-500 rounded">
+
+      {/* Tetris Grid */}
+      <div
+        className="grid gap-[1px] bg-gray-400 p-1 border-4 border-gray-800 rounded"
+        style={{ gridTemplateColumns: `repeat(${COLS}, ${CELL_SIZE * 4}px)` }}
+      >
         {displayGrid.flat().map((cell, i) => (
           <div
             key={i}
-            className={`w-6 h-6 ${cell ? "bg-purple-600" : "bg-white"}`}
+            className={`w-${CELL_SIZE} h-${CELL_SIZE} ${
+              cell ? 'bg-green-400' : 'bg-white'
+            }`}
           />
         ))}
       </div>
 
+      {/* Game Over Message */}
       {isGameOver && (
-        <div className="mt-4 text-center text-2xl font-bold text-red-600 animate-pulse">
+        <div className="absolute inset-0 flex items-center justify-center bg-white/80 text-red-600 text-3xl font-bold animate-pulse z-10">
           💀 Game Over!
         </div>
       )}
 
-      {/* Mobile controls */}
-      <div className="flex gap-3 mt-6 md:hidden">
+      {/* Start Button */}
+      {!isStarted && !isGameOver && (
         <button
-          className="bg-gray-700 text-white px-3 py-2 rounded hover:bg-blue-300"
-          onClick={left}
+          onClick={startGame}
+          className="bg-purple-700 text-white px-6 py-3 rounded-full flex items-center gap-2 hover:bg-purple-900 transition"
         >
-          <ArrowBigLeft color="#fff" />
+          <PlayCircle /> Start Game
         </button>
-        <button
-          className="bg-gray-700 text-white px-3 py-2 rounded hover:bg-blue-300"
-          onClick={rotateBlock}
-        >
-          {" "}
-          <RotateCcw color="#fff" />
-        </button>
-        <button
-          className="bg-gray-700 text-white px-3 py-2 rounded hover:bg-blue-300"
-          onClick={fastDrop}
-        >
-          <ArrowBigDownDash color="#fff" />
-        </button>
+      )}
 
-        <button
-          className="bg-gray-700 text-white px-3 py-2 rounded hover:bg-blue-300"
-          onClick={right}
-        >
-          <ArrowBigRight color="#fff" />
-        </button>
-      </div>
+      {/* Mobile Controls */}
+      {isStarted && !isGameOver && (
+        <div className="flex gap-3 mt-6 md:hidden">
+          <button className="bg-gray-700 text-white p-3 rounded" onClick={left}>
+            <ArrowBigLeft color="#fff" />
+          </button>
+          <button className="bg-gray-700 text-white p-3 rounded" onClick={rotateBlock}>
+            <RotateCcw color="#fff" />
+          </button>
+          <button className="bg-gray-700 text-white p-3 rounded" onClick={fastDrop}>
+            <ArrowBigDownDash color="#fff" />
+          </button>
+          <button className="bg-gray-700 text-white p-3 rounded" onClick={right}>
+            <ArrowBigRight color="#fff" />
+          </button>
+        </div>
+      )}
+
+      {/* Audio elements */}
+      <audio ref={rotateSound} src="/rotate.wav" />
+      <audio ref={moveSound} src="/move.wav" />
+      <audio ref={dropSound} src="/drop.wav" />
+      <audio ref={gameOverSound} src="/gameover.mp3" />
     </div>
   );
 };
