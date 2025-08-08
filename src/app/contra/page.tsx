@@ -174,6 +174,9 @@ const TetrisPage = () => {
     }, 500);
   };
 
+  useEffect(()=>{
+    startGame();
+  },[])
   return (
     <div
       className="w-full h-screen py-5 flex flex-col items-center justify-center relative"
@@ -183,7 +186,7 @@ const TetrisPage = () => {
       }}
     >
       <Headline title="treeMON" />
-      <button onClick={startGame} className="p-2 bg-blue-400 text-white hover:bg-amber-600">Play <Play color="#3296"/></button>
+      <button onClick={startGame} className="p-2 bg-transparent text-white flex justify-center items-center">Play <Play color="#3296"/></button>
 
       <div
         className="grid border-4 border-white"
