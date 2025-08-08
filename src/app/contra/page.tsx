@@ -210,25 +210,25 @@ const TetrisPage = () => {
           onClick={() => handleMobileControl("left")}
           className="bg-black text-white px-4 py-2 rounded-lg  "
         >
-          <ArrowBigLeft className="hover:bg-cyan-500" color="#fff" />
+          <ArrowBigLeft className="hover:text-cyan-500" color="#fff" />
         </button>
         <button
           onClick={() => handleMobileControl("rotate")}
           className="bg-black text-white px-4 py-2 rounded-lg "
         >
-          <RotateCcw className="hover:bg-cyan-500" color="#fff" />
+          <RotateCcw className="hover:text-cyan-500" color="#fff" />
         </button>
         <button
           onClick={() => handleMobileControl("down")}
           className="bg-black text-white px-4 py-2 rounded-lg "
         >
-          <ArrowBigDownDash className="hover:bg-cyan-500" color="#fff" />
+          <ArrowBigDownDash className="hover:text-cyan-500" color="#fff" />
         </button>
         <button
           onClick={() => handleMobileControl("right")}
           className="bg-black text-white px-4 py-2 rounded-lg "
         >
-          <ArrowBigRight className="hover:bg-cyan-500" color="#fff" />
+          <ArrowBigRight className="hover:text-cyan-500" color="#fff" />
         </button>
       </div>
 
