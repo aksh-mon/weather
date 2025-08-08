@@ -44,16 +44,19 @@ const shapes = [
 ];
 
 const getRandomShape = () => shapes[Math.floor(Math.random() * shapes.length)];
-const emptyBoard = () =>
-  Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+const emptyBoard = () => Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 
 const TetrisPage = () => {
   const [board, setBoard] = useState(emptyBoard());
   const [shape, setShape] = useState(getRandomShape());
   const [position, setPosition] = useState({ row: 0, col: 4 });
   const [gameOver, setGameOver] = useState(false);
+  const [score, setScore] = useState(0);
+  const [timer, setTimer] = useState(0);
+  const [started, setStarted] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const mergeShapeToBoard = (shape: number[][], pos: any, base: number[][]) => {
     const newBoard = base.map((row) => [...row]);
@@ -93,13 +96,16 @@ const TetrisPage = () => {
       setPosition(newPos);
     } else {
       const newBoard = mergeShapeToBoard(shape, position, board);
-      clearFullRows(newBoard);
+      const clearedRows = clearFullRows(newBoard);
+      if (clearedRows > 0) {
+        setScore((prev) => prev + clearedRows * 100);
+      }
       const newShape = getRandomShape();
       const startPos = { row: 0, col: 4 };
 
       if (!isValidMove(newShape, startPos)) {
         setGameOver(true);
-        if (intervalRef.current) clearInterval(intervalRef.current);
+        stopGame();
       } else {
         setShape(newShape);
         setPosition(startPos);
@@ -107,48 +113,37 @@ const TetrisPage = () => {
     }
   };
 
-  const clearFullRows = (newBoard: number[][]) => {
+  const clearFullRows = (newBoard: number[][]): number => {
     const filtered = newBoard.filter((row) => row.some((cell) => cell === 0));
-    const cleared = Array(ROWS - filtered.length).fill(Array(COLS).fill(0));
+    const clearedCount = ROWS - filtered.length;
+    const cleared = Array(clearedCount).fill(Array(COLS).fill(0));
     setBoard([...cleared, ...filtered]);
+    return clearedCount;
   };
 
-  useEffect(() => {
-    intervalRef.current = setInterval(() => {
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
+      e.preventDefault();
+    }
+
+    if (!started || gameOver) return;
+
+    if (e.key === "ArrowLeft") {
+      const newPos = { row: position.row, col: position.col - 1 };
+      if (isValidMove(shape, newPos)) setPosition(newPos);
+    } else if (e.key === "ArrowRight") {
+      const newPos = { row: position.row, col: position.col + 1 };
+      if (isValidMove(shape, newPos)) setPosition(newPos);
+    } else if (e.key === "ArrowDown") {
       drop();
-    }, 500);
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
-        e.preventDefault();
-      }
-
-      if (gameOver) return;
-
-      if (e.key === "ArrowLeft") {
-        const newPos = { row: position.row, col: position.col - 1 };
-        if (isValidMove(shape, newPos)) setPosition(newPos);
-      } else if (e.key === "ArrowRight") {
-        const newPos = { row: position.row, col: position.col + 1 };
-        if (isValidMove(shape, newPos)) setPosition(newPos);
-      } else if (e.key === "ArrowDown") {
-        drop();
-      } else if (e.key === "ArrowUp") {
-        const rotated = rotate(shape);
-        if (isValidMove(rotated, position)) setShape(rotated);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [shape, position, board, gameOver]);
+    } else if (e.key === "ArrowUp") {
+      const rotated = rotate(shape);
+      if (isValidMove(rotated, position)) setShape(rotated);
+    }
+  };
 
   const handleMobileControl = (direction: string) => {
-    if (gameOver) return;
-
+    if (!started || gameOver) return;
     if (direction === "left") {
       const newPos = { row: position.row, col: position.col - 1 };
       if (isValidMove(shape, newPos)) setPosition(newPos);
@@ -163,18 +158,38 @@ const TetrisPage = () => {
     }
   };
 
-  const currentBoard = mergeShapeToBoard(shape, position, board);
-
   const startGame = () => {
     setBoard(emptyBoard());
     setShape(getRandomShape());
     setPosition({ row: 0, col: 4 });
     setGameOver(false);
+    setScore(0);
+    setTimer(0);
+    setStarted(true);
+
     if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      drop();
-    }, 500);
+    intervalRef.current = setInterval(drop, 500);
+
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setTimer((prev) => prev + 1);
+    }, 1000);
   };
+
+  const stopGame = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (timerRef.current) clearInterval(timerRef.current);
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      stopGame();
+    };
+  }, [shape, position, board, gameOver, started]);
+
+  const currentBoard = mergeShapeToBoard(shape, position, board);
 
   return (
     <div
@@ -185,6 +200,18 @@ const TetrisPage = () => {
       }}
     >
       <Headline title="MONtet" />
+
+      <div className="text-white mb-2">Score: {score} | Time: {timer}s</div>
+
+      {!started && (
+        <button
+          onClick={startGame}
+          className="bg-black text-white px-6 py-2 rounded-lg mb-4"
+        >
+          ▶️ Start Game
+        </button>
+      )}
+
       <div
         className="grid border-4 border-white"
         style={{
@@ -204,41 +231,38 @@ const TetrisPage = () => {
         ))}
       </div>
 
-      {/* Mobile Controls */}
       <div className="flex gap-3 mt-6 md:hidden">
         <button
           onClick={() => handleMobileControl("left")}
-          className="bg-black text-white px-4 py-2 rounded-lg  "
+          className="bg-black text-white px-4 py-2 rounded-lg"
         >
-          <ArrowBigLeft className="hover:text-cyan-500" color="#fff" />
+          <ArrowBigLeft color="#fff" />
         </button>
         <button
           onClick={() => handleMobileControl("rotate")}
-          className="bg-black text-white px-4 py-2 rounded-lg "
+          className="bg-black text-white px-4 py-2 rounded-lg"
         >
-          <RotateCcw className="hover:text-cyan-500" color="#fff" />
+          <RotateCcw color="#fff" />
         </button>
         <button
           onClick={() => handleMobileControl("down")}
-          className="bg-black text-white px-4 py-2 rounded-lg "
+          className="bg-black text-white px-4 py-2 rounded-lg"
         >
-          <ArrowBigDownDash className="hover:text-cyan-500" color="#fff" />
+          <ArrowBigDownDash color="#fff" />
         </button>
         <button
           onClick={() => handleMobileControl("right")}
-          className="bg-black text-white px-4 py-2 rounded-lg "
+          className="bg-black text-white px-4 py-2 rounded-lg"
         >
-          <ArrowBigRight className="hover:text-cyan-500" color="#fff" />
+          <ArrowBigRight color="#fff" />
         </button>
       </div>
 
-      <Headline title="tetMON" />
       {gameOver && (
         <div className="absolute bg-white text-black px-6 py-4 rounded-2xl text-center shadow-xl text-2xl animate-pulse space-y-4">
           <div>
-            🎮 Game Over!
-            <br />
-            Wanna try again?
+            🎮 Game Over!<br />Score: {score} | Time: {timer}s
+            <br /> Wanna try again?
           </div>
           <button
             onClick={startGame}
@@ -248,6 +272,8 @@ const TetrisPage = () => {
           </button>
         </div>
       )}
+
+      <Headline title="tetMON" />
     </div>
   );
 };
