@@ -208,7 +208,7 @@ const Sudoku = () => {
       className="flex flex-col items-center gap-4 p-4  justify-center bg- font-mono relative h-full"
       style={{
         fontFamily: "monospace",
-        backgroundColor: colors[28],
+        backgroundColor: colors[3],
         textShadow: `0 0 10px ${colors[colorIndex]}, 0 0 20px ${colors[colorIndex]}`,
       }}
     >
