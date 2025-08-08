@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import { Rotate3DIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export default function DinoGame() {
@@ -30,8 +31,9 @@ export default function DinoGame() {
   // Detect orientation
   useEffect(() => {
     const checkOrientation = () => {
-      const isLandscapeMode =
-        window.matchMedia("(orientation: landscape)").matches;
+      const isLandscapeMode = window.matchMedia(
+        "(orientation: landscape)"
+      ).matches;
       setIsLandscape(isLandscapeMode);
     };
 
@@ -143,9 +145,7 @@ export default function DinoGame() {
         }
       });
 
-      obstacles.current = obstacles.current.filter(
-        (ob) => ob.x + ob.width > 0
-      );
+      obstacles.current = obstacles.current.filter((ob) => ob.x + ob.width > 0);
     };
 
     const detectCollision = () => {
@@ -227,9 +227,32 @@ export default function DinoGame() {
       onClick={jump}
     >
       {!isLandscape && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-90 text-white flex flex-col items-center justify-center px-6 text-center">
-          <p className="text-2xl font-bold mb-4">Please rotate your device</p>
-          <p className="text-lg">This game only works in landscape mode.</p>
+        <div className="relative inset-0 w-full h-[100%] mt-[50%] text-white flex flex-col items-center justify-center px-6 text-center">
+          <p
+            className="text-2xl font-bold px-5"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
+              color: "rgba(210, 216, 217, 0.722)",
+            }}
+          >
+            Please rotate <span className="ml-[45px]">your device</span>
+          </p>
+          <div className="p-2 rounded-full  bg-[linear-gradient(90deg,rgba(18,179,204,1)_28%,rgb(227,227,230)_50%,rgba(0,68,255,0.83)_96%)] inline-flex items-center justify-center">
+            <Rotate3DIcon size={38} color="rgba(18,179,204,1)" className="animate-spin" />
+          </div>
+
+          <p
+            className="text-xl"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
+              color: "rgba(210, 216, 217, 0.722)",
+            }}
+          >
+            This game only works{" "}
+            <span className="ml-[58px]">in landscape mode.</span>
+          </p>
         </div>
       )}
 

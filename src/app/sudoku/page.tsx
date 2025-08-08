@@ -196,6 +196,12 @@ const Sudoku = () => {
       .toString()
       .padStart(2, "0")}`;
   };
+  useEffect(() => {
+    if (isStarted && !isCompleted && isPuzzleComplete()) {
+      setIsCompleted(true);
+      setIsStarted(false);
+    }
+  }, [grid]);
 
   return (
     <div
@@ -303,7 +309,12 @@ const Sudoku = () => {
         </button>
       </div>
       {isCompleted && showWinMessage && (
-        <div className="bg-white px-6 py-8 rounded-3xl text-center text-3xl font-bold text-black animate-pulse shadow-xl max-w-xs relative">
+        <div
+          style={{
+            backgroundColor: colors[colorIndex],
+          }}
+          className="px-6 py-8 rounded-3xl text-center text-3xl font-bold text-black animate-pulse shadow-xl max-w-xs absolute"
+        >
           🎉 You Won! 🎉
           <br />
           Completed in <span className="underline">{formatTime(timer)}</span>
@@ -314,7 +325,7 @@ const Sudoku = () => {
             ✕
           </button>
         </div>
-      )}      
+      )}
     </div>
   );
 };
