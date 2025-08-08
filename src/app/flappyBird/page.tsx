@@ -1,4 +1,4 @@
-6/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { Rotate3DIcon } from "lucide-react";
