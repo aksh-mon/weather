@@ -4,42 +4,41 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Headline from "../compo/headline";
+
 const ROWS = 20;
 const COLS = 20;
-const BLOCK_SIZE = 20; // this is dynamic now
+const BLOCK_SIZE = 20;
 
 const shapes = [
-  [[1, 1, 1, 1]], // I
+  [[1, 1, 1, 1]],
   [
     [1, 1],
     [1, 1],
-  ], // O
+  ],
   [
     [0, 1, 0],
     [1, 1, 1],
-  ], // T
+  ],
   [
     [0, 1, 1],
     [1, 1, 0],
-  ], // S
+  ],
   [
     [1, 1, 0],
     [0, 1, 1],
-  ], // Z
+  ],
   [
     [1, 0, 0],
     [1, 1, 1],
-  ], // J
+  ],
   [
     [0, 0, 1],
     [1, 1, 1],
-  ], // L
+  ],
 ];
 
 const getRandomShape = () => shapes[Math.floor(Math.random() * shapes.length)];
-
-const emptyBoard = () =>
-  Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+const emptyBoard = () => Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 
 const TetrisPage = () => {
   const [board, setBoard] = useState(emptyBoard());
@@ -140,14 +139,30 @@ const TetrisPage = () => {
     };
   }, [shape, position, board, gameOver]);
 
+  const handleMobileControl = (direction: string) => {
+    if (gameOver) return;
+
+    if (direction === "left") {
+      const newPos = { row: position.row, col: position.col - 1 };
+      if (isValidMove(shape, newPos)) setPosition(newPos);
+    } else if (direction === "right") {
+      const newPos = { row: position.row, col: position.col + 1 };
+      if (isValidMove(shape, newPos)) setPosition(newPos);
+    } else if (direction === "down") {
+      drop();
+    } else if (direction === "rotate") {
+      const rotated = rotate(shape);
+      if (isValidMove(rotated, position)) setShape(rotated);
+    }
+  };
+
   const currentBoard = mergeShapeToBoard(shape, position, board);
+
   const startGame = () => {
     setBoard(emptyBoard());
     setShape(getRandomShape());
     setPosition({ row: 0, col: 4 });
     setGameOver(false);
-
-    // restart the interval
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       drop();
@@ -162,7 +177,7 @@ const TetrisPage = () => {
           "linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%)",
       }}
     >
-      <Headline title="MONtet"/>
+      <Headline title="MONtet" />
       <div
         className="grid border-4 border-white"
         style={{
@@ -175,14 +190,20 @@ const TetrisPage = () => {
         {currentBoard.flat().map((cell, i) => (
           <div
             key={i}
-            className={`border border-gray-700 ${
-              cell ? "bg-green-400" : "bg-black"
-            }`}
+            className={`border border-gray-700 ${cell ? "bg-green-400" : "bg-black"}`}
           ></div>
         ))}
       </div>
 
-      <Headline title="tetMON"/>
+      {/* Mobile Controls */}
+      <div className="flex gap-3 mt-6 md:hidden">
+        <button onClick={() => handleMobileControl("left")} className="bg-black text-white px-4 py-2 rounded-lg">⬅️</button>
+        <button onClick={() => handleMobileControl("rotate")} className="bg-black text-white px-4 py-2 rounded-lg">🔄</button>
+        <button onClick={() => handleMobileControl("right")} className="bg-black text-white px-4 py-2 rounded-lg">➡️</button>
+        <button onClick={() => handleMobileControl("down")} className="bg-black text-white px-4 py-2 rounded-lg">⬇️</button>
+      </div>
+
+      <Headline title="tetMON" />
       {gameOver && (
         <div className="absolute bg-white text-black px-6 py-4 rounded-2xl text-center shadow-xl text-2xl animate-pulse space-y-4">
           <div>
