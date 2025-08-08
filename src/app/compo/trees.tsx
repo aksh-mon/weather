@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 // components/GrowTreesDoor.tsx
 'use client';
 
@@ -12,8 +13,8 @@ export default function GrowTreesDoor() {
         onClick={() => setShowMessage(true)}
         className="bg-green-600 text-white text-xl p-3 rounded-r-xl shadow-md hover:bg-green-700 transition"
         aria-label="Open Grow Tree Message"
-      >
-        🌳
+      > 
+        <img src="./tree.svg" alt='tree' width={100} height={100} />
       </button>
 
       {showMessage && (
