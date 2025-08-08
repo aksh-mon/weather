@@ -111,9 +111,13 @@ const TetrisPage = () => {
   };
 
   const clearFullRows = (newBoard: number[][]) => {
-    const filtered = newBoard.filter((row) => row.some((cell) => cell === 0));
-    const cleared = Array(ROWS - filtered.length).fill(Array(COLS).fill(0));
-    setBoard([...cleared, ...filtered]);
+    const rowsToKeep = newBoard.filter((row) => row.some((cell) => cell === 0));
+    const clearedRows = ROWS - rowsToKeep.length;
+    const newRows = Array.from({ length: clearedRows }, () =>
+      Array(COLS).fill(0)
+    );
+    const updatedBoard = [...newRows, ...rowsToKeep];
+    setBoard(updatedBoard);
   };
 
   const move = (dir: "left" | "right" | "down" | "rotate") => {
