@@ -199,10 +199,10 @@ const Sudoku = () => {
 
   return (
     <div
-      className="flex flex-col items-center gap-4 p-4 h-screen justify-center bg- font-mono relative"
+      className="flex flex-col items-center gap-4 p-4  justify-center bg- font-mono relative h-full"
       style={{
         fontFamily: "monospace",
-        backgroundColor: colors[3],
+        backgroundColor: colors[28],
         textShadow: `0 0 10px ${colors[colorIndex]}, 0 0 20px ${colors[colorIndex]}`,
       }}
     >
@@ -302,7 +302,6 @@ const Sudoku = () => {
           <Eraser />
         </button>
       </div>
-
       {isCompleted && showWinMessage && (
         <div className="bg-white px-6 py-8 rounded-3xl text-center text-3xl font-bold text-black animate-pulse shadow-xl max-w-xs relative">
           🎉 You Won! 🎉
@@ -315,8 +314,7 @@ const Sudoku = () => {
             ✕
           </button>
         </div>
-      )}
-      
+      )}      
     </div>
   );
 };

@@ -8,6 +8,8 @@ export default function DinoGame() {
   const [isRunning, setIsRunning] = useState(false);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(true);
+
   const gravity = 0.6;
   const jumpStrength = -12;
   const dino = useRef({
@@ -25,9 +27,27 @@ export default function DinoGame() {
   const dinoImageRef = useRef<HTMLImageElement | null>(null);
   const obstacleImageRef = useRef<HTMLImageElement | null>(null);
 
+  // Detect orientation
+  useEffect(() => {
+    const checkOrientation = () => {
+      const isLandscapeMode =
+        window.matchMedia("(orientation: landscape)").matches;
+      setIsLandscape(isLandscapeMode);
+    };
+
+    checkOrientation();
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", checkOrientation);
+
+    return () => {
+      window.removeEventListener("resize", checkOrientation);
+      window.removeEventListener("orientationchange", checkOrientation);
+    };
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !isLandscape) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -43,8 +63,10 @@ export default function DinoGame() {
     let currentScore = 0;
 
     const resizeCanvas = () => {
-      canvas.width = 800;
-      canvas.height = 300;
+      const width = Math.min(window.innerWidth, 800);
+      const height = Math.min(window.innerHeight, 300);
+      canvas.width = width;
+      canvas.height = height;
       dino.current.y = canvas.height - dino.current.height;
     };
     resizeCanvas();
@@ -92,7 +114,7 @@ export default function DinoGame() {
     const drawScore = () => {
       ctx.fillStyle = "black";
       ctx.font = "20px Arial";
-      ctx.fillText(`Score: ${currentScore}`, 340, 30);
+      ctx.fillText(`Score: ${currentScore}`, canvas.width / 2 - 40, 30);
     };
 
     const update = () => {
@@ -115,14 +137,15 @@ export default function DinoGame() {
       obstacles.current.forEach((ob) => {
         ob.x -= 6;
 
-        // Update score when obstacle passes the dino
         if (!ob.passed && ob.x + ob.width < dino.current.x) {
           ob.passed = true;
           currentScore += 1;
         }
       });
 
-      obstacles.current = obstacles.current.filter((ob) => ob.x + ob.width > 0);
+      obstacles.current = obstacles.current.filter(
+        (ob) => ob.x + ob.width > 0
+      );
     };
 
     const detectCollision = () => {
@@ -178,9 +201,11 @@ export default function DinoGame() {
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isRunning]);
+  }, [isRunning, isLandscape]);
 
   const jump = () => {
+    if (!isLandscape) return;
+
     if (!isRunning && !gameOver) {
       setIsRunning(true);
     } else if (gameOver) {
@@ -201,31 +226,39 @@ export default function DinoGame() {
       }}
       onClick={jump}
     >
+      {!isLandscape && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-90 text-white flex flex-col items-center justify-center px-6 text-center">
+          <p className="text-2xl font-bold mb-4">Please rotate your device</p>
+          <p className="text-lg">This game only works in landscape mode.</p>
+        </div>
+      )}
+
       <h2
         className="text-[32px] px-2 mb-5"
         style={{
           background:
             "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
-          color:"rgba(210, 216, 217, 0.722)"  
+          color: "rgba(210, 216, 217, 0.722)",
         }}
       >
         FISH - MON
       </h2>
+
       <div className="relative">
         <canvas
           ref={canvasRef}
-          className=""
           style={{
             background:
               "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
+            maxWidth: "100%",
           }}
         />
-        {!isRunning && !gameOver && (
+        {!isRunning && !gameOver && isLandscape && (
           <div className="absolute inset-0 flex items-center justify-center text-black text-lg font-bold bg-white bg-opacity-70">
             Click or press Space/↑ to Start & Jump
           </div>
         )}
-        {gameOver && (
+        {gameOver && isLandscape && (
           <div className="absolute inset-0 flex items-center justify-center flex-col text-black text-2xl font-bold bg-blue-300 bg-opacity-90">
             <p>Game Over</p>
             <p className="text-lg mt-2">Score: {score}</p>
