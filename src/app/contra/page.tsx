@@ -110,15 +110,15 @@ const TetrisPage = () => {
     }
   };
 
-  const clearFullRows = (newBoard: number[][]) => {
-    const rowsToKeep = newBoard.filter((row) => row.some((cell) => cell === 0));
-    const clearedRows = ROWS - rowsToKeep.length;
-    const newRows = Array.from({ length: clearedRows }, () =>
-      Array(COLS).fill(0)
-    );
-    const updatedBoard = [...newRows, ...rowsToKeep];
-    setBoard(updatedBoard);
-  };
+  
+
+const clearFullRows = (newBoard: number[][]) => {
+  const updatedBoard = newBoard.filter((row) => row.some((cell) => cell === 0));
+  const clearedRows = newBoard.length - updatedBoard.length;
+  const newRows = Array.from({ length: clearedRows }, () => Array(COLS).fill(0));
+  setBoard([...newRows, ...updatedBoard]);
+};
+
 
   const move = (dir: "left" | "right" | "down" | "rotate") => {
     if (gameOver) return;
