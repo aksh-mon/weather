@@ -4,6 +4,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Headline from "../compo/headline";
+import FlipNumbers from "react-flip-numbers";
 import {
   ArrowBigLeft,
   ArrowBigRight,
@@ -51,6 +52,7 @@ const emptyBoard = () =>
 
 const TetrisPage = () => {
   const [board, setBoard] = useState(emptyBoard());
+  const [score, setScore] = useState(0);
   const [shape, setShape] = useState(getRandomShape());
   const [position, setPosition] = useState({ row: 0, col: 4 });
   const [gameOver, setGameOver] = useState(false);
@@ -118,6 +120,10 @@ const TetrisPage = () => {
 
     // Count how many rows were cleared
     const clearedRows = ROWS - updatedBoard.length;
+    if (clearedRows > 0) {
+      setScore((prev) => prev + clearedRows * 100);
+      
+    }
 
     // Add new empty rows at the top
     const newRows = Array.from({ length: clearedRows }, () =>
@@ -179,6 +185,7 @@ const TetrisPage = () => {
     setShape(getRandomShape());
     setPosition({ row: 0, col: 4 });
     setGameOver(false);
+    setScore(0)
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       drop();
@@ -188,6 +195,22 @@ const TetrisPage = () => {
   useEffect(() => {
     startGame();
   }, []);
+
+  const dropIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startDropFast = () => {
+    if (dropIntervalRef.current) return; // prevent multiple intervals
+    dropIntervalRef.current = setInterval(() => {
+      drop();
+    }, 50); // drop every 50ms while holding
+  };
+
+  const stopDropFast = () => {
+    if (dropIntervalRef.current) {
+      clearInterval(dropIntervalRef.current);
+      dropIntervalRef.current = null;
+    }
+  };
   return (
     <div
       className="w-full h-screen py-5 flex flex-col items-center justify-center relative"
@@ -197,12 +220,25 @@ const TetrisPage = () => {
       }}
     >
       <Headline title="treeMON" />
-      <button
-        onClick={startGame}
-        className="p-2 bg-transparent text-white flex justify-center items-center"
-      >
-        Play <Play color="#3296" />
-      </button>
+      <div className="max-w-[350px] w-full flex items-center justify-between">
+        <button
+          onClick={startGame}
+          className="p-2 bg-transparent text-white flex justify-center items-center"
+        >
+          Play <Play color="#3296" />
+        </button>
+        <div className="flex justify-center items-center">
+          <p className="text-white">Score:</p>
+          <FlipNumbers
+            height={24}
+            width={18}
+            color="#3296"
+            background="transparent"
+            play
+            numbers={String(score)}
+          />
+        </div>
+      </div>
 
       <div
         className="grid border-4 border-white"
@@ -239,7 +275,11 @@ const TetrisPage = () => {
         </button>
 
         <button
-          onClick={() => move("down")}
+          onMouseDown={startDropFast}
+          onMouseUp={stopDropFast}
+          onMouseLeave={stopDropFast}
+          onTouchStart={startDropFast}
+          onTouchEnd={stopDropFast}
           className="bg-gray-700 hover:bg-blue-300 text-black px-4 py-2 rounded-lg"
         >
           <ArrowBigDownDash color="#fff" />
@@ -255,12 +295,13 @@ const TetrisPage = () => {
       <Headline title="tetris" />
 
       {gameOver && (
-        <div className="absolute bg-white text-black px-6 py-4 rounded-2xl text-center shadow-xl text-2xl animate-pulse space-y-4">
+        <div className="absolute bg-white text-black px-6 py-4 rounded-2xl text-center shadow-xl text-2xl  animate-pulse space-y-4 hover:animate-none hover:transition-all [animation-delay:3s]">
           <div>
             🎮 Game Over!
             <br />
             Wanna try again?
           </div>
+          <p>Score:{score}</p>
           <button
             onClick={startGame}
             className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"

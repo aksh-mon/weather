@@ -3,7 +3,9 @@ import Sudoku from "../app/sudoku/page";
 import Footnote from "../app/footnote/page";
 import FlappyBirdGame from "./flappyBird/page";
 import Contra from "./contra/page";
+import Snake from "./snake/page"
 import Tree from "./compo/trees"
+
 export default function Home() {
   return (
     <div className="bg-amber-200 border-[.5rem] border-dashed border-emerald-300">
@@ -12,6 +14,7 @@ export default function Home() {
       <Sudoku />
       <FlappyBirdGame />
       <Contra />
+      <Snake/>
       <Footnote />
     </div>
   );
