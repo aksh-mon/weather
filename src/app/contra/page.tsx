@@ -94,8 +94,8 @@ const TetrisPage = () => {
     if (isValidMove(shape, newPos)) {
       setPosition(newPos);
     } else {
-      const newBoard = mergeShapeToBoard(shape, position, board);
-      clearFullRows(newBoard);
+      let newBoard = mergeShapeToBoard(shape, position, board);
+      newBoard = clearFullRows(newBoard); // clear rows here
       const newShape = getRandomShape();
       const startPos = { row: 0, col: 4 };
 
@@ -105,20 +105,27 @@ const TetrisPage = () => {
       } else {
         setShape(newShape);
         setPosition(startPos);
-        setBoard(newBoard);
+        setBoard(newBoard); // now we set the already cleared board
       }
     }
   };
 
-  
+  const clearFullRows = (newBoard: number[][]) => {
+    // Keep only rows that are NOT completely filled
+    const updatedBoard = newBoard.filter((row) =>
+      row.some((cell) => cell === 0)
+    );
 
-const clearFullRows = (newBoard: number[][]) => {
-  const updatedBoard = newBoard.filter((row) => row.some((cell) => cell === 0));
-  const clearedRows = newBoard.length - updatedBoard.length;
-  const newRows = Array.from({ length: clearedRows }, () => Array(COLS).fill(0));
-  setBoard([...newRows, ...updatedBoard]);
-};
+    // Count how many rows were cleared
+    const clearedRows = ROWS - updatedBoard.length;
 
+    // Add new empty rows at the top
+    const newRows = Array.from({ length: clearedRows }, () =>
+      Array(COLS).fill(0)
+    );
+
+    return [...newRows, ...updatedBoard];
+  };
 
   const move = (dir: "left" | "right" | "down" | "rotate") => {
     if (gameOver) return;

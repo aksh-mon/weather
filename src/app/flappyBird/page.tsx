@@ -219,43 +219,13 @@ export default function DinoGame() {
 
   return (
     <div
-      className="w-full h-full min-h-[50vh] flex items-center justify-center flex-col"
+      className="w-full h-full min-h-[100vh] flex items-center justify-center flex-col"
       style={{
         background:
           "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
       }}
       onClick={jump}
     >
-      {!isLandscape && (
-        <div className="relative inset-0 w-full h-[100%] mt-[50%] text-white flex flex-col items-center justify-center px-6 text-center">
-          <p
-            className="text-2xl font-bold px-5"
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
-              color: "rgba(210, 216, 217, 0.722)",
-            }}
-          >
-            Please rotate <span className="ml-[45px]">your device</span>
-          </p>
-          <div className="p-2 rounded-full  bg-[linear-gradient(90deg,rgba(18,179,204,1)_28%,rgb(227,227,230)_50%,rgba(0,68,255,0.83)_96%)] inline-flex items-center justify-center">
-            <Rotate3DIcon size={38} color="rgba(18,179,204,1)" className="animate-spin" />
-          </div>
-
-          <p
-            className="text-xl"
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
-              color: "rgba(210, 216, 217, 0.722)",
-            }}
-          >
-            This game only works{" "}
-            <span className="ml-[58px]">in landscape mode.</span>
-          </p>
-        </div>
-      )}
-
       <h2
         className="text-[32px] px-2 mb-5"
         style={{
@@ -266,6 +236,34 @@ export default function DinoGame() {
       >
         FISH - MON
       </h2>
+      {!isLandscape && (
+        <div className="relative inset-0 w-full h-[100%] my-[25%] text-white flex flex-col items-center justify-center px-6 text-center gap-5">
+          <p
+            className="text-2xl font-bold px-5 text-center"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
+              color: "rgba(210, 216, 217, 0.722)",
+            }}
+          >
+            Please <span className="ml-5">rotate</span> <br /> your <span className="ml-9">device</span>
+          </p>
+          <div className="p-2 rounded-full  bg-[linear-gradient(90deg,rgba(18,179,204,1)_28%,rgb(227,227,230)_50%,rgba(0,68,255,0.83)_96%)] inline-flex items-center justify-center">
+            <Rotate3DIcon size={38} className="animate-spin text-sky-200" />
+          </div>
+
+          <p
+            className="text-xl"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(18,179,204,1) 28%, rgb(227,227,230) 50%, rgba(0,68,255,0.83) 96%)",
+              color: "rgba(210, 216, 217, 0.722)",
+            }}
+          >
+            This game works in <br /> landscape mode only.
+          </p>
+        </div>
+      )}
 
       <div className="relative">
         <canvas
