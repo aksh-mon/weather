@@ -310,7 +310,7 @@ export default function SnakePage() {
                 <ChevronUp />
               </button>
             </div>
-            <div className="flex justify-between w-[250px]">
+            <div className="flex justify-between w-[200px]">
               <button
                 onTouchStart={() => handleTouchDir({ x: -1, y: 0 })}
                 onMouseDown={() => handleTouchDir({ x: -1, y: 0 })}
