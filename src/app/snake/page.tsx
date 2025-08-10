@@ -248,8 +248,8 @@ export default function SnakePage() {
             )}
 
             {gameOver && (
-              <div className="flex gap-2 items-center">
-                <div className="text-red-500 font-black text-2xl">
+              <div className="flex gap-2 items-center sm:flex-col">
+                <div className="text-red-500 font-black text-2xl text-nowrap">
                   Game Over
                 </div>
                 <button
@@ -305,23 +305,23 @@ export default function SnakePage() {
               <button
                 onTouchStart={() => handleTouchDir({ x: 0, y: -1 })}
                 onMouseDown={() => handleTouchDir({ x: 0, y: -1 })}
-                className="px-4 py-2 bg-gray-700 rounded text-white"
+                className="px-4 py-2 bg-gray-700 rounded text-white hover:bg-blue-400 hover:text-black"
               >
                 <ChevronUp />
               </button>
             </div>
-            <div className="flex justify-between w-[300px]">
+            <div className="flex justify-between w-[250px]">
               <button
                 onTouchStart={() => handleTouchDir({ x: -1, y: 0 })}
                 onMouseDown={() => handleTouchDir({ x: -1, y: 0 })}
-                className="px-4 py-2 bg-gray-700 rounded text-white"
+                className="px-4 py-2 bg-gray-700 rounded text-white hover:bg-blue-400 hover:text-black"
               >
                 <ChevronLeft />
               </button>
               <button
                 onTouchStart={() => handleTouchDir({ x: 1, y: 0 })}
                 onMouseDown={() => handleTouchDir({ x: 1, y: 0 })}
-                className="px-4 py-2 bg-gray-700 rounded text-white"
+                className="px-4 py-2 bg-gray-700 rounded text-white hover:bg-blue-400 hover:text-black"
               >
                 <ChevronRight />
               </button>
@@ -330,7 +330,7 @@ export default function SnakePage() {
               <button
                 onTouchStart={() => handleTouchDir({ x: 0, y: 1 })}
                 onMouseDown={() => handleTouchDir({ x: 0, y: 1 })}
-                className="px-4 py-2 bg-gray-700 rounded text-white"
+                className="px-4 py-2 bg-gray-700 rounded text-white hover:bg-blue-400 hover:text-black"
               >
                 <ChevronDown />
               </button>
