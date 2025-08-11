@@ -13,7 +13,8 @@
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-flip-numbers": "^3.0.9"
+    "react-flip-numbers": "^3.0.9",
+    "zustand": "^5.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

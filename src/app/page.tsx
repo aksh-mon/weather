@@ -5,6 +5,7 @@ import FlappyBirdGame from "./flappyBird/page";
 import Contra from "./contra/page";
 import Snake from "./snake/page"
 import Tree from "./compo/trees"
+import Ludo from "./ludo/page";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <FlappyBirdGame />
       <Contra />
       <Snake/>
+      <Ludo/>
       <Footnote />
     </div>
   );

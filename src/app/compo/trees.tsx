@@ -8,7 +8,7 @@ export default function GrowTreesDoor() {
   const [showMessage, setShowMessage] = useState(false);
 
   return (
-    <div className="md:fixed md:left-2 md:top-1/2 md:-translate-y-1/2 md:z-50 sm:fixed sm:right-2 sm:z-auto">
+    <div className="md:fixed md:left-2 md:top-1/2 md:-translate-y-1/2 md:z-50 sm:relative">
       <button
         onClick={() => setShowMessage(true)}
         className=" text-white text-xl p-3 rounded-r-xl shadow-md hover:bg-green-700 transition"

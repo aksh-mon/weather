@@ -184,7 +184,7 @@ export default function SnakePage() {
     >
       <div className="max-w-2xl w-full">
         <div className="flex items-center justify-center mb-4 ">
-            <Headline title="SNAKEMON"/>
+          <Headline title="SNAKEMON" />
         </div>
 
         <div
@@ -194,7 +194,7 @@ export default function SnakePage() {
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
           }}
-          className="p-4 rounded-lg shadow-xl flex flex-col items-center"
+          className="p-4 rounded-lg shadow-xl flex flex-col items-center max-w-screen"
         >
           {/* controls/top */}
           <div className="w-full flex justify-between mb-3">
@@ -209,7 +209,7 @@ export default function SnakePage() {
             <div className="text-white">
               <div className="flex gap-1">
                 <p>Score:</p>
-                <p className="font-black">
+                <div className="font-black">
                   <FlipNumbers
                     height={24}
                     width={18}
@@ -218,7 +218,7 @@ export default function SnakePage() {
                     play
                     numbers={String(score)}
                   />
-                </p>
+                </div>
               </div>
               <div className="text-xl text-gray-200">
                 High:{" "}
@@ -339,9 +339,10 @@ export default function SnakePage() {
 
           {/* desktop controls */}
           <div className="hidden sm:flex gap-2 mt-4">
-            <div className="text-sm text-gray-200">Use arrow keys or WASD</div>
+            <div className="text-sm text-gray-200 font-extrabold">Use arrow keys or WASD</div>
           </div>
         </div>
+
       </div>
     </div>
   );
