@@ -63,6 +63,7 @@ export default function RootLayout({
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
         <link rel="canonical" href="https://weather-mon.netlify.app" />
+        <meta name="google-site-verification" content="m_kj2_ts7NEAGgo6GjUSv2a63FodqLbnhTFrHH4UQXs" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
