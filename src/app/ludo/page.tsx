@@ -388,19 +388,19 @@ export default function LudoBoard() {
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-screen p-4"
+      className="flex flex-col items-center justify-center h-screen p-4 "
       style={{
         background:
           " linear-gradient(90deg,rgba(217, 197, 20, 0.48) 9%, rgba(217, 197, 20, 1) 23%, rgba(20, 98, 217, 1) 44%, rgba(44, 207, 35, 1) 62%, rgba(224, 13, 13, 0.74) 84%)",
       }}
     >
       <div
-        className="grid"
-        style={{
-          gridTemplateRows: `repeat(${size}, 2rem)`,
-          gridTemplateColumns: `repeat(${size}, 2rem)`,
-          boxShadow: "0 0 20px rgba(0,0,0,0.2)",
-        }}
+        className={`grid `}
+         style={{
+          gridTemplateRows: `repeat(${size}, 1rem)`,
+           gridTemplateColumns: `repeat(${size}, 1rem)`,
+           boxShadow: "0 0 20px rgba(0,0,0,0.2)",
+         }}
       >
         {cells}
       </div>

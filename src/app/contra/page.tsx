@@ -213,7 +213,7 @@ const TetrisPage = () => {
   };
   return (
     <div
-      className="w-full h-screen py-5 flex flex-col items-center justify-center relative"
+      className="w-full h-screen py-5 flex flex-col items-center justify-center"
       style={{
         background:
           "linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%)",
