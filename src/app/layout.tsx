@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: "Weather-Mon",
     images: [
       {
-        url: "/tree.svg", // replace with your actual image path
+        url: "/tree.svg", 
         width: 1200,
         height: 630,
         alt: "Weather-Mon - Live Weather App",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     title: "Weather-Mon | Live Weather App",
     description:
       "Check live weather, forecasts, and temperature details for any city with Weather-Mon.",
-    images: ["https://weather-mon.netlify.app/og-image.jpg"], // replace with your actual image path
+    images: ["https://weather-mon.netlify.app/og-image.jpg"], 
   },
 };
 

@@ -89,7 +89,6 @@ export default function SnakePage() {
     if (d.x + next.x === 0 && d.y + next.y === 0) return;
     setDir(next);
   }
-
   function step() {
     const current = snakeRef.current;
     const d = dirRef.current;
@@ -98,13 +97,13 @@ export default function SnakePage() {
     const head = current[0];
     const newHead = { x: head.x + d.x, y: head.y + d.y };
 
-    // wall collision -> wrap around OR game over. We'll make it wrap.
+    // Wrap-around logic
     if (newHead.x < 0) newHead.x = COLS - 1;
     if (newHead.x >= COLS) newHead.x = 0;
     if (newHead.y < 0) newHead.y = ROWS - 1;
     if (newHead.y >= ROWS) newHead.y = 0;
 
-    // self collision
+    // Self collision → game over
     if (current.some((s) => s.x === newHead.x && s.y === newHead.y)) {
       endGame();
       return;
@@ -118,26 +117,44 @@ export default function SnakePage() {
 
     if (ate) {
       setScore((s) => s + 10);
-      // increase speed slightly every few points
       setSpeed((sp) => Math.max(50, Math.round(sp * 0.95)));
 
-      // place new food not on snake
-      setFood(randomFood(newSnake, ROWS, COLS));
+      // Get new food
+      const newFoodPos = randomFood(newSnake, ROWS, COLS);
+      if (newFoodPos.x === -1) {
+        // No space left → win
+        setScore((s) => s + 10);
+        setHighScore((h) => Math.max(h, score + 10));
+        setIsPlaying(false);
+        alert("🎉 You won! The snake filled the board!");
+        return;
+      }
+      setFood(newFoodPos);
 
-      // update highscore
+      // Update high score
       setHighScore((h) => Math.max(h, score + 10));
     }
   }
 
-  function randomFood(s: Pos[], rows: number, cols: number) {
-    const occupied = new Set(s.map((p) => `${p.x},${p.y}`));
+  function randomFood(snakeBody: Pos[], rows: number, cols: number): Pos {
+    const occupied = new Set(snakeBody.map((p) => `${p.x},${p.y}`));
     const spots: Pos[] = [];
+
+    // Find all empty cells
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
-        if (!occupied.has(`${x},${y}`)) spots.push({ x, y });
+        if (!occupied.has(`${x},${y}`)) {
+          spots.push({ x, y });
+        }
       }
     }
-    if (spots.length === 0) return { x: 0, y: 0 };
+
+    // If there are no spots left → snake filled the board
+    if (spots.length === 0) {
+      return { x: -1, y: -1 }; // invalid food position
+    }
+
+    // Pick a random empty cell
     return spots[Math.floor(Math.random() * spots.length)];
   }
 
@@ -339,10 +356,11 @@ export default function SnakePage() {
 
           {/* desktop controls */}
           <div className="hidden sm:flex gap-2 mt-4">
-            <div className="text-sm text-gray-200 font-extrabold">Use arrow keys or WASD</div>
+            <div className="text-sm text-gray-200 font-extrabold">
+              Use arrow keys or WASD
+            </div>
           </div>
         </div>
-
       </div>
     </div>
   );
