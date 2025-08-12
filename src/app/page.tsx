@@ -152,7 +152,7 @@ export default function Home() {
                 color="#ccc "
                 className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
               />{" "}
-              <p>FISHMON </p>
+              <p>@FISHMON </p>
             </button>
             
           </div>
