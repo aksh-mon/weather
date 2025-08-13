@@ -76,7 +76,7 @@ export default function Home() {
                 animation: "sway 3s ease-in-out infinite",
               }}
             >
-              <svg width="800px" height="800px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"  className="si-glyph si-glyph-tree">
+              <svg width="80px" height="80px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"  className="si-glyph si-glyph-tree">
                 <title>929</title>
                 <defs>
                 </defs>
