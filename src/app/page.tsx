@@ -65,9 +65,6 @@ export default function Home() {
         <div className="relative top-[10vh]">
           <div
             className="flex flex-col items-center justify-center min-h-[80vh] bg-white text-black p-6"
-            style={{
-              fontFamily: "monospace",
-            }}
           >
             {/* Moving Tree */}
             <div
@@ -108,7 +105,7 @@ export default function Home() {
             </div>
 
             {/* Error Message */}
-            <h1 className={"text-2xl font-bold mt-3 "}>Page Not Available</h1>
+            <h1 className={"text-2xl font-bold mt-3  "}>Page Not Available</h1>
             <p className="text-gray-400 text-center mt-2">
               The page you requested is not available. Please try again later.
             </p>
