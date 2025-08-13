@@ -108,7 +108,7 @@ export default function Home() {
             </div>
 
             {/* Error Message */}
-            <h1 className="text-2xl font-bold mt-6">Page Not Available</h1>
+            <h1 className="text-2xl font-bold mt-3">Page Not Available</h1>
             <p className="text-gray-400 text-center mt-2">
               The page you requested is not available. Please try again later.
             </p>
