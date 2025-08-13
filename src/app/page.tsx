@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState } from "react";
@@ -9,7 +10,7 @@ import Contra from "./contra/page";
 import Snake from "./snake/page";
 import Ludo from "./ludo/page";
 import Tree from "../app/compo/trees";
-import { Menu, Shell, X } from "lucide-react";
+import { CircleQuestionMark, Menu, Shell, X } from "lucide-react";
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -35,9 +36,9 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-amber-200 border-[.5rem] border-dashed border-emerald-300 overflow-hidden relative z-[1000]">
+    <div className="bg-amber-200 border-[.5rem] border-dashed border-emerald-300 overflow-hidden relative z-[1000] font-mono ">
       {/* HEADER */}
-      <header className="bg-[#fff] w-[99%] mx-auto  h-[10vh] border-b-2 border-b-cyan-700 fixed left-0 right-0 top-0 z-[999] flex justify-center items-center ">
+      <header className="bg-[#fff] w-[99%] mx-auto  h-[10vh] border-b-2 border-b-cyan-700 fixed left-0 right-0 top-0 z-[999] flex justify-center items-center">
         <button onClick={() => setIsSidebarOpen(true)}>
           <Menu className=" w-[2rem] h-[2rem]  ml-3" />
         </button>
@@ -58,108 +59,255 @@ export default function Home() {
       </header>
 
       {/* SIDEBAR */}
-        <div
-          className={`min-h-[90vh] w-[20vw] absolute top-[9vh] z-[99] transform transition-transform duration-1000 ease-in-out  ${
-            isSidebarOpen ? "translate-x-1.5" : "-translate-x-[300%]"
-          }`}
-        >
-          <div className="flex flex-col items-start justify-between gap-5">
-            <button
-              onClick={() => setIsSidebarOpen(false)}
-              className="self-end m-2 bg-white h-fit w-fit rounded-full "
-            >
-              <X className="w-6 h-6" />
-            </button>
-
-            <button
-              className ="text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[15px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
-              onClick={() => {
-                setSelectedGame("app");
-                setIsSidebarOpen(false);
-              }}
-            >
-              <Shell
-                color="#ccc"
-                className="mr-2 animate-spin stroke-amber-700 group-hover:stroke-black"
-              />{" "}
-              <p> HOME </p>
-            </button>
-            <button
-
-              className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[30px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
-              onClick={() => {
-                setSelectedGame("ludo");
-                setIsSidebarOpen(false);
-              }}
-            >
-              <Shell
-                color="#ccc"
-                className="mr-2 animate-spin stroke-amber-700 group-hover:stroke-black"
-              />{" "}
-              <p> LUDO </p>
-            </button>
-            <button
-
-              className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[45px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
-              onClick={() => {
-                setSelectedGame("snake");
-                setIsSidebarOpen(false);
-              }}
-            >
-              <Shell
-                color="#ccc"
-                className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
-              />{" "}
-              <p> SNAKE </p>
-            </button>
-            <button
-
-              className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[60px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
-              onClick={() => {
-                setSelectedGame("sudoku");
-                setIsSidebarOpen(false);
-              }}
-            >
-              <Shell
-                color="#ccc"
-                className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
-              />{" "}
-              <p> SUDOKU </p>
-            </button>
-             <button
-
-              className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[75px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
-              onClick={() => {
-                setSelectedGame("contra");
-                setIsSidebarOpen(false);
-              }}
-            >
-              <Shell
-                color="#ccc"
-                className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
-              />{" "}
-              <p> TETRIS </p>
-            </button>
-            <button
-
-              className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[90px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white active:bg-white cursor-pointer "
-              onClick={() => {
-                setSelectedGame("flappy");
-                setIsSidebarOpen(false);
-              }}
-            >
-              <Shell
-                color="#ccc "
-                className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
-              />{" "}
-              <p>@FISHMON </p>
-            </button>
-            
-          </div>
-        </div>
 
       {/* PAGE CONTENT */}
-      <div className="bg-white h-full w-full pt-10">{renderGame()}</div>
+      <div className="bg-white h-[90vh] w-full">
+        <div className="relative top-[10vh]">
+          <div
+            className="flex flex-col items-center justify-center min-h-[80vh] bg-white text-black p-6"
+            style={{
+              fontFamily: "monospace",
+            }}
+          >
+            {/* Moving Tree */}
+            <div
+              className="relative"
+              style={{
+                animation: "sway 3s ease-in-out infinite",
+              }}
+            >
+              <img
+                style={{
+                  borderTopLeftRadius:'100rem',
+                  borderTopRightRadius:'100rem'
+                }}
+                src={
+                  "https://images.unsplash.com/photo-1545220406-9464b49eb86e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                }
+                alt="error"
+                width={80}
+                height={50}
+              />
+            </div>
+
+            {/* Error Message */}
+            <h1 className="text-2xl font-bold mt-6">Page Not Available</h1>
+            <p className="text-gray-400 text-center mt-2">
+              The page you requested is not available. Please try again later.
+            </p>
+
+            {/* Neon Button */}
+            <button
+              className="mt-6 px-6 py-3 rounded-lg text-white font-bold text-lg transition-all duration-500"
+              style={{
+                backgroundColor: "#ccc",
+                boxShadow: "0 0 20px #ccc, 0 0 40px #ccc",
+                animation: "glow 1.5s infinite alternate",
+              }}
+              onClick={() => alert("Notification Sent!")}
+            >
+              Send Notification
+            </button>
+
+            {/* Inline Keyframes */}
+            <style jsx>{`
+              @keyframes sway {
+                0% {
+                  transform: rotate(0deg);
+                }
+                50% {
+                  transform: rotate(3deg);
+                }
+                100% {
+                  transform: rotate(0deg);
+                }
+              }
+              @keyframes glow {
+                from {
+                  box-shadow: 0 0 10px #000, 0 0 20px #c3c3c3;
+                }
+                to {
+                  box-shadow: 0 0 20px #000, 0 0 40px #c2c2c2;
+                }
+              }
+            `}</style>
+          </div>
+        </div>
+      </div>
+      <div
+        className={` h-[81vh] min-h-[81vh] w-[30vw] min-w-[50vw] absolute top-[9vh] z-[99] transform transition-transform duration-1000 ease-in-out  ${
+          isSidebarOpen ? "translate-x-1.5" : "-translate-x-[300%] "
+        }`}
+      >
+        <div
+          style={{ scrollbarWidth: "none" }}
+          className="flex flex-col items-start justify-start gap-5 h-[81vh] border overflow-scroll"
+        >
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="self-end m-2 bg-white h-fit w-fit rounded-full "
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          <button
+            className="text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[15px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("app");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> HOME </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[30px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("ludo");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> LUDO </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[45px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("snake");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> SNAKE </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[60px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("sudoku");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> SUDOKU </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[75px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("contra");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> TETRIS </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[90px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white active:bg-white cursor-pointer "
+            onClick={() => {
+              setSelectedGame("flappy");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc "
+              className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p>@FISHMON </p>
+          </button>
+          <button
+            className="text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[15px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("app");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> HOME </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[30px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("ludo");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> LUDO </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[45px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("snake");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> SNAKE </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[60px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("sudoku");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> SUDOKU </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[75px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white  cursor-pointer "
+            onClick={() => {
+              setSelectedGame("contra");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc"
+              className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p> TETRIS </p>
+          </button>
+          <button
+            className=" text-xl bg-transparent border w-fit h-[6vh] px-5 text-left p-2 flex items-center ml-[90px] rounded-3xl  hover:border-red-200 hover:text-black hover:[text-shadow:_2px_2px_4px_rgba(0,0,0,0.5)]  text-[#ccc] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.4)] hover:border-[5px] hover:bg-white active:bg-white cursor-pointer "
+            onClick={() => {
+              setSelectedGame("flappy");
+              setIsSidebarOpen(false);
+            }}
+          >
+            <Shell
+              color="#ccc "
+              className="mr-2 animate-spin  stroke-amber-700 group-hover:stroke-black"
+            />{" "}
+            <p>@FISHMON </p>
+          </button>
+        </div>
+      </div>
       <Tree />
       <Footnote />
     </div>
