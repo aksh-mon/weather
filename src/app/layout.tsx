@@ -1,5 +1,4 @@
-
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Nabla } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,6 +11,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const nabla = Nabla({
+  variable: "--font-nabla",
+  subsets: ["latin"],
+  weight: "400", // or the weight you want
+});
 
 export default function RootLayout({
   children,
@@ -27,7 +31,7 @@ export default function RootLayout({
         <meta name="google-site-verification" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable}  antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${nabla.variable} antialiased`}
       >
         {children}
       </body>
