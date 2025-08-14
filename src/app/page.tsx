@@ -116,7 +116,8 @@ export default function Home() {
               showCursor={true}
               cursorCharacter="|" 
               variableSpeed={undefined} 
-              onSentenceComplete={undefined}            
+              onSentenceComplete={undefined}   
+              className="text-black"         
               />
             <p className="text-gray-400 text-center mt-1">
               The page you requested is not available. Please try again later.
