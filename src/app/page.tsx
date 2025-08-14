@@ -106,11 +106,7 @@ export default function Home() {
             </div>
 
             {/* Error Message */}
-<<<<<<< HEAD
             <h1 className='mt-[-5%] text-2xl text-black' style={{ fontFamily: 'Nabla' }}>404</h1>
-=======
-            <h1 className='mt-[-15%] text-2xl text-black' style={{fontFamily: 'Nabla'}}>404</h1>
->>>>>>> 86ee08bc957c568888f4f862cfa8c8db09382883
             <h1 className={"text-2xl font-bold mt-1 "}>Page Not Available</h1>
             <p>typewriter</p>
             <Typewriter
