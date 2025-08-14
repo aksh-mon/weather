@@ -40,7 +40,7 @@ export default function Home() {
       {/* HEADER */}
       <header className="bg-[#fff] w-[99%] mx-auto  h-[10vh] border-b-2 border-b-cyan-700 fixed left-0 right-0 top-0 z-[999] flex justify-center items-center">
         <button onClick={() => setIsSidebarOpen(true)}>
-          <Menu className=" w-[2rem] h-[2rem]  ml-3 bg-black text-black" color="black"/>
+          <Menu className=" w-[2rem] h-[2rem]  ml-3 text-gray-700" />
         </button>
         <div className="flex items-center w-full justify-center">
           <div className="bg-green-300 w-[3rem] md:w-[5rem] h-[1rem]  border-s-[40px] border-s-amber-700 rounded-s-full"></div>
