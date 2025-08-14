@@ -108,7 +108,6 @@ export default function Home() {
             {/* Error Message */}
             <h1 className='mt-[-5%] text-2xl text-black' style={{ fontFamily: 'Nabla' }}>404</h1>
             <h1 className={"text-2xl font-bold mt-1 "}>Page Not Available</h1>
-            <p>typewriter</p>
             <Typewriter
               text={[
                 "working on our website ⛔",
