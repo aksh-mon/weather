@@ -11,6 +11,7 @@ import Snake from "./snake/page";
 import Ludo from "./ludo/page";
 import Tree from "../app/compo/trees";
 import { CircleQuestionMark, Menu, Shell, X } from "lucide-react";
+import Typewriter from "../app/compo/typewritwertext";
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -105,8 +106,18 @@ export default function Home() {
             </div>
 
             {/* Error Message */}
-            <h1 className='mt-[-5%] text-2xl text-black' style={{fontFamily: 'Nabla'}}>404</h1>
+            <h1 className='mt-[-5%] text-2xl text-black' style={{ fontFamily: 'Nabla' }}>404</h1>
             <h1 className={"text-2xl font-bold mt-1 "}>Page Not Available</h1>
+            <p>typewriter</p>
+            <Typewriter
+              text={["Text typing effect", "for your websites", "Happy coding!"]}
+              typingSpeed={75}
+              pauseDuration={1500}
+              showCursor={true}
+              cursorCharacter="|" 
+              variableSpeed={undefined} 
+              onSentenceComplete={undefined}            
+              />
             <p className="text-gray-400 text-center mt-1">
               The page you requested is not available. Please try again later.
             </p>
