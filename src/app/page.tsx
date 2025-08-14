@@ -41,7 +41,7 @@ export default function Home() {
       {/* HEADER */}
       <header className="bg-[#fff] w-[99%] mx-auto  h-[10vh] border-b-2 border-b-cyan-700 fixed left-0 right-0 top-0 z-[999] flex justify-center items-center">
         <button onClick={() => setIsSidebarOpen(true)}>
-          <Menu className=" w-[2rem] h-[2rem]  ml-3" />
+          <Menu className=" w-[2rem] h-[2rem]  ml-3 text-gray-700" />
         </button>
         <div className="flex items-center w-full justify-center">
           <div className="bg-green-300 w-[3rem] md:w-[5rem] h-[1rem]  border-s-[40px] border-s-amber-700 rounded-s-full"></div>
@@ -106,7 +106,11 @@ export default function Home() {
             </div>
 
             {/* Error Message */}
+<<<<<<< HEAD
             <h1 className='mt-[-5%] text-2xl text-black' style={{ fontFamily: 'Nabla' }}>404</h1>
+=======
+            <h1 className='mt-[-15%] text-2xl text-black' style={{fontFamily: 'Nabla'}}>404</h1>
+>>>>>>> 86ee08bc957c568888f4f862cfa8c8db09382883
             <h1 className={"text-2xl font-bold mt-1 "}>Page Not Available</h1>
             <p>typewriter</p>
             <Typewriter
