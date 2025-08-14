@@ -110,15 +110,18 @@ export default function Home() {
             <h1 className={"text-2xl font-bold mt-1 "}>Page Not Available</h1>
             <p>typewriter</p>
             <Typewriter
-              text={["Text typing effect", "for your websites", "Happy coding!"]}
+              text={[
+                "working on our website ⛔",
+                "site under construction 🛰️",
+                "happy visiting 🫡"
+              ]}
               typingSpeed={75}
               pauseDuration={1500}
               showCursor={true}
-              cursorCharacter="|" 
-              variableSpeed={undefined} 
-              onSentenceComplete={undefined}   
-              className="text-black"         
-              />
+              cursorCharacter="|"
+              variableSpeed={undefined}
+              onSentenceComplete={undefined}
+            />
             <p className="text-gray-400 text-center mt-1">
               The page you requested is not available. Please try again later.
             </p>
