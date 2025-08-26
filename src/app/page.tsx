@@ -8,7 +8,8 @@ import FlappyBirdGame from "./flappyBird/page";
 import Contra from "./contra/page";
 import Snake from "./snake/page";
 import Ludo from "./ludo/page";
-import Cube from "./cube/page"
+import Cube from "./cube/page";
+import Car from "./car/page";
 
 import Header from "./compo/header";
 import Toggle from "./compo/toggle";
@@ -36,6 +37,8 @@ export default function Home() {
         return <Contra />;
       case "cube":
         return <Cube/>  
+      case "car":
+        return <Car/>  
       case "app":
       default:
         return <App />;

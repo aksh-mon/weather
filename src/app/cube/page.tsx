@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
@@ -28,14 +29,16 @@ export default function CubePage() {
     );
     mountRef.current.appendChild(renderer.domElement);
 
-    // 🔹 Function to create a texture with text
-    function createTextTexture(text: string) {
+    // 🔹 Function to create a texture with text + background color
+    function createTextTexture(text: string, bgColor: string) {
       const canvas = document.createElement("canvas");
       canvas.width = 256;
       canvas.height = 256;
       const ctx = canvas.getContext("2d")!;
-      ctx.fillStyle = "black";
+      // Background color
+      ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Text
       ctx.fillStyle = "white";
       ctx.font = "bold 40px Arial";
       ctx.textAlign = "center";
@@ -44,12 +47,11 @@ export default function CubePage() {
       return new THREE.CanvasTexture(canvas);
     }
 
-    // 🔹 Create 6 materials with "Akshay"
-    const materials = Array(6)
-      .fill(null)
-      .map(
-        () => new THREE.MeshBasicMaterial({ map: createTextTexture("Akshay") })
-      );
+    // 🔹 Create 6 materials with "Akshay" and different colors
+    const colors = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c"];
+    const materials = colors.map(
+      (color) => new THREE.MeshBasicMaterial({ map: createTextTexture("Akshay", color) })
+    );
 
     // Cube
     const cube = new THREE.Mesh(new THREE.BoxGeometry(), materials);
