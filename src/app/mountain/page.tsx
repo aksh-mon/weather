@@ -1,155 +1,158 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import confetti from "canvas-confetti";
 
-export default function StarGame() {
+export default function ClimbGame() {
   const mountRef = useRef<HTMLDivElement | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [stage, setStage] = useState<number>(
+    parseInt(localStorage.getItem("climb_stage") || "1")
+  );
+  const [playerName, setPlayerName] = useState<string>(
+    localStorage.getItem("climb_name") || "Player"
+  );
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [score, setScore] = useState(0);
-  const [playerName, setPlayerName] = useState("");
-  const [nameInput, setNameInput] = useState("");
+  // Stage definitions
+  const stages = [
+    { id: 1, steps: 300, name: "Rocky Start", color: "#6b4226" },
+    { id: 2, steps: 400, name: "Icy Heights", color: "#88ccee" },
+    { id: 3, steps: 500, name: "Windy Edge", color: "#99cc55" },
+    { id: 4, steps: 600, name: "Frozen Cliffs", color: "#ccccff" },
+    { id: 5, steps: 700, name: "Storm Peak", color: "#555577" },
+    { id: 6, steps: 800, name: "Cloud Summit", color: "#dddddd" },
+    { id: 7, steps: 1000, name: "The Final Ascent", color: "#ffcc88" },
+  ];
 
-  // Handle start game
-  const handleStart = () => {
-    if (nameInput.trim() !== "") {
-      setPlayerName(nameInput.trim());
-      setIsPlaying(true);
-    }
-  };
-
+  // Audio
   useEffect(() => {
-    if (!mountRef.current || !isPlaying) return;
+    const audio = new Audio(
+      "https://cdn.pixabay.com/download/audio/2022/03/15/audio_0a97ab8e77.mp3?filename=epic-ambient-111397.mp3"
+    );
+    audio.loop = true;
+    audio.volume = 0.3;
+    audio.play().catch(() => {}); // ignore autoplay block
+    return () => audio.pause();
+  }, []);
 
-    // Scene setup
+  // Setup Three.js scene
+  useEffect(() => {
+    if (!mountRef.current) return;
+
     const scene = new THREE.Scene();
-    sceneRef.current = scene;
-
-    // Gradient background (mountain-like)
-    const canvas = document.createElement("canvas");
-    canvas.width = 1;
-    canvas.height = 256;
-    const ctx = canvas.getContext("2d")!;
-    const gradient = ctx.createLinearGradient(0, 0, 0, 256);
-    gradient.addColorStop(0, "#0f2027"); // top dark
-    gradient.addColorStop(0.5, "#203a43"); // middle bluish
-    gradient.addColorStop(1, "#2c5364"); // bottom
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 1, 256);
-    scene.background = new THREE.CanvasTexture(canvas);
-
-    // Camera
     const camera = new THREE.PerspectiveCamera(
       75,
       mountRef.current.clientWidth / mountRef.current.clientHeight,
       0.1,
       1000
     );
-    camera.position.z = 5;
-    cameraRef.current = camera;
+    camera.position.z = 10;
+    camera.position.y = 5;
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
     mountRef.current.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
-
-    // Player cube
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshStandardMaterial({ color: 0xffcc00 });
-    const player = new THREE.Mesh(geometry, material);
-    scene.add(player);
 
     // Light
     const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(5, 5, 5);
+    light.position.set(0, 10, 10);
     scene.add(light);
 
-    // Stars
-    const starGeometry = new THREE.SphereGeometry(0.05, 8, 8);
-    const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    for (let i = 0; i < 200; i++) {
-      const star = new THREE.Mesh(starGeometry, starMaterial);
-      star.position.set(
-        (Math.random() - 0.5) * 50,
-        (Math.random() - 0.5) * 50,
-        -Math.random() * 50
+    // Mountain (just colored plane for now)
+    const geometry = new THREE.ConeGeometry(5, 20, 32);
+    const material = new THREE.MeshStandardMaterial({
+      color: stages[stage - 1].color,
+      flatShading: true,
+    });
+    const mountain = new THREE.Mesh(geometry, material);
+    scene.add(mountain);
+
+    // Player
+    const playerGeometry = new THREE.SphereGeometry(0.3, 16, 16);
+    const playerMaterial = new THREE.MeshStandardMaterial({ color: "red" });
+    const player = new THREE.Mesh(playerGeometry, playerMaterial);
+    player.position.set(0, -9, 0);
+    scene.add(player);
+
+    // Obstacles
+    const obstacles: THREE.Mesh[] = [];
+    for (let i = 0; i < 10; i++) {
+      const o = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 0.5, 0.5),
+        new THREE.MeshStandardMaterial({ color: "black" })
       );
-      scene.add(star);
+      o.position.set((Math.random() - 0.5) * 5, Math.random() * 15 - 5, 0);
+      scene.add(o);
+      obstacles.push(o);
     }
 
-    // Movement
-    const keys: Record<string, boolean> = {};
-    const handleKeyDown = (e: KeyboardEvent) => {
-      keys[e.key] = true;
-    };
-    const handleKeyUp = (e: KeyboardEvent) => {
-      keys[e.key] = false;
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
+    let climbing = true;
+    let climbedSteps = 0;
 
-    // Animate
-    const animate = () => {
-      if (!isPlaying) return;
+    // Touch controls
+    function handleTouch(e: TouchEvent) {
+      if (climbing) {
+        player.position.y += 0.3; // climb step
+        climbedSteps++;
+      }
+    }
+    window.addEventListener("touchstart", handleTouch);
 
-      if (keys["ArrowUp"]) player.position.y += 0.05;
-      if (keys["ArrowDown"]) player.position.y -= 0.05;
-      if (keys["ArrowLeft"]) player.position.x -= 0.05;
-      if (keys["ArrowRight"]) player.position.x += 0.05;
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
 
-      // Update score (distance travelled upwards)
-      setScore((s) => Math.max(s, Math.floor(player.position.y * 10)));
+      // Obstacle falling
+      obstacles.forEach((o) => {
+        o.position.y -= 0.05;
+        if (o.position.y < -10) {
+          o.position.y = 10;
+          o.position.x = (Math.random() - 0.5) * 5;
+        }
+        // Collision check
+        if (player.position.distanceTo(o.position) < 0.5) {
+          climbing = false;
+          alert("You got hit! Try again.");
+          player.position.y = -9;
+          climbedSteps = 0;
+          climbing = true;
+        }
+      });
+
+      // Stage completion
+      if (climbedSteps >= stages[stage - 1].steps) {
+        confetti();
+        let nextStage = stage + 1;
+        if (nextStage > stages.length) {
+          alert("🎉 You completed all stages! The End.");
+          nextStage = 1;
+        }
+        setStage(nextStage);
+        localStorage.setItem("climb_stage", nextStage.toString());
+        climbedSteps = 0;
+        player.position.y = -9;
+      }
 
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    };
+    }
     animate();
 
+    setTimeout(() => setLoading(false), 2000); // fake loading
+
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-      if (rendererRef.current) {
-        mountRef.current?.removeChild(rendererRef.current.domElement);
-        rendererRef.current.dispose();
-      }
+      window.removeEventListener("touchstart", handleTouch);
+      mountRef.current?.removeChild(renderer.domElement);
     };
-  }, [isPlaying]);
+  }, [stage]);
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-b from-blue-900 to-gray-900">
-      {!isPlaying ? (
-        <div className="p-6 rounded-2xl bg-white shadow-xl text-center space-y-4">
-          <h1 className="text-2xl font-bold text-gray-800">Star Game 🚀</h1>
-          <input
-            type="text"
-            placeholder="Enter your name"
-            value={nameInput}
-            onChange={(e) => setNameInput(e.target.value)}
-            className="border p-2 rounded-md w-full"
-          />
-          <button
-            onClick={handleStart}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full"
-          >
-            Start Game
-          </button>
-        </div>
+    <div className="w-screen h-screen bg-black text-white flex items-center justify-center">
+      {loading ? (
+        <h1 className="text-3xl animate-pulse">CLIMB - Loading resources...</h1>
       ) : (
-        <div className="relative w-full h-full">
-          <div
-            ref={mountRef}
-            className="w-full h-full"
-          />
-          <div className="absolute top-4 left-4 bg-white/70 px-4 py-2 rounded-lg shadow-lg">
-            <p className="font-semibold text-gray-800">{playerName}</p>
-            <p className="text-sm text-gray-600">Score: {score}</p>
-          </div>
-        </div>
+        <div ref={mountRef} className="w-full h-full"></div>
       )}
     </div>
   );
