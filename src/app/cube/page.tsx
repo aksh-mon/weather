@@ -50,7 +50,7 @@ export default function CubePage() {
     // 🔹 Create 6 materials with "Akshay" and different colors
     const colors = ["#3296", "#3498db", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c"];
     const materials = colors.map(
-      (color) => new THREE.MeshBasicMaterial({ map: createTextTexture("aksh-mon", color) })
+      (color) => new THREE.MeshBasicMaterial({ map: createTextTexture("©️aksh-mon", color) })
     );
 
     // Cube
