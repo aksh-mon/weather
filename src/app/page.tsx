@@ -10,6 +10,7 @@ import Snake from "./snake/page";
 import Ludo from "./ludo/page";
 import Cube from "./cube/page";
 import Car from "./car/page";
+import Kill from "./kill/page"
 
 import Header from "./compo/header";
 import Toggle from "./compo/toggle";
@@ -38,7 +39,9 @@ export default function Home() {
       case "cube":
         return <Cube/>  
       case "car":
-        return <Car/>  
+        return <Car/>
+      case "kill":
+        return <Kill/>
       case "app":
       default:
         return <App />;
