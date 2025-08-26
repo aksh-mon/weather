@@ -1,31 +1,61 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export default function Cube() {
+export default function CubePage() {
   const mountRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!mountRef.current) return;
+
+    // Create scene
     const scene = new THREE.Scene();
 
+    // Camera
     const camera = new THREE.PerspectiveCamera(
       75,
-      window.innerWidth / window.innerHeight,
+      mountRef.current.clientWidth / mountRef.current.clientHeight,
       0.1,
       1000
     );
-    camera.position.z = 5;
+    camera.position.z = 4;
 
+    // Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    mountRef.current?.appendChild(renderer.domElement);
+    renderer.setSize(
+      mountRef.current.clientWidth,
+      mountRef.current.clientHeight
+    );
+    mountRef.current.appendChild(renderer.domElement);
 
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshNormalMaterial();
-    const cube = new THREE.Mesh(geometry, material);
+    // 🔹 Function to create a texture with text
+    function createTextTexture(text: string) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 256;
+      canvas.height = 256;
+      const ctx = canvas.getContext("2d")!;
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      ctx.font = "bold 40px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    // 🔹 Create 6 materials with "Akshay"
+    const materials = Array(6)
+      .fill(null)
+      .map(
+        () => new THREE.MeshBasicMaterial({ map: createTextTexture("Akshay") })
+      );
+
+    // Cube
+    const cube = new THREE.Mesh(new THREE.BoxGeometry(), materials);
     scene.add(cube);
 
+    // Animation
     const animate = () => {
       requestAnimationFrame(animate);
       cube.rotation.x += 0.01;
@@ -34,13 +64,19 @@ export default function Cube() {
     };
     animate();
 
+    // Resize handling
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      if (mountRef.current) {
+        const width = mountRef.current.clientWidth;
+        const height = mountRef.current.clientHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      }
     };
     window.addEventListener("resize", handleResize);
 
+    // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
       if (mountRef.current) {
@@ -49,6 +85,7 @@ export default function Cube() {
     };
   }, []);
 
+  // 🔹 Fullscreen on click
   const goFullscreen = () => {
     if (mountRef.current) {
       mountRef.current.requestFullscreen();
@@ -58,8 +95,8 @@ export default function Cube() {
   return (
     <div
       ref={mountRef}
-      className="w-full h-full bg-black flex items-center justify-center"
-      onClick={goFullscreen} // click anywhere → fullscreen
+      onClick={goFullscreen}
+      className="w-full h-screen bg-black cursor-pointer"
     />
   );
 }
