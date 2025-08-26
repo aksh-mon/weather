@@ -388,7 +388,7 @@ export default function LudoBoard() {
 
   return (
     <div
-      className="flex flex-col items-center justify-center h-screen p-4 "
+      className="flex flex-col items-center justify-center h-[100vh] p-4 "
       style={{
         background:
           " linear-gradient(90deg,rgba(217, 197, 20, 0.48) 9%, rgba(217, 197, 20, 1) 23%, rgba(20, 98, 217, 1) 44%, rgba(44, 207, 35, 1) 62%, rgba(224, 13, 13, 0.74) 84%)",

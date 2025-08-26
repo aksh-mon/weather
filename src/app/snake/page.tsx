@@ -196,7 +196,7 @@ export default function SnakePage() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center p-6"
+      className="flex flex-col items-center justify-center p-6 "
       style={{ background: "linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%)" }}
     >
       <div className="max-w-2xl w-full">

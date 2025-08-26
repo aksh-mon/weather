@@ -2,7 +2,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <footer className='bg-white text-black text-center py-3 font-sans border-t-2 border-t-cyan-700 '>
+    <footer className=' text-white text-center py-3 font-sans border-t-2 border-t-cyan-700 ' style={{fontFamily:'__nextjs-Geist Mono',background:' linear-gradient(to right, #003973, #e5e5be)'}}>
         &copy; aksh-mon-2025    
     </footer>
   )
