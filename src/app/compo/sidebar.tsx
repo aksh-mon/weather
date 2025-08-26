@@ -18,9 +18,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen, setS
 
     return (
         <div
-            className={`transition-transform duration-500 ease-in-out 
+        style={{scrollbarWidth:'none'}}    
+        className={`transition-transform duration-500 ease-in-out 
       ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-      absolute h-[100%] top-[10vh] bottom-[10vh] left-0 
+      absolute h-[95vh] overflow-scroll top-[10vh] bottom-[10vh] left-0 
       lg:w-[20vw] sm:w-[40vw] w-[60vw] 
       bg-white/50 border-r z-[99]`}
         >
