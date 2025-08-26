@@ -40,7 +40,7 @@ export default function CubePage() {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       // Text
       ctx.fillStyle = "white";
-      ctx.font = "bold 40px Arial";
+      ctx.font = "bold 40px monospace";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(text, canvas.width / 2, canvas.height / 2);
@@ -48,9 +48,9 @@ export default function CubePage() {
     }
 
     // 🔹 Create 6 materials with "Akshay" and different colors
-    const colors = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c"];
+    const colors = ["#3296", "#3498db", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c"];
     const materials = colors.map(
-      (color) => new THREE.MeshBasicMaterial({ map: createTextTexture("Akshay", color) })
+      (color) => new THREE.MeshBasicMaterial({ map: createTextTexture("aksh-mon", color) })
     );
 
     // Cube
