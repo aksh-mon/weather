@@ -6,14 +6,28 @@ import * as THREE from "three";
 import confetti from "canvas-confetti";
 
 export default function ClimbGame() {
-  const mountRef = useRef<HTMLDivElement | null>(null);
+ const mountRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(true);
-  const [stage, setStage] = useState<number>(
-    parseInt(localStorage.getItem("climb_stage") || "1")
-  );
-  const [playerName, setPlayerName] = useState<string>(
-    localStorage.getItem("climb_name") || "Player"
-  );
+  const [stage, setStage] = useState<number>(1);
+  const [playerName, setPlayerName] = useState<string>("Player");
+
+  // ✅ Initialize from localStorage only in browser
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedStage = localStorage.getItem("climb_stage");
+      const savedName = localStorage.getItem("climb_name");
+      if (savedStage) setStage(parseInt(savedStage));
+      if (savedName) setPlayerName(savedName);
+    }
+  }, []);
+
+  // ✅ Save progress only in browser
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("climb_stage", stage.toString());
+      localStorage.setItem("climb_name", playerName);
+    }
+  }, [stage, playerName]);
 
   // Stage definitions
   const stages = [
