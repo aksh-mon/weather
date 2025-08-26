@@ -16,6 +16,7 @@
     "react-dom": "^19.0.0",
     "react-flip-numbers": "^3.0.9",
     "styled-components": "^6.1.19",
+    "three": "^0.179.1",
     "zustand": "^5.0.7"
   },
   "devDependencies": {
@@ -24,6 +25,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.179.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "tailwindcss": "^4",
