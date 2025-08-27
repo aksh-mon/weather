@@ -242,7 +242,7 @@ export default function Platformer3DFull() {
         const heroG = playerRef.current!;
         const ud = (heroG as any).userData;
         const vel = ud.vel as THREE.Vector3;
-        const SPEED = 6.5; const GRAV = -20; const JUMP = 11.5;
+        const SPEED = 6.5; const GRAV = -20; const JUMP = 13.5;
 
         let move = 0; if (keysRef.current["arrowright"] || keysRef.current["d"]) move += 1; if (keysRef.current["arrowleft"] || keysRef.current["a"]) move -= 1;
         vel.x = move * SPEED;
