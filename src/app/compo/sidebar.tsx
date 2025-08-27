@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen, setS
       lg:w-[20vw] sm:w-[40vw] w-[60vw] 
       bg-white/50 border-r z-[99]`}
         >
-            <div className="flex flex-col gap-5 overflow-y-auto p-4">
+            <div className="flex flex-col gap-5 overflow-y-auto p-4 neb">
 
                 <button style={{ background: 'linear-gradient(to right, #283048, #859398)' }} className='text-white p-3 rounded-t-2xl flex justify-center'> Content <Footprints className='text-white' /></button>
 
