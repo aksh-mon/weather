@@ -12,6 +12,7 @@ import Cube from "./cube/page";
 import Car from "./car/page";
 import Kill from "./kill/page";
 import Climb from "./mountain/page";
+import Jump from "./mario/page";
 
 import Header from "./compo/header";
 import Toggle from "./compo/toggle";
@@ -45,6 +46,8 @@ export default function Home() {
         return <Kill />
       case "climb":
         return <Climb />
+      case "jump":
+        return <Jump />
       case "app":
       default:
         return <App />;

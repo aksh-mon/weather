@@ -39,6 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen, setS
                 <button style={{ background: 'linear-gradient(to right, #5c258d, #4389a2)' }} onClick={() => handleClick("car")}className="cursor-pointer btn flex text-white p-3 gap-3.5 rounded-2xl"> <Shell className="animate-spin w-4" /> Car</button>
                 <button style={{ background: 'linear-gradient(to right, #5c258d, #4389a2)' }} onClick={() => handleClick("kill")}className="cursor-pointer btn flex text-white p-3 gap-3.5 rounded-2xl"> <Shell className="animate-spin w-4" /> Kill</button>
                 <button style={{ background: 'linear-gradient(to right, #5c258d, #4389a2)' }} onClick={() => handleClick("climb")}className="cursor-pointer btn flex text-white p-3 gap-3.5 rounded-2xl"> <Shell className="animate-spin w-4" /> CLimb</button>
+                <button style={{ background: 'linear-gradient(to right, #5c258d, #4389a2)' }} onClick={() => handleClick("jump")}className="cursor-pointer btn flex text-white p-3 gap-3.5 rounded-2xl"> <Shell className="animate-spin w-4" /> Jump</button>
                
                 {/* Error Mode */}
                 <button
