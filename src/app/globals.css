@@ -22,7 +22,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-nabla), sans-serif;
+  /* font-family: var(--font-nabla), sans-serif; */
 }
 
 button {
