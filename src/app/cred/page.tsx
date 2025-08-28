@@ -16,7 +16,8 @@ export default function AuthForm() {
 
     if (email === "aks@321.com" && password === "12345678") {
       setError("");
-      router.push("/home"); // ✅ go to main page
+      localStorage.setItem("isAuthenticated", "true"); 
+      router.replace("/home"); 
     } else {
       setError("❌ Account not found. Please create one.");
     }
@@ -41,7 +42,7 @@ export default function AuthForm() {
       <div className="shooting-star"></div>
 
       {/* Auth Box */}
-      <div  className="relative w-full max-w-md border border-black bg-transparent p-8 shadow-[8px_8px_0px_black] rounded-xl z-10">
+      <div className="relative w-full max-w-md border border-black bg-transparent p-8 shadow-[8px_8px_0px_black] rounded-xl z-10">
         <div className="absolute top-[6px] left-[6px] right-[-6px] bottom-[-6px] border border-black rounded-xl -z-10" />
 
         <h1 className="mb-6 text-center text-3xl font-bold text-white">
