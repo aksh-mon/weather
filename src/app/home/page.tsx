@@ -1,7 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 import App from "../app/page";
-import Error from '../404/page'
+import Error from "../404/page";
 import Sudoku from "../sudoku/page";
 import Footnote from "../footnote/page";
 import FlappyBirdGame from "../flappyBird/page";
@@ -18,9 +20,18 @@ import Header from "../compo/header";
 import Toggle from "../compo/toggle";
 
 export default function Home() {
-  const [selectedGame, setSelectedGame] = useState("app"); // default game
-  const [mode, setMode] = useState<"game" | "error">("game"); // game or error
+  const [selectedGame, setSelectedGame] = useState("app");
+  const [mode, setMode] = useState<"game" | "error">("game");
   const [bgColor, setBgColor] = useState("");
+  const router = useRouter();
+
+  // ✅ Check auth when Home mounts
+  useEffect(() => {
+    const isAuth = localStorage.getItem("isAuthenticated");
+    if (!isAuth) {
+      router.replace("/"); // redirect to login if not authenticated
+    }
+  }, [router]);
 
   const renderGame = () => {
     if (mode === "error") {
@@ -39,15 +50,15 @@ export default function Home() {
       case "contra":
         return <Contra />;
       case "cube":
-        return <Cube />
+        return <Cube />;
       case "car":
-        return <Car />
+        return <Car />;
       case "kill":
-        return <Kill />
+        return <Kill />;
       case "climb":
-        return <Climb />
+        return <Climb />;
       case "jump":
-        return <Jump />
+        return <Jump />;
       case "app":
       default:
         return <App />;
@@ -55,14 +66,17 @@ export default function Home() {
   };
 
   return (
-    <div className=" h-screen flex flex-col">
+    <div className="h-screen flex flex-col">
       {/* Header (with Sidebar toggle) */}
       <Header setSelectedGame={setSelectedGame} setMode={setMode} />
 
       {/* Main Content */}
       <main
         className="flex-1 h-screen"
-        style={{ backgroundColor: bgColor, transition: "background-color 0.3s ease-in-out" }}
+        style={{
+          backgroundColor: bgColor,
+          transition: "background-color 0.3s ease-in-out",
+        }}
       >
         {renderGame()}
         <Toggle onToggle={setBgColor} />
