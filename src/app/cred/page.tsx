@@ -66,7 +66,7 @@ export default function AuthForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
-                  className="w-full border-2 border-black bg-white px-3 py-2 text-base outline-none focus:shadow-[4px_4px_0px_black]"
+                  className="w-full border-2 border-black bg-white px-3 py-2 text-black outline-none focus:shadow-[4px_4px_0px_black]"
                 />
               </div>
 
@@ -79,7 +79,7 @@ export default function AuthForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full border-2 border-black bg-white px-3 py-2 text-base outline-none focus:shadow-[4px_4px_0px_black]"
+                  className="w-full border-2 border-black bg-white px-3 py-2 text-black outline-none focus:shadow-[4px_4px_0px_black]"
                 />
               </div>
 
@@ -142,7 +142,7 @@ export default function AuthForm() {
                 <input
                   type="text"
                   placeholder="John Doe"
-                  className="w-full border-2 border-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]"
+                  className="w-full border-2 border-black text-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]"
                 />
               </div>
 
@@ -151,7 +151,7 @@ export default function AuthForm() {
                 <input
                   type="email"
                   placeholder="your@email.com"
-                  className="w-full border-2 border-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]"
+                  className="w-full border-2 border-black text-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]"
                 />
               </div>
 
@@ -162,7 +162,7 @@ export default function AuthForm() {
                 <input
                   type="tel"
                   placeholder="+1 234 567 890"
-                  className="w-full border-2 border-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]"
+                  className="w-full border-2 border-black text-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]"
                 />
               </div>
 
@@ -193,7 +193,7 @@ export default function AuthForm() {
                 <input
                   type="text"
                   placeholder="e.g. Rock, Jazz, EDM"
-                  className="w-full border-2 border-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]"
+                  className="w-full text-black border-2 border-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]"
                 />
               </div>
 
