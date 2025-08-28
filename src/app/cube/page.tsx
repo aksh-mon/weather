@@ -29,16 +29,26 @@ export default function CubePage() {
     );
     mountRef.current.appendChild(renderer.domElement);
 
+    // 🔹 Video background
+    const video = document.createElement("video");
+    video.src = "/night.mp4"; // <-- put your video name from /public folder
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.play();
+
+    const videoTexture = new THREE.VideoTexture(video);
+    scene.background = videoTexture; // Set as scene background
+
     // 🔹 Function to create a texture with text + background color
     function createTextTexture(text: string, bgColor: string) {
       const canvas = document.createElement("canvas");
       canvas.width = 256;
       canvas.height = 256;
       const ctx = canvas.getContext("2d")!;
-      // Background color
       ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      // Text
       ctx.fillStyle = "white";
       ctx.font = "bold 40px monospace";
       ctx.textAlign = "center";
@@ -47,13 +57,15 @@ export default function CubePage() {
       return new THREE.CanvasTexture(canvas);
     }
 
-    // 🔹 Create 6 materials with "Akshay" and different colors
-    const colors = ["#3296", "#3498db", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c"];
+    // 🔹 Cube with text on each face
+    const colors = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c"];
     const materials = colors.map(
-      (color) => new THREE.MeshBasicMaterial({ map: createTextTexture("©️aksh-mon", color) })
+      (color) =>
+        new THREE.MeshBasicMaterial({
+          map: createTextTexture("©️aksh-mon", color),
+        })
     );
 
-    // Cube
     const cube = new THREE.Mesh(new THREE.BoxGeometry(), materials);
     scene.add(cube);
 
@@ -78,7 +90,6 @@ export default function CubePage() {
     };
     window.addEventListener("resize", handleResize);
 
-    // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
       if (mountRef.current) {
