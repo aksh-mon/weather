@@ -2,7 +2,9 @@
 'use client'
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react'
+import Heading from "../compo/title";
 import Sidebar from '../compo/sidebar';
+
 
 interface HeaderProps {
   setSelectedGame: React.Dispatch<React.SetStateAction<string>>;
@@ -22,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
             <Menu className="w-[2rem] h-[2rem] text-gray-700" />
           )}
         </button>
-
+        <Heading />
         {/* Logo section */}
         <div className="flex items-center justify-center">
           <div className="bg-green-300 w-[3rem] md:w-[5rem] h-[1rem] border-s-[40px] border-s-amber-700 rounded-s-full"></div>

@@ -27,7 +27,9 @@ body {
 .neb{
 font-family: var(--font-nabla), sans-serif; 
 }
-
+.ash{
+  font-family: var(--font-ash),monospace;
+}
 button {
   transition: all 3s cubic-bezier(0.39, 0.575, 0.565, 1);
 }

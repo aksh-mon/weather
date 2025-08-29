@@ -1,4 +1,5 @@
-import { Geist, Geist_Mono, Nabla,Asimovian  } from "next/font/google";
+import localFont from 'next/font/local';
+import { Geist, Geist_Mono, Nabla } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,14 +15,14 @@ const geistMono = Geist_Mono({
 const nabla = Nabla({
   variable: "--font-nabla",
   subsets: ["latin"],
-  weight: "400", // or the weight you want
+  weight: "400", 
 });
 
-const ash = Asimovian({
-  variable:"--font-ash",
-  weight:"400",
-})
-
+const asimovian = localFont({
+  src: "./fonts/Asimovian-Regular.ttf", 
+  variable: "--font-ash",
+  weight: "400",
+});
 
 export default function RootLayout({
   children,
@@ -37,7 +38,7 @@ export default function RootLayout({
         <meta name="google-site-verification" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${nabla.variable} ${ash.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${nabla.variable} ${asimovian.variable} antialiased`}
       >
         {children}
       </body>

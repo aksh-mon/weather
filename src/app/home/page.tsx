@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 import App from "../app/page";
 import Error from "../404/page";
 import Sudoku from "../sudoku/page";
