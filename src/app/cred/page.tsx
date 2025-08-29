@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-
+import Tagline from '../compo/tagline';
 export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
@@ -32,7 +32,7 @@ export default function AuthForm() {
   };
 
   return (
-    <div id="body" className="relative flex min-h-screen items-center justify-center font-mono p-4 overflow-hidden">
+    <div id="body" className="relative flex min-h-screen items-center justify-center gap-2 font-mono p-4 overflow-hidden">
       {/* 🌌 Starry background */}
       <div className="stars"></div>
       <div className="shooting-star"></div>
@@ -41,7 +41,7 @@ export default function AuthForm() {
       <div className="shooting-star"></div>
       <div className="shooting-star"></div>
 
-        <h2 className="text-4xl text-white hover:text-gray-500 transition-all ">WELCOME TO THE SHOW</h2>
+      <Tagline />
       {/* Auth Box */}
       <div className="relative w-full max-w-md border border-black bg-transparent p-8 shadow-[8px_8px_0px_black] rounded-xl z-10">
 
