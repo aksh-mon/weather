@@ -72,13 +72,6 @@ export default function ClimbGame() {
   const [theme, setTheme] = useState<"day" | "night">("day");
   const [stage, setStage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const [playerName, setPlayerName] = useState(
-    () => localStorage.getItem("playerName") || ""
-  );
-
-  useEffect(() => {
-    localStorage.setItem("playerName", playerName);
-  }, [playerName]);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -162,8 +155,6 @@ export default function ClimbGame() {
         setPaused={setPaused}
         theme={theme}
         setTheme={setTheme}
-        playerName={playerName}
-        setPlayerName={setPlayerName}
       />
       <div ref={mountRef} className="w-full h-full bg-sky-300" />
       <StageModal
