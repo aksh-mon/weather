@@ -35,7 +35,7 @@ export default function AuthForm() {
   return (
     <div
       id="body"
-      className="relative flex min-h-screen items-center justify-center gap-4 font-mono p-4 overflow-hidden flex-row sm:flex-col"
+      className="relative flex min-h-screen items-center justify-center gap-4 font-mono p-4 overflow-hidden flex-col lg:flex-row"
     >
       {/* 🌌 Starry background */}
       <div className="stars"></div>

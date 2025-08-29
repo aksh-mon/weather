@@ -24,7 +24,9 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
             <Menu className="w-[2rem] h-[2rem] text-gray-700" />
           )}
         </button>
-        <Heading />
+        <div className="absolute left-1/2 -translate-x-1/2">
+          <Heading />
+        </div>
         {/* Logo section */}
         <div className="flex items-center justify-center">
           <div className="bg-green-300 w-[3rem] md:w-[5rem] h-[1rem] border-s-[40px] border-s-amber-700 rounded-s-full"></div>
