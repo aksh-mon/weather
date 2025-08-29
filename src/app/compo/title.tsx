@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 
 export default function Title() {
   return (
-    <div className="flex justify-center items-center h-screen bg-black ash">
+    <div className="flex justify-center items-center h-screen ash">
       <motion.h2
         className="relative text-4xl sm:text-2xl font-extrabold tracking-wide"
         style={{
-          color: "#0ff", // Neon cyan
+          color: "#ddd", // Neon cyan
           textShadow: `
             0 0 5px #0ff,
             0 0 10px #0ff,
