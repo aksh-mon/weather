@@ -60,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       border-r z-[99] flex flex-col overflow-hidden`}
         >
             {/* Scrollable middle section */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 relative z-10">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 relative z-10" style={{scrollbarWidth:'none'}}>
                 {/* Content Button */}
                 <div className="relative">
                     <button className="relative text-white p-3 rounded-2xl flex justify-center bg-gradient-to-r from-[#74a1bb] to-[#5b200c] shadow-md hover:scale-105 transition overflow-hidden w-full">
