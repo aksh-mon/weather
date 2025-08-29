@@ -63,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className="flex-1 overflow-y-auto p-4 space-y-4 relative z-10">
                 {/* Content Button */}
                 <div className="relative">
-                    <button className="relative text-white p-3 rounded-2xl flex justify-center bg-gradient-to-r from-[#283048] to-[#859398] shadow-md hover:scale-105 transition overflow-hidden w-full">
+                    <button className="relative text-white p-3 rounded-2xl flex justify-center bg-gradient-to-r from-[#74a1bb] to-[#5b200c] shadow-md hover:scale-105 transition overflow-hidden w-full">
                         <span className="relative z-10 flex items-center gap-2">
                             Content <Footprints className="ml-2" />
                         </span>
@@ -106,8 +106,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <div key={key} className="relative">
                         <button
                             onClick={() => handleClick(key)}
-                            className="relative flex items-center gap-3 p-3 w-full rounded-xl text-white 
-                bg-gradient-to-r from-[#5c258d] to-[#4389a2] shadow-md hover:scale-105 transition overflow-hidden"
+                            className="relative flex items-center gap-3 p-3 w-full rounded-t-3xl text-white 
+                bg-stone-800 shadow-md hover:scale-105 transition overflow-hidden"
                         >
                             <span className="relative z-10 flex items-center gap-2">
                                 <Shell className="animate-spin w-4" /> {label}

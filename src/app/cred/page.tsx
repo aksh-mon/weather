@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Tagline from '../compo/tagline';
+import HeroTagline from "../compo/tagline"; 
+
 export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
@@ -32,7 +33,10 @@ export default function AuthForm() {
   };
 
   return (
-    <div id="body" className="relative flex min-h-screen items-center justify-center gap-2 font-mono p-4 overflow-hidden">
+    <div
+      id="body"
+      className="relative flex min-h-screen items-center justify-center gap-4 font-mono p-4 overflow-hidden flex-col"
+    >
       {/* 🌌 Starry background */}
       <div className="stars"></div>
       <div className="shooting-star"></div>
@@ -41,13 +45,14 @@ export default function AuthForm() {
       <div className="shooting-star"></div>
       <div className="shooting-star"></div>
 
-      <Tagline />
-      {/* Auth Box */}
-      <div className="relative w-full max-w-md border border-black bg-transparent p-8 shadow-[8px_8px_0px_black] rounded-xl z-10">
+      {/* Hero Tagline */}
+      <HeroTagline />
 
+      {/* Auth Box */}
+      <div className="relative w-full max-w-md border border-black bg-transparent p-6 sm:p-8 shadow-[8px_8px_0px_black] rounded-xl z-10">
         <div className="absolute top-[6px] left-[6px] right-[-6px] bottom-[-6px] border border-black rounded-xl -z-10" />
 
-        <h1 className="mb-6 text-center text-3xl font-bold text-white">
+        <h1 className="mb-6 text-center text-2xl sm:text-3xl font-bold text-white">
           {mode === "login" ? "LOGIN" : "CREATE ACCOUNT"}
         </h1>
 
@@ -62,6 +67,7 @@ export default function AuthForm() {
               transition={{ duration: 0.4 }}
               className="space-y-4"
             >
+              {/* Email */}
               <div>
                 <label className="mb-1 block font-bold text-white">EMAIL</label>
                 <input
@@ -73,6 +79,7 @@ export default function AuthForm() {
                 />
               </div>
 
+              {/* Password */}
               <div>
                 <label className="mb-1 block font-bold text-white">
                   PASSWORD
@@ -105,6 +112,7 @@ export default function AuthForm() {
                 <span className="flex-1 border-b-2 border-black"></span>
               </div>
 
+              {/* Social login */}
               <div className="flex justify-center gap-4">
                 {["G", "F", "X"].map((s, i) => (
                   <div
@@ -140,6 +148,7 @@ export default function AuthForm() {
               transition={{ duration: 0.4 }}
               className="space-y-4"
             >
+              {/* Signup fields */}
               <div>
                 <label className="mb-1 block font-bold text-white">NAME</label>
                 <input
@@ -171,20 +180,20 @@ export default function AuthForm() {
 
               <div>
                 <label className="mb-1 block font-bold text-white">GENDER</label>
-                <select className="w-full border-2 border-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]">
+                <select className="w-full border-2 border-black bg-white px-3 py-2 outline-none text-black focus:shadow-[4px_4px_0px_black]">
                   <option>Male</option>
                   <option>Female</option>
                   <option>Other</option>
                 </select>
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {["Facebook", "Instagram", "Snapchat"].map((platform) => (
                   <input
                     key={platform}
                     type="text"
                     placeholder={platform}
-                    className="w-full border-2 border-black bg-white px-3 py-2 outline-none focus:shadow-[4px_4px_0px_black]"
+                    className="w-full border-2 border-black bg-white px-3 py-2 text-black outline-none focus:shadow-[4px_4px_0px_black]"
                   />
                 ))}
               </div>
@@ -322,8 +331,7 @@ export default function AuthForm() {
             opacity: 0;
           }
         }
-      `}
-      </style>
+      `}</style>
     </div>
   );
 }
