@@ -41,10 +41,10 @@ export default function AuthForm() {
       <div className="shooting-star"></div>
       <div className="shooting-star"></div>
 
+        <h2 className="text-4xl text-white hover:text-gray-500 transition-all ">WELCOME TO THE SHOW</h2>
       {/* Auth Box */}
       <div className="relative w-full max-w-md border border-black bg-transparent p-8 shadow-[8px_8px_0px_black] rounded-xl z-10">
 
-        <h2 className="text-4xl text-white hover:text-gray-500 transition-all "> WELCOME TO THE SHOW</h2>
         <div className="absolute top-[6px] left-[6px] right-[-6px] bottom-[-6px] border border-black rounded-xl -z-10" />
 
         <h1 className="mb-6 text-center text-3xl font-bold text-white">

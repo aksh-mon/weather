@@ -25,38 +25,38 @@ const Sidebar: React.FC<SidebarProps> = ({
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("isAuthenticated"); // ❌ remove session
-        router.replace("/"); // ✅ back to login form
+        localStorage.removeItem("isAuthenticated");
+        router.replace("/");
     };
 
     return (
         <div
-            style={{ scrollbarWidth: "none" }}
-            className={`transition-transform duration-500 ease-in-out 
+            className={`transition-transform duration-500 ease-in-out
       ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-      absolute h-[95vh] overflow-scroll top-[10vh] bottom-[10vh] left-0 
+      absolute top-0 left-0 h-screen 
       lg:w-[20vw] sm:w-[40vw] w-[60vw] 
-      bg-white/50 border-r z-[99]`}
+      bg-white/50 border-r z-[99] flex flex-col`}
         >
-            <div className="flex flex-col gap-5 overflow-y-auto p-4 neb">
+            {/* Scrollable middle section */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 <button
                     style={{ background: "linear-gradient(to right, #283048, #859398)" }}
-                    className="text-white p-3 rounded-t-2xl flex justify-center"
+                    className="text-white p-3 rounded-2xl flex justify-center"
                 >
                     Content <Footprints className="text-white" />
                 </button>
 
                 <button
-                    style={{ background: " linear-gradient(to right, #5c258d, #4389a2)" }}
+                    style={{ background: "linear-gradient(to right, #5c258d, #4389a2)" }}
                     onClick={() => handleClick("app")}
-                    className="cursor-pointer btn flex  text-white p-3 gap-3.5 rounded-t-3xl rounded-b-2xl"
+                    className="cursor-pointer btn flex text-white p-3 gap-3.5 rounded-xl"
                 >
                     <Shell className="animate-spin w-4" /> Home
                 </button>
                 <button
-                    style={{ background: " linear-gradient(to right, #5c258d, #4389a2)" }}
+                    style={{ background: "linear-gradient(to right, #5c258d, #4389a2)" }}
                     onClick={() => handleClick("ludo")}
-                    className="cursor-pointer btn flex  text-white p-3 gap-3.5 rounded-t-3xl rounded-b-2xl"
+                    className="cursor-pointer btn flex text-white p-3 gap-3.5 rounded-xl"
                 >
                     <Shell className="animate-spin w-4" /> Ludo
                 </button>
@@ -124,23 +124,25 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <Shell className="animate-spin w-4" /> Jump
                 </button>
 
-                {/* Error Mode */}
+
                 <button
                     onClick={() => {
                         setMode("error");
                         setIsSidebarOpen(false);
                     }}
                     style={{ background: "linear-gradient(to right, #ff512f, #dd2476)" }}
-                    className="btn text-white p-3 flex justify-center gap-2.5 cursor-pointer"
+                    className="btn text-white p-3 flex justify-center gap-2.5 cursor-pointer rounded-xl"
                 >
                     <Bug className="text-white animate-pulse" /> Show Error
                 </button>
+            </div>
 
-                {/* 🚪 Logout */}
+            {/* Fixed Logout at bottom */}
+            <div className="p-4 border-t">
                 <button
                     onClick={handleLogout}
                     style={{ background: "linear-gradient(to right, #141e30, #243b55)" }}
-                    className="btn text-white p-3 flex justify-center gap-2.5 cursor-pointer rounded-b-2xl"
+                    className="w-full text-white p-3 flex justify-center gap-2.5 cursor-pointer rounded-xl"
                 >
                     <LogOut className="text-white" /> Logout
                 </button>
