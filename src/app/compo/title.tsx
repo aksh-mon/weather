@@ -3,26 +3,34 @@ import { motion } from "framer-motion";
 
 export default function Title() {
   return (
-    <div className="flex justify-center items-center h-screen  ash">
+    <div className="flex justify-center items-center h-screen bg-black ash">
       <motion.h2
-        className="relative text-5xl font-extrabold tracking-wide"
+        className="relative text-4xl sm:text-2xl font-extrabold tracking-wide"
         style={{
-          background: "linear-gradient(270deg, #111, #333, #555, #111)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
+          color: "#0ff", // Neon cyan
+          textShadow: `
+            0 0 5px #0ff,
+            0 0 10px #0ff,
+            0 0 20px #0ff,
+            0 0 40px #0ff,
+            0 0 80px #0ff
+          `,
         }}
         animate={{
-          backgroundPosition: ["0% 50%", "100% 50%"],
+          textShadow: [
+            "0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff",
+            "0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff",
+            "0 0 5px #0ff, 0 0 15px #0ff, 0 0 25px #0ff, 0 0 50px #0ff",
+          ],
+          color: ["#0ff", "#fff", "#0ff"], // Flicker between cyan & white
         }}
         transition={{
-          duration: 6,
+          duration: 2,
           repeat: Infinity,
-          ease: "linear",
+          ease: "easeInOut",
         }}
       >
         weatherORwhether
-        {/* Tail glow on hover */}
-        <span className="absolute inset-0 text-transparent hover:text-white transition-all duration-500 before:content-[''] before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-gray-800 before:via-gray-600 before:to-gray-900 before:blur-xl before:opacity-0 hover:before:opacity-80" />
       </motion.h2>
     </div>
   );
