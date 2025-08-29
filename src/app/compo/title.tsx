@@ -5,29 +5,19 @@ export default function Title() {
   return (
     <div className="flex justify-center items-center h-screen ash">
       <motion.h2
-        className="relative text-4xl sm:text-2xl font-extrabold tracking-wide"
+        className="relative text-4xl sm:text-xl lg:text-6xl font-extrabold tracking-wide"
         style={{
-          color: "#ddd", // Neon cyan
-          textShadow: `
-            0 0 5px #0ff,
-            0 0 10px #0ff,
-            0 0 20px #0ff,
-            0 0 40px #0ff,
-            0 0 80px #0ff
-          `,
+          background: "linear-gradient(90deg, #aaa, #666, #aaa)", 
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
         }}
         animate={{
-          textShadow: [
-            "0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff",
-            "0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff",
-            "0 0 5px #0ff, 0 0 15px #0ff, 0 0 25px #0ff, 0 0 50px #0ff",
-          ],
-          color: ["#0ff", "#fff", "#0ff"], // Flicker between cyan & white
+          backgroundPosition: ["0% 50%", "100% 50%"], // shimmer effect
         }}
         transition={{
-          duration: 2,
+          duration: 4,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: "linear",
         }}
       >
         weatherORwhether
