@@ -22,6 +22,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  scrollbar-width: none;
 }
 .neb{
 font-family: var(--font-nabla), sans-serif; 

@@ -51,6 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     return (
         <div
+            style={{scrollbarWidth:'none'}} 
             className={`transition-transform duration-500 ease-in-out
       ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
       absolute top-0 left-0 h-screen 
