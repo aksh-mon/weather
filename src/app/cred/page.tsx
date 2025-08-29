@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import HeroTagline from "../compo/tagline"; 
+import HeroTagline from "../compo/tagline";
 
 export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -35,7 +35,7 @@ export default function AuthForm() {
   return (
     <div
       id="body"
-      className="relative flex min-h-screen items-center justify-center gap-4 font-mono p-4 overflow-hidden flex-col"
+      className="relative flex min-h-screen items-center justify-center gap-4 font-mono p-4 overflow-hidden sm:flex-col"
     >
       {/* 🌌 Starry background */}
       <div className="stars"></div>

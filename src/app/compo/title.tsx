@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function Title() {
   return (
-    <div className="flex justify-center items-center h-screen bg-black ash">
+    <div className="flex justify-center items-center h-screen  ash">
       <motion.h2
         className="relative text-5xl font-extrabold tracking-wide"
         style={{
