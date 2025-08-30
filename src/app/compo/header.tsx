@@ -6,7 +6,7 @@ import Sidebar from '../compo/sidebar';
 
 
 interface HeaderProps {
-  setSelectedGame: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedGame:  React.Dispatch<React.SetStateAction<string>>;
   setMode: React.Dispatch<React.SetStateAction<"game" | "error">>;
 }
 
