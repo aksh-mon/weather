@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 import React, { useState } from 'react'
 import Typewriter from '../compo/typewritwertext';
+import Toggle from '../compo/toggle';
 
 const page = () => {
 
@@ -109,6 +110,7 @@ const page = () => {
             `}</style>
           </div>
         </div>
+        <Toggle onToggle={setBgColor}/>
       </div>
 
     </div>

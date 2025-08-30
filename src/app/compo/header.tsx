@@ -1,8 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
+
 'use client'
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react'
-import Heading from "../compo/title";
 import Sidebar from '../compo/sidebar';
 
 
@@ -16,16 +15,15 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
 
   return (
     <div>
-      <header className="bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-between items-center px-4">
+      <header className="bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
         <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} style={{rotate:'-35deg'}}>
           {isSidebarOpen ? (
-            <X className="w-[2rem] h-[2rem] text-gray-700" />
+            <X className="w-[2rem] h-[2rem] text-gray-700 bg-red-50" />
           ) : (
             <Menu className="w-[2rem] h-[2rem] text-gray-700 bg-white p-2" />
           )}
         </button>
         <div className="">
-          <Heading />
         </div>
         {/* Logo section */}
         {/* <div className="flex items-center justify-center">

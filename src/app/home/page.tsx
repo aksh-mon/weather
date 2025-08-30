@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -15,7 +16,6 @@ import Climb from "../mountain/page";
 import Jump from "../mario/page";
 
 import Header from "../compo/header";
-import Toggle from "../compo/toggle";
 
 export default function Home() {
   const [selectedGame, setSelectedGame] = useState("app");
@@ -75,7 +75,6 @@ export default function Home() {
         }}
       >
         {renderGame()}
-        <Toggle onToggle={setBgColor} />
         
       <Header setSelectedGame={setSelectedGame} setMode={setMode} />
       </main>

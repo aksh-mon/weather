@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Bug, Footprints, Shell, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-
+import Heading from '../compo/title';
 interface SidebarProps {
     isSidebarOpen: boolean;
     setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,6 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className="flex-1 overflow-y-auto p-4 space-y-4 relative z-10" style={{scrollbarWidth:'none'}}>
                 {/* Content Button */}
                 <div className="relative">
+                    <Heading/>
                     <button className="relative text-white p-3 rounded-2xl flex justify-center bg-gradient-to-r from-[#74a1bb] to-[#5b200c] shadow-md hover:scale-105 transition overflow-hidden w-full">
                         <span className="relative z-10 flex items-center gap-2">
                             Content <Footprints className="ml-2" />
