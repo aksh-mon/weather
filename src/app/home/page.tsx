@@ -67,8 +67,6 @@ export default function Home() {
   return (
     <div className="h-screen flex flex-col">
       {/* Header (with Sidebar toggle) */}
-      <Header setSelectedGame={setSelectedGame} setMode={setMode} />
-
       {/* Main Content */}
       <main
         className="flex-1 h-screen"
@@ -80,8 +78,8 @@ export default function Home() {
         {renderGame()}
         <Toggle onToggle={setBgColor} />
       </main>
-
       {/* Footer */}
+      <Header setSelectedGame={setSelectedGame} setMode={setMode} />
       <Footnote />
     </div>
   );
