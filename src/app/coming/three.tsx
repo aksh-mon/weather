@@ -139,14 +139,14 @@ export default function PyramidHome() {
     <div className="relative w-full h-screen" ref={mountRef}>
       {/* Overlay Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 font-serif">
-  <h1 className="text-6xl font-extrabold mb-6 animate-spin-slow">
-    नवीनं नूतनं मोचनं अन्वेष्यताम् .
-  </h1>
-  <button className="btn-wind px-8 py-3 rounded-full text-4xl font-bold">
-    ?
-  </button>
+        <h1 className="text-6xl font-extrabold mb-6 animate-spin-slow">
+          नवीनं नूतनं मोचनं अन्वेष्यताम् .
+        </h1>
+        <button className="btn-wind px-8 py-3 rounded-full text-4xl font-bold">
+          ?
+        </button>
 
-  <style jsx>{`
+        <style jsx>{`
     .btn-wind {
       background: #fef3c7;
       color: #78350f;
@@ -209,7 +209,8 @@ export default function PyramidHome() {
       }
     }
   `}</style>
-</div>
+      </div>
+
 
     </div>
   );

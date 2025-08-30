@@ -15,31 +15,56 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
 
   return (
     <div>
-      <header  style={{ position: 'absolute', bottom: '0',scrollbarWidth:'none' }} className="overflow-hidden bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
-        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} style={{ rotate: '-35deg' }}>
+      <header style={{ position: 'absolute', bottom: '0', scrollbarWidth: 'none' }} className="overflow-hidden bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="icon-tornado-btn relative flex items-center justify-center w-[3.5rem] h-[3.5rem] rounded-lg bg-gray-600"
+          style={{ rotate: "-35deg" }}
+        >
           {isSidebarOpen ? (
-            <X className="icon-tornado w-[2rem] h-[2rem] text-gray-800 p-2 rounded-lg" />
+            <X className="w-[3rem] h-[3rem] text-gray-200 z-10" />
           ) : (
-            <Menu className="icon-tornado w-[3rem] h-[3rem] text-gray-800  p-2 rounded-lg" />
+            <Menu className="w-[2rem] h-[2rem] text-gray-200 z-10" />
           )}
 
           <style jsx>{`
-  .icon-tornado {
-    transition: transform 0.6s ease-in-out;
-    cursor: pointer;
-  }
-  .icon-tornado:hover {
-    animation: tornado 0.6s ease-in-out forwards;
-    color: #1f2937; /* dark gray (gray-800) */
-  }
-  @keyframes tornado {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.3); }
-    100% { transform: rotate(360deg) scale(1); }
-  }
-          `}</style>
-
+    .icon-tornado-btn {
+      background: linear-gradient(145deg, #1f2937, #111827); /* dark gradient */
+      box-shadow: 0 0 20px rgba(31, 41, 55, 0.8),
+        0 0 40px rgba(17, 24, 39, 0.6), 0 0 60px rgba(0, 0, 0, 0.9);
+      transition: all 0.6s ease-in-out;
+      overflow: hidden;
+    }
+    .icon-tornado-btn::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(
+        from 0deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(0, 0, 0, 0.3),
+        rgba(255, 255, 255, 0.1)
+      );
+      border-radius: inherit;
+      animation: swirl 4s linear infinite;
+      z-index: 0;
+    }
+    .icon-tornado-btn:hover {
+      background: linear-gradient(145deg, #111827, #000000);
+      box-shadow: 0 0 30px rgba(0, 255, 200, 0.8),
+        0 0 60px rgba(0, 200, 255, 0.6), 0 0 100px rgba(0, 150, 255, 0.5);
+    }
+    @keyframes swirl {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  `}</style>
         </button>
+
         <div className="">
         </div>
         {/* Logo section */}
