@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
 
   return (
     <div>
-      <header style={{ position: 'absolute', bottom: '0', scrollbarWidth: 'none' }} className="overflow-hidden bg-transparent w-full h-[10vh]  relative z-[9999] flex justify-end items-center px-4">
+      <header style={{ position: 'relative, bottom: '2rem', scrollbarWidth: 'none' }} className="overflow-hidden bg-transparent w-full h-[10vh]  relative z-[9999] flex justify-end items-center px-4">
         
         <button
         
