@@ -18,11 +18,11 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
       <header style={{ position: 'absolute', bottom: '0', scrollbarWidth: 'none' }} className="overflow-hidden bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="icon-tornado-btn relative flex items-center justify-center w-[3.5rem] h-[3.5rem] rounded-lg bg-gray-600"
+          className="icon-tornado-btn relative flex items-center justify-center w-[3.5rem] h-[3.5rem] rounded-b-4xl"
           style={{ rotate: "-35deg" }}
         >
           {isSidebarOpen ? (
-            <X className="w-[3rem] h-[3rem] text-gray-200 z-10" />
+            <X className="w-[3rem] h-[3rem] text-gray-200 z-10 " />
           ) : (
             <Menu className="w-[2rem] h-[2rem] text-gray-200 z-10" />
           )}

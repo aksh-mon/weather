@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import { Geist, Geist_Mono, Nabla } from "next/font/google";
+import { Geist, Geist_Mono, Nabla,Tiro_Devanagari_Hindi } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,6 +23,12 @@ const asimovian = localFont({
   variable: "--font-ash",
   weight: "400",
 });
+const dev = Tiro_Devanagari_Hindi({
+  variable: "--font-dev",
+  subsets: ["devanagari"],
+  weight: '400'
+})
+
 
 export default function RootLayout({
   children,
@@ -38,7 +44,7 @@ export default function RootLayout({
         <meta name="google-site-verification" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${nabla.variable} ${asimovian.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${nabla.variable} ${asimovian.variable} ${dev.variable} antialiased`}
       >
         {children}
       </body>
