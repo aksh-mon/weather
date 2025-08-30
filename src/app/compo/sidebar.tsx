@@ -107,7 +107,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                         <button
                             onClick={() => handleClick(key)}
                             className="relative flex items-center gap-3 p-3 w-full rounded-t-3xl text-white 
-                bg-stone-800 shadow-md hover:scale-105 transition overflow-hidden"
+                bg-stone-800 shadow-md hover:scale-105 transition overflow-hidden hover:bg-sky-200"
                         >
                             <span className="relative z-10 flex items-center gap-2">
                                 <Shell className="animate-spin w-4" /> {label}

@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import App from "../app/page";
 import Error from "../404/page";
 import Sudoku from "../sudoku/page";
-import Footnote from "../footnote/page";
 import FlappyBirdGame from "../flappyBird/page";
 import Contra from "../contra/page";
 import Snake from "../snake/page";
@@ -81,7 +80,7 @@ export default function Home() {
       <Header setSelectedGame={setSelectedGame} setMode={setMode} />
       </main>
       {/* Footer */}
-      <Footnote />
+      {/* <Footnote /> */}
     </div>
   );
 }
