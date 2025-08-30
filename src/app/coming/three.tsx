@@ -11,7 +11,7 @@ export default function PyramidHome() {
 
     // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#111827"); // Tailwind gray-900
+    scene.background = new THREE.Color("#C2B280"); // start with sand
 
     // Camera
     const camera = new THREE.PerspectiveCamera(
@@ -20,46 +20,111 @@ export default function PyramidHome() {
       0.1,
       1000
     );
-    camera.position.z = 5;
+    camera.position.z = 10;
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Geometry: Pyramid (tetrahedron)
-    const geometry = new THREE.TetrahedronGeometry(1);
-    const material = new THREE.MeshStandardMaterial({
-      color: "#facc15", // yellow-400
+    // Pyramid Geometry: square base
+    const pyramidGeo = new THREE.ConeGeometry(1, 2, 4); // square-based pyramid
+    const pyramidMat = new THREE.MeshStandardMaterial({
+      color: "#fbbf24", // summer yellow
       flatShading: true,
     });
 
-    // Create multiple pyramids
     const pyramids: THREE.Mesh[] = [];
-    for (let i = 0; i < 20; i++) {
-      const mesh = new THREE.Mesh(geometry, material.clone());
+    for (let i = 0; i < 12; i++) {
+      const mesh = new THREE.Mesh(pyramidGeo, pyramidMat.clone());
       mesh.position.set(
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 6,
-        (Math.random() - 0.5) * 10
+        (Math.random() - 0.5) * 14,
+        (Math.random() - 0.5) * 8,
+        (Math.random() - 0.5) * 14
       );
       scene.add(mesh);
       pyramids.push(mesh);
     }
 
-    // Lighting
-    const light = new THREE.PointLight(0xffffff, 1, 100);
-    light.position.set(10, 10, 10);
-    scene.add(light);
+    // Dust Particles
+    const particleCount = 400;
+    const positions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 30;
+    }
+    const particleGeo = new THREE.BufferGeometry();
+    particleGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    const particleMat = new THREE.PointsMaterial({
+      size: 0.06,
+      color: "#ffffff",
+      transparent: true,
+      opacity: 0.8,
+    });
+    const particles = new THREE.Points(particleGeo, particleMat);
+    scene.add(particles);
 
-    // Animation
+    // Lights
+    const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambient);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(10, 15, 10);
+    scene.add(dirLight);
+
+    // Season Colors
+    const seasons = [
+      { bg: "#C2B280", color: "#facc15" }, // Summer (sand, yellow)
+      { bg: "#92400e", color: "#ea580c" }, // Autumn (brown, orange)
+      { bg: "#1e3a8a", color: "#93c5fd" }, // Winter (blue, icy white)
+      { bg: "#065f46", color: "#10b981" }, // Spring (green, teal)
+    ];
+    let seasonIndex = 0;
+    let nextSeasonIndex = 1;
+    let seasonProgress = 0;
+
+    // Clock
+    const clock = new THREE.Clock();
+
+    // Animate
     const animate = () => {
       requestAnimationFrame(animate);
+
+      const delta = clock.getDelta();
+
+      // Rotate pyramids
       pyramids.forEach((p) => {
-        p.rotation.x += 0.01;
         p.rotation.y += 0.01;
-        p.position.y += Math.sin(Date.now() * 0.001 + p.position.x) * 0.002;
+        p.rotation.x += 0.005;
       });
+
+      // Particles drift
+      particles.rotation.y += 0.0005;
+
+      // Season blending
+      seasonProgress += delta * 0.05; // slower transition
+      if (seasonProgress >= 1) {
+        seasonProgress = 0;
+        seasonIndex = nextSeasonIndex;
+        nextSeasonIndex = (nextSeasonIndex + 1) % seasons.length;
+      }
+
+      const current = seasons[seasonIndex];
+      const next = seasons[nextSeasonIndex];
+
+      // Interpolate colors
+      const bgColor = new THREE.Color(current.bg).lerp(
+        new THREE.Color(next.bg),
+        seasonProgress
+      );
+      const pyrColor = new THREE.Color(current.color).lerp(
+        new THREE.Color(next.color),
+        seasonProgress
+      );
+
+      scene.background = bgColor;
+      pyramids.forEach((p) => {
+        (p.material as THREE.MeshStandardMaterial).color = pyrColor;
+      });
+
       renderer.render(scene, camera);
     };
     animate();
@@ -72,26 +137,41 @@ export default function PyramidHome() {
 
   return (
     <div className="relative w-full h-screen" ref={mountRef}>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10">
-        <h1 className="text-5xl font-bold mb-6">✨ Pyramidverse</h1>
-        <button className="btn-wind px-8 py-3 rounded-lg text-lg font-semibold transition-colors duration-500">
-          Explore
+      {/* Overlay Content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 font-serif">
+        <h1 className="text-6xl font-extrabold mb-6 animate-spin-slow">
+          🌪️ ? Explore
+        </h1>
+        <button className="btn-wind px-8 py-3 rounded-lg text-xl font-semibold">
+          Begin Journey
         </button>
       </div>
 
       <style jsx>{`
         .btn-wind {
-          background: white;
-          color: black;
-          box-shadow: 0 0 15px rgba(255, 255, 255, 0.8),
-            0 0 30px rgba(200, 200, 200, 0.6),
-            0 0 60px rgba(150, 150, 150, 0.4);
+          background: #fef3c7;
+          color: #78350f;
+          box-shadow: 0 0 20px rgba(255, 255, 200, 0.9),
+            0 0 40px rgba(200, 180, 100, 0.6),
+            0 0 80px rgba(150, 120, 50, 0.4);
+          transition: all 0.6s ease-in-out;
         }
         .btn-wind:hover {
           filter: grayscale(100%);
           background: black;
           color: white;
-          transition: all 0.5s ease-in-out;
+        }
+        .animate-spin-slow {
+          display: inline-block;
+          animation: spin 12s linear infinite;
+        }
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </div>

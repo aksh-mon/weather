@@ -15,12 +15,12 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
 
   return (
     <div>
-      <header style={{ position: 'absolute', bottom: '0' }} className="bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
+      <header  style={{ position: 'absolute', bottom: '0',scrollbarWidth:'none' }} className="overflow-hidden bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
         <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} style={{ rotate: '-35deg' }}>
           {isSidebarOpen ? (
             <X className="icon-tornado w-[2rem] h-[2rem] text-gray-800 bg-red-50 p-2 rounded-lg" />
           ) : (
-            <Menu className="icon-tornado w-[3rem] h-[5rem] text-gray-800 bg-white p-2 rounded-lg" />
+            <Menu className="icon-tornado w-[3rem] h-[3rem] text-gray-800 bg-white p-2 rounded-lg" />
           )}
 
           <style jsx>{`
