@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 
 export default function Title() {
   return (
-    <div className="ash" style={{rotate:'-30deg'}}>
+    <div className="ash">
       <motion.h2
-        className="relative text-xl sm:text-xl lg:text-6xl font-extrabold tracking-wide "
+        className="relative text-3xl sm:text-3xl lg:text-6xl font-extrabold tracking-wide "
         style={{
-          background: "linear-gradient(270deg, #aaa, #999, #777, #555, #777, #999, #aaa)",
+          background: "linear-gradient(270deg, #aaa, #999, #777, #555,#ddd,#3296,#000, #777, #999, #aaa)",
           backgroundSize: "400% 400%",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",

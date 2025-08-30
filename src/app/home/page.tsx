@@ -14,6 +14,7 @@ import Car from "../car/page";
 import Kill from "../kill/page";
 import Climb from "../mountain/page";
 import Jump from "../mario/page";
+import Three from "../coming/three";
 
 import Header from "../compo/header";
 
@@ -57,6 +58,8 @@ export default function Home() {
         return <Climb />;
       case "jump":
         return <Jump />;
+      case "come":
+        return <Three/>  
       case "app":
       default:
         return <App />;

@@ -103,12 +103,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                     ["kill", "Kill"],
                     ["climb", "Climb"],
                     ["jump", "Jump"],
+                    ["come","Three"],
                 ].map(([key, label]) => (
                     <div key={key} className="relative">
                         <button
                             onClick={() => handleClick(key)}
                             className="relative flex items-center gap-3 p-3 w-full rounded-t-3xl text-white 
-                bg-stone-800 shadow-md hover:scale-105 transition overflow-hidden hover:bg-sky-200"
+                bg-stone-800 shadow-md hover:scale-105 transition overflow-hidden hover:bg-[rgb(132,102,164,0.8)] hover:text-gray-900"
                         >
                             <span className="relative z-10 flex items-center gap-2">
                                 <Shell className="animate-spin w-4" /> {label}

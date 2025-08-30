@@ -15,13 +15,30 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
 
   return (
     <div>
-      <header className="bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
-        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} style={{rotate:'-35deg'}}>
+      <header style={{ position: 'absolute', bottom: '0' }} className="bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
+        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} style={{ rotate: '-35deg' }}>
           {isSidebarOpen ? (
-            <X className="w-[2rem] h-[2rem] text-gray-700 bg-red-50" />
+            <X className="icon-tornado w-[2rem] h-[2rem] text-gray-800 bg-red-50 p-2 rounded-lg" />
           ) : (
-            <Menu className="w-[2rem] h-[2rem] text-gray-700 bg-white p-2" />
+            <Menu className="icon-tornado w-[3rem] h-[5rem] text-gray-800 bg-white p-2 rounded-lg" />
           )}
+
+          <style jsx>{`
+  .icon-tornado {
+    transition: transform 0.6s ease-in-out;
+    cursor: pointer;
+  }
+  .icon-tornado:hover {
+    animation: tornado 0.6s ease-in-out forwards;
+    color: #1f2937; /* dark gray (gray-800) */
+  }
+  @keyframes tornado {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.3); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+          `}</style>
+
         </button>
         <div className="">
         </div>
