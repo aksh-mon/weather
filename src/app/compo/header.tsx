@@ -46,9 +46,9 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
           }
         >
            {isSidebarOpen ? (
-            <X className="w-[3rem] h-[3rem] text-gray-200 z-10 " />
+            <X className="text-2xl text-gray-900 z-10 " />
           ) : (
-            <Menu className="w-[2rem] h-[2rem] text-gray-200 z-10" />
+            <Menu className="text-2xl text-gray-900 z-10" />
           )}
 
         </button>
