@@ -199,7 +199,7 @@ export default function SnakePage() {
       className="flex flex-col items-center justify-center p-6 "
       style={{ background: "linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%)" }}
     >
-      <div className="max-w-2xl w-[100vh]">
+      <div className="max-w-2xl w-full h-full">
         <div className="flex items-center justify-center mb-4 ">
           <Headline title="SNAKEMON" />
         </div>
