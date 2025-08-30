@@ -15,11 +15,11 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
 
   return (
     <div>
-      <header style={{ position: 'absolute', bottom: '0', scrollbarWidth: 'none' }} className="overflow-hidden bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
+      <header style={{ position: 'absolute', bottom: '0', scrollbarWidth: 'none' }} className="overflow-hidden bg-transparent w-full h-[10vh]  relative z-[9999] flex justify-end items-center px-4">
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           style={{ rotate: "-35deg" }}
-          className='hover:bg-[rgb(120,120,120,0.3)] h-[3.1rem] w-[3.1rem]'
+          className='hover:bg-[rgb(120,120,120,0.3)] h-[3.1rem] w-[3.1rem] flex justify-c'
         >
           {isSidebarOpen ? (
             <X className="w-[3rem] h-[3rem] text-gray-200 z-10 " />
