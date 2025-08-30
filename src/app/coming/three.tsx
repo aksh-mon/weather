@@ -11,7 +11,7 @@ export default function PyramidHome() {
 
     // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#0d0d0d"); // deep black background
+    scene.background = new THREE.Color("#87CEEB"); // light blue sky
 
     // Camera
     const camera = new THREE.PerspectiveCamera(
@@ -30,13 +30,13 @@ export default function PyramidHome() {
     // --- Central Rotating Triangle ---
     const triangleGeo = new THREE.CircleGeometry(2, 3); // equilateral triangle
     const triangleMat = new THREE.MeshStandardMaterial({
-      color: "#111111",
+      color: "#C0A060", // warm sandy color instead of dark
       flatShading: true,
     });
     const triangle = new THREE.Mesh(triangleGeo, triangleMat);
     scene.add(triangle);
 
-    // --- Layered Mountains (2D planes with jagged edges) ---
+    // --- Layered Mountains (Sand colors) ---
     function createMountainLayer(color: string, y: number, z: number, scale: number) {
       const shape = new THREE.Shape();
       shape.moveTo(-10, 0);
@@ -54,7 +54,7 @@ export default function PyramidHome() {
     }
 
     const mountains: THREE.Mesh[] = [];
-    const mountainColors = ["#1a1a1a", "#262626", "#333333", "#404040"];
+    const mountainColors = ["#C2B280", "#D2B48C", "#E0C097", "#F4E1C1"]; // sand tones
     for (let i = 0; i < 4; i++) {
       const layer = createMountainLayer(
         mountainColors[i],
@@ -67,9 +67,9 @@ export default function PyramidHome() {
     }
 
     // Lights
-    const ambient = new THREE.AmbientLight(0xffffff, 0.3);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.6); // brighter daylight
     scene.add(ambient);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    const dirLight = new THREE.DirectionalLight(0xfff5c0, 1); // warm sunlight
     dirLight.position.set(5, 10, 5);
     scene.add(dirLight);
 
@@ -84,12 +84,12 @@ export default function PyramidHome() {
       // Rotate triangle
       triangle.rotation.z = t * 0.4;
 
-      // Pulse triangle color (dark shades)
+      // Pulse triangle color (warm sandy tones)
       const pulse = (Math.sin(t * 2) + 1) / 2; // 0 → 1
       (triangle.material as THREE.MeshStandardMaterial).color.set(
         new THREE.Color().lerpColors(
-          new THREE.Color("#000000"),
-          new THREE.Color("#444444"),
+          new THREE.Color("#D2B48C"), // tan
+          new THREE.Color("#FFD580"), // sandy yellow
           pulse
         )
       );
@@ -111,11 +111,11 @@ export default function PyramidHome() {
   return (
     <div className="relative w-full h-screen" ref={mountRef}>
       {/* Overlay Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 font-serif">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 font-serif drop-shadow-lg">
         <h1 className="text-6xl font-extrabold mb-6 dev text-center">
           नवीनं नूतनं मोचनं अन्वेष्यताम् .
         </h1>
-        <button className="btn-wind px-8 py-3 rounded-full text-4xl font-bold">
+        <button className="btn-wind px-8 py-3 rounded-full text-4xl font-bold bg-yellow-500 hover:bg-yellow-600 text-black transition">
           ?
         </button>
       </div>
