@@ -17,6 +17,7 @@ const messages = [
     "🔥 New adventures await you!",
     "🎵 Tune in, play on, vibe high!",
     "🌌 Explore, conquer, repeat.",
+    "Imagine if every time you said Sorry it actually meant Thank you’—you’d sound way more grateful than guilty.",
 ];
 
 const psSymbols = ["✕", "◯", "□", "△"];
