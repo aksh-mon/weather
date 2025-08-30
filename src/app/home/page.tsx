@@ -77,9 +77,10 @@ export default function Home() {
       >
         {renderGame()}
         <Toggle onToggle={setBgColor} />
+        
+      <Header setSelectedGame={setSelectedGame} setMode={setMode} />
       </main>
       {/* Footer */}
-      <Header setSelectedGame={setSelectedGame} setMode={setMode} />
       <Footnote />
     </div>
   );
