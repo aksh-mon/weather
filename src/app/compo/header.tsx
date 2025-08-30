@@ -16,7 +16,54 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
   return (
     <div>
       <header style={{ position: 'absolute', bottom: '0', scrollbarWidth: 'none' }} className="overflow-hidden bg-transparent w-full h-[10vh] border-b-2 border-b-cyan-700 relative z-[9999] flex justify-end items-center px-4">
-        
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="icon-tornado-btn relative flex items-center justify-center w-[3rem] h-[3rem] rounded-b-4xl"
+          style={{ rotate: "-35deg" }}
+        >
+          {isSidebarOpen ? (
+            <X className="w-[3rem] h-[3rem] text-gray-200 z-10 " />
+          ) : (
+            <Menu className="w-[2rem] h-[2rem] text-gray-200 z-10" />
+          )}
+
+          <style jsx>{`
+    .icon-tornado-btn {
+      background: linear-gradient(145deg, #1f2937, #111827); /* dark gradient */
+      box-shadow: 0 0 20px rgba(31, 41, 55, 0.8),
+        0 0 40px rgba(17, 24, 39, 0.6), 0 0 60px rgba(0, 0, 0, 0.9);
+      transition: all 0.6s ease-in-out;
+      overflow: hidden;
+    }
+    .icon-tornado-btn::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(
+        from 0deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(0, 0, 0, 0.3),
+        rgba(255, 255, 255, 0.1)
+      );
+      border-radius: inherit;
+      animation: swirl 4s linear infinite;
+      z-index: 0;
+    }
+    .icon-tornado-btn:hover {
+      background: linear-gradient(145deg, #111827, #000000);
+      box-shadow: 0 0 30px rgba(9, 9, 9, 0.8),
+        0 0 60px rgba(60, 82, 88, 0.6), 0 0 100px rgba(100, 110, 118, 0.5);
+    }
+    @keyframes swirl {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  `}</style>
+        </button>
         {/* Logo section */}
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-sky-200 to-sky-500">
       <button
