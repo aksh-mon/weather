@@ -34,7 +34,7 @@ export default function Home() {
 
   const renderGame = () => {
     if (mode === "error") {
-      return <Error />;
+      return <Error name="Error" />;
     }
 
     switch (selectedGame) {
@@ -53,11 +53,11 @@ export default function Home() {
       case "car":
         return <Car />;
       case "kill":
-        return <Kill />;
+        return <Error name="kill"/>;
       case "climb":
-        return <Climb />;
+        return <Error name="climb"/>;
       case "jump":
-        return <Jump />;
+        return <Error name="jump"/>;
       case "come":
         return <Three/>  
       case "app":

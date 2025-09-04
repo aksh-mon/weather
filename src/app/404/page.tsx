@@ -4,14 +4,15 @@
 import React, { useState } from 'react'
 import Typewriter from '../compo/typewritwertext';
 import Toggle from '../compo/toggle';
-
-const page = () => {
-
+interface PageProps {
+  name: string;
+}
+const page: React.FC<PageProps> = ({ name }) => {
   const [bgColor, setBgColor] = useState("");
   return (
     <div>
 
-      <div style={{ backgroundColor: `${bgColor}`, transition: "background-color 0.3s ease-in-out" }} className=" h-[90vh] w-full">
+      <div style={{ backgroundColor: `${bgColor}`, transition: "background-color 0.3s ease-in-out" }} className="h-[100vh] w-full ">
         <div className="relative top-[10vh]">
           <div
             style={{ backgroundColor: `${bgColor}` }}
@@ -56,9 +57,9 @@ const page = () => {
             </div>
 
             {/* Error Message */}
-            <h1 className='mt-[-5%] text-2xl text-black' style={{ fontFamily: 'Nabla' }}>404</h1>
+            <h1 className='mt-[-5%] text-2xl text-black neb' >404</h1>
             <h1 className={"text-2xl font-bold mt-1 "}
-              style={{ color: bgColor === "#E5E5E5" ? "black" : "white" }}>Page Not Available</h1>
+              style={{ color: bgColor === "#E5E5E5" ? "black" : "white" }}> Page {name} Not Available</h1>
             <Typewriter
               text={[
                 "working on our website ⛔",

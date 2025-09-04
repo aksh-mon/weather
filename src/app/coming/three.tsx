@@ -28,9 +28,9 @@ export default function PyramidHome() {
     mountRef.current.appendChild(renderer.domElement);
 
     // --- Central Rotating Triangle ---
-    const triangleGeo = new THREE.CircleGeometry(2, 3); // equilateral triangle
+    const triangleGeo = new THREE.CircleGeometry(3, 3); // equilateral triangle
     const triangleMat = new THREE.MeshStandardMaterial({
-      color: "#C0A060", // warm sandy color instead of dark
+      color: "#000", // warm sandy color instead of dark
       flatShading: true,
     });
     const triangle = new THREE.Mesh(triangleGeo, triangleMat);
@@ -82,7 +82,7 @@ export default function PyramidHome() {
       const t = clock.getElapsedTime();
 
       // Rotate triangle
-      triangle.rotation.z = t * 0.4;
+      triangle.rotation.z = t * 5;
 
       // Pulse triangle color (warm sandy tones)
       const pulse = (Math.sin(t * 2) + 1) / 2; // 0 → 1
@@ -109,13 +109,13 @@ export default function PyramidHome() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen" ref={mountRef}>
+    <div className="relative w-full h-screen overflow-hidden" ref={mountRef}>
       {/* Overlay Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 font-serif drop-shadow-lg">
         <h1 className="text-6xl font-extrabold mb-6 dev text-center">
           नवीनं नूतनं मोचनं अन्वेष्यताम् .
         </h1>
-        <button className="btn-wind px-8 py-3 rounded-full text-4xl font-bold bg-yellow-500 hover:bg-yellow-600 text-black transition">
+        <button className="rounded-full text-4xl font-bold bg-white text-black dev w-[50px] h-[50px] flex justify-center items-end">
           ?
         </button>
       </div>

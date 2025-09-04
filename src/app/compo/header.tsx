@@ -15,40 +15,22 @@ const Header: React.FC<HeaderProps> = ({ setSelectedGame, setMode }) => {
 
   return (
     <div>
-      <header style={{ position: 'absolute', top: '0', scrollbarWidth: 'none' }} className="overflow-hidden bg-transparent w-full h-[10vh]  relative z-[9999] flex justify-end items-center px-4">
+      <header style={{ position: 'absolute', bottom: '0', scrollbarWidth: 'none' }} className="overflow-hidden bg-transparent w-full h-[10vh]  relative z-[9999] flex justify-end items-center px-4">
         
         <button
-        
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className='cursor-pointer bg-amber-300 p-2.5'
           style={{
             font: "inherit",
-            rotate:"-30deg",
-            backgroundColor: "#f0f0f0",
             border: "0",
-            color: "#242424",
-            borderRadius: "0.5em",
-            fontSize: "1.35rem",
-            padding: "0.375em 1em",
-            fontWeight: 600,
             textShadow: "0 0.0625em 0 #fff",
-            boxShadow:
-              "inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef, 0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede, 0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece",
-            transition: "0.15s ease",
-            cursor: "pointer",
           }}
-          onMouseDown={(e) =>
-          (e.currentTarget.style.boxShadow =
-            "inset 0 0.03em 0 0 #f4f4f4, 0 0.03em 0 0 #efefef, 0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede, 0 0.2em 0 0 #dcdcdc, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece")
-          }
-          onMouseUp={(e) =>
-          (e.currentTarget.style.boxShadow =
-            "inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef, 0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede, 0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece")
-          }
+        
         >
            {isSidebarOpen ? (
-            <X className="text-2xl text-gray-900 z-10 " />
+            <X className=" text-white" />
           ) : (
-            <Menu className="text-2xl text-gray-900 z-10" />
+            <Menu className=" text-white font-bold" />
           )}
 
         </button>
