@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import App from "../app/page";
-import Error from "../404/page";
+import Error from "../err/page";
 import Sudoku from "../sudoku/page";
 import FlappyBirdGame from "../flappyBird/page";
 import Contra from "../contra/page";
@@ -11,9 +11,6 @@ import Snake from "../snake/page";
 import Ludo from "../ludo/page";
 import Cube from "../cube/page";
 import Car from "../car/page";
-import Kill from "../kill/page";
-import Climb from "../mountain/page";
-import Jump from "../mario/page";
 import Three from "../coming/three";
 
 import Header from "../compo/header";
@@ -34,7 +31,7 @@ export default function Home() {
 
   const renderGame = () => {
     if (mode === "error") {
-      return <Error name="Error" />;
+      return <Error />;
     }
 
     switch (selectedGame) {
@@ -53,11 +50,11 @@ export default function Home() {
       case "car":
         return <Car />;
       case "kill":
-        return <Error name="kill"/>;
+        return <Error/>;
       case "climb":
-        return <Error name="climb"/>;
+        return <Error/>;
       case "jump":
-        return <Error name="jump"/>;
+        return <Error/>;
       case "come":
         return <Three/>  
       case "app":
