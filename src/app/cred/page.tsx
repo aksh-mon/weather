@@ -18,7 +18,7 @@ export default function AuthForm() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (email === adminEmail && password === adminPassword) {
+    if (email === "aks@321.com" && password === "imadeit") {
       setError("");
       localStorage.setItem("isAuthenticated", "true");
       router.replace("/home");
