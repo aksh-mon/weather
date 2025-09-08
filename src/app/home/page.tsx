@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import App from "../app/page";
-import Error from "../err/page";
+import Error from "../demo/page";
 import Sudoku from "../sudoku/page";
 import FlappyBirdGame from "../flappyBird/page";
 import Contra from "../contra/page";
@@ -50,7 +50,7 @@ export default function Home() {
       case "car":
         return <Car />;
       case "kill":
-        return <Error/>;
+        return <Error />;
       case "climb":
         return <Error/>;
       case "jump":

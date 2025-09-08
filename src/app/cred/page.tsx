@@ -12,9 +12,6 @@ export default function AuthForm() {
   const [error, setError] = useState("");
   const router = useRouter(); 
 
-  const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-  const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 

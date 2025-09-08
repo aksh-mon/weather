@@ -58,7 +58,7 @@ const page= () => {
             {/* Error Message */}
             <h1 className='mt-[-5%] text-2xl text-black neb' >404</h1>
             <h1 className={"text-2xl font-bold mt-1 "}
-              style={{ color: bgColor === "#E5E5E5" ? "black" : "white" }}> Page Not Available</h1>
+              style={{ color: bgColor === "#E5E5E5" ? "black" : "white" }}> Page <span className='text-3xl text-blue-900 underline'>GAME</span> Not Available</h1>
             <Typewriter
               text={[
                 "working on our website ⛔",

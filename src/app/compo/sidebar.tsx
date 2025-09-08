@@ -73,7 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
       absolute top-0 left-0 h-screen 
       lg:w-[20vw] sm:w-[40vw] w-[60vw] 
-      bg-cyan-700/50
+      bg-slate-800/70
       border-r z-[99] flex flex-col overflow-hidden`}
     >
       {/* Scrollable middle section */}
