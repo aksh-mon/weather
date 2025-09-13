@@ -126,6 +126,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           ["climb", "Climb"],
           ["jump", "Jump"],
           ["come", "Three"],
+          ["newhome","House"]
         ].map(([key, label], idx) => (
           <div key={key} className="relative">
             <button

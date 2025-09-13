@@ -18,7 +18,7 @@ export default function AuthForm() {
     if (email === "aks@321.com" && password === "imadeit") {
       setError("");
       localStorage.setItem("isAuthenticated", "true");
-      router.replace("/home");
+      router.replace("/newHome");
     } else {
       setError("❌ Account not found. Please create one.");
     }

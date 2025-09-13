@@ -12,6 +12,7 @@ import Ludo from "../ludo/page";
 import Cube from "../cube/page";
 import Car from "../car/page";
 import Three from "../coming/three";
+import House from '../newHome/page';
 
 import Header from "../compo/header";
 
@@ -56,7 +57,9 @@ export default function Home() {
       case "jump":
         return <Error/>;
       case "come":
-        return <Three/>  
+        return <Three/>;  
+      case"newhome":
+       return <House/>;
       case "app":
       default:
         return <App />;
